@@ -3,10 +3,10 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup as Soup
 
 #ANCHOR - set up URLs and parsers
-URL = "https://www.d20pfsrd.com/"
+URL = "https://www.aonprd.com/"
 
-class_page = urlopen(f"{URL}classes/")
-class_soup = Soup(class_page, 'html.parser')
+class_page = urlopen(f"{URL}Classes.aspx")
+class_links = Soup(class_page, 'lxml')
 classes = []
 
 # race_page = urlopen(f"{URL}races")
@@ -14,8 +14,16 @@ classes = []
 
 #ANCHOR - start parsing
 # Classes:
-tables = class_soup.find_all(class_="table-wrapper")
-print(tables)
+links = class_links.find(id="ctl00_MainContent_AllClassLabel")
+links = links.find_all('a') # type: ignore
+for link in links:
+    link = link.get('href').replace(" ", "%20")
+    print(f"{URL}{link}")
+    current_link = urlopen(f"{URL}{link}")
+    current_class = Soup(current_link, 'lxml')
+    #NOTE - this gets the class features table (which should be the first table to pop up)
+    print(current_class.find(class_="inner"))
+
 
 # all_spells_page = urlopen(f"{URL}/spells")
 # soup = Soup(all_spells_page, 'html.parser')
