@@ -3,11 +3,10 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-        {% block head %}
-        {% endblock %}
+        {% block head %} {% endblock %}
     </head>
 
     <body>
-        {% block body %}{% endblock %}
+        {% block body %} {% endblock %}
     </body>
 </html>

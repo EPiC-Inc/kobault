@@ -9,7 +9,8 @@ def index():
 
 @main.route('/<game>/character/<character_id>')
 def character_sheet(game, character_id):
+    #TODO - fetch character from storage
     try:
         return render_template(f"{game}/character_sheet.html")
     except TemplateNotFound:
-        return render_template(f"_core/404.html")
+        return render_template("_core/404.html"), 404

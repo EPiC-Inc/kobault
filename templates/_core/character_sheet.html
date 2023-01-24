@@ -1,4 +1,22 @@
 {% extends "_core/base.html" %}
 {% block head %}
-    <title>Undefined Character Sheet</title>
+<title>[Character Name] | Kobault</title>
+{% endblock %}
+
+{% block body %}
+<div id="character">
+    <div class="stats combat">
+        <label for="hp">HP:</label>
+        <input id="hp" name="hp" type="number" class="stat hp" maxlength="4">
+        <div class="adjustment">
+            <button>+</button>
+            <button>r</button>
+            <button>-</button>
+        </div>
+    </div>
+    
+    <div class="stats"></div>
+
+    <div class="skills"></div>
+</div>
 {% endblock %}

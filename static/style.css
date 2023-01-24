@@ -1,3 +1,48 @@
+#character {
+    font-size: larger;
+}
+
+.stats > *{
+    font-size: xx-large;
+}
+
+.stat, .stat > * {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.stat {
+    box-sizing: border-box;
+    --stat-animation-duration: 280ms;
+    margin: 4px;
+    text-align: center;
+    transition: border var(--stat-animation-duration) ease-out;
+    border: 3px solid black;
+    border-radius: 4px;
+}
+.stat:focus{
+    outline: 0;
+}
+.stat.hp {
+    width: 2.5em;
+}
+.stat.hp:hover {
+    border-color: lightblue;
+}
+.stat.hp:focus {
+    border-color: navy;
+}
+
 body {
     margin: 0;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/*input[type=number] {
+    -moz-appearance:textfield;
+}*/
