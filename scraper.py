@@ -1,13 +1,15 @@
 from urllib.request import urlopen
 
 from bs4 import BeautifulSoup as Soup
+from lxml import etree
+from lxml.html import fromstring
 
 #ANCHOR - set up URLs and parsers
 URL = "https://www.aonprd.com/"
 
 class_page = urlopen(f"{URL}Classes.aspx")
 class_links = Soup(class_page, 'lxml')
-classes = []
+classes = {}
 
 # race_page = urlopen(f"{URL}races")
 # race_soup = Soup(race_page, 'html.parser')
@@ -18,12 +20,30 @@ links = class_links.find(id="ctl00_MainContent_AllClassLabel")
 links = links.find_all('a') # type: ignore
 for link in links:
     link = link.get('href').replace(" ", "%20")
+    if link.endswith("Companion"):
+        print("End of player classes")
+        break
     print(f"{URL}{link}")
     current_link = urlopen(f"{URL}{link}")
     current_class = Soup(current_link, 'lxml')
-    #NOTE - this gets the class features table (which should be the first table to pop up)
-    print(current_class.find(class_="inner"))
 
+    dom = etree.HTML(str(current_class), parser=None)
+    class_name = dom.xpath('//*[@id="ctl00_MainContent_DataListTypes_ctl00_LabelName"]/h1/text()')[0].strip()
+    print(class_name)
+
+    class_table = dom.xpath('//*[@id="ctl00_MainContent_DataListTypes_ctl00_LabelName"]/table')
+    class_table = class_table[0]
+
+    #NOTE - the spells per day heading trips this up a lot since it's on a different row :[
+    start = 0
+    while ((class_table[start][0].text is None) or not (class_table[start][0].text.strip())):
+        start += 1
+    headers = class_table[start][0].text
+    print(start, headers)
+
+    for level in range(start, len(class_table)):
+        for column in range(0, len(class_table[start])):
+            print(class_table[level][column].text)
 
 # all_spells_page = urlopen(f"{URL}/spells")
 # soup = Soup(all_spells_page, 'html.parser')
