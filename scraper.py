@@ -39,11 +39,33 @@ for link in links:
     while ((class_table[start][0].text is None) or not (class_table[start][0].text.strip())):
         start += 1
     headers = class_table[start][0].text
-    print(start, headers)
+    # print(start, headers)
 
+    classes[class_name] = {}
     for level in range(start, len(class_table)):
-        for column in range(0, len(class_table[start])):
-            print(class_table[level][column].text)
+        level_label = "you should not be able to see this - let Emmett know if you do"
+        for i, column in enumerate(range(0, len(class_table[start]))):
+            current_feature = class_table[level][column].text
+            #print(current_feature, end=' | ')
+            match i:
+                case 0:
+                    level_label = current_feature
+                    classes[class_name][level_label] = {}
+                case 1:
+                    classes[class_name][level_label]["base_attack_bonus"] = current_feature
+                case 2:
+                    classes[class_name][level_label]["save_fortitude"] = current_feature
+                case 3:
+                    classes[class_name][level_label]["save_reflex"] = current_feature
+                case 4:
+                    classes[class_name][level_label]["save_will"] = current_feature
+                case 5:
+                    classes[class_name][level_label]["new_features"] = current_feature
+                case _:
+                    print('grr')
+        print()
+    print(classes)
+    
 
 # all_spells_page = urlopen(f"{URL}/spells")
 # soup = Soup(all_spells_page, 'html.parser')
