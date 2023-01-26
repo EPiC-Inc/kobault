@@ -24,7 +24,7 @@
     outline: 0;
 }
 .stat.hp {
-    width: 2.5em;
+    width: 2.7em;
 }
 .stat.hp:hover {
     border-color: lightblue;
@@ -43,6 +43,6 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-/*input[type=number] {
+input[type=number] {
     -moz-appearance:textfield;
-}*/
+}
