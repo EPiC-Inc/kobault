@@ -1,0 +1,25 @@
+{% extends "_core/base.html" %}
+{% block title %}Sign Up{% endblock %}
+
+{% block head %}{% endblock%}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="error">
+        Error: {{ messages[0] }}.
+    </div>
+{% endif %}
+{% endwith %}
+
+<form action="{{ url_for('auth.signup') }}" method="post">
+    <label for="user_id">User ID:</label><br>
+    <input type="text" name="user_id"><br>
+    <label for="lname">User display name:</label><br>
+    <input type="text" name="user_name"><br>
+    <label for="lname">Password:</label><br>
+    <input type="password" name="password"><br><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

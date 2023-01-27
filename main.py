@@ -9,6 +9,11 @@ main = Blueprint('main', __name__)
 def index():
     return 'Index'
 
+@main.route('/home')
+def home():
+    #TODO - make a homepage with campaigns and characters
+    return 'home'
+
 @main.route('/characters')
 def characters():
     #TODO - Get a list of all the logged-in user's characters
@@ -16,12 +21,19 @@ def characters():
 
 @main.route('/characters/<game>/<character_id>')
 def character_sheet(game, character_id):
+    #TODO - make sure user is authorized for that character
     #TODO - fetch character from storage
     try:
         return render_template(f"{game}/character_sheet.html", 
             game=game, max_hp=32, character_name="test_character")
     except TemplateNotFound:
         abort(404)
+
+#ANCHOR - Edit character
+@main.route('/characters/<character_id>', methods=['POST'])
+def set_character(character_id):
+    #TODO - make sure user is authorized for that character
+    return "test"
 
 #TODO - add a place to print the character and have it in a pathfinder pdf
 
