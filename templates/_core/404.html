@@ -1,4 +1,8 @@
 {% extends "_core/base.html" %}
+{% block head %}
+<title>404 not found</title>
+{% endblock %}
 {% block body %}
-<p>404 :[</p>
+<p>404</p>
+<img src="{{ url_for('static', filename='oof.png') }}" alt="oof" width="210" height="210">
 {% endblock %}

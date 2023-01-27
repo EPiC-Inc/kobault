@@ -1,14 +1,21 @@
+* {
+    /*font-family: "Playfair Display";*/
+    font-family: "Caudex";
+}
+
 #character {
     font-size: larger;
+    display: grid;
+    grid-template-columns: 2fr 1.5fr;
+    grid-template-rows: 1fr 1fr;
 }
 
-.stats > *{
-    font-size: xx-large;
+.stats, .stats > *{
+    font-size: x-large;
 }
 
-.stat, .stat > * {
-    display: inline-flex;
-    flex-direction: row;
+input.stat {
+    text-align: center;
 }
 
 .stat {
@@ -23,13 +30,13 @@
 .stat:focus{
     outline: 0;
 }
-.stat.hp {
+.stat {
     width: 2.7em;
 }
-.stat.hp:hover {
+.stat:hover {
     border-color: lightblue;
 }
-.stat.hp:focus {
+.stat:focus {
     border-color: navy;
 }
 
@@ -37,12 +44,10 @@ body {
     margin: 0;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type=number] {
-    -moz-appearance:textfield;
+/* for mobile devices (ew lol) */
+@media screen and (max-width: 500px) {
+    #character {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+    }
 }

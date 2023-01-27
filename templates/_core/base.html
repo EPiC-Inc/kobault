@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>{% block title %}{% endblock %} | Kobault</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Caudex&display=swap" rel="stylesheet">
+
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-        {% block head %} {% endblock %}
+
+        {% block head %}{% endblock %}
     </head>
 
     <body>
-        {% block body %} {% endblock %}
+        {% block body %}{% endblock %}
     </body>
 </html>
