@@ -18,7 +18,8 @@ def characters():
 def character_sheet(game, character_id):
     #TODO - fetch character from storage
     try:
-        return render_template(f"{game}/character_sheet.html", game=game, max_hp=32)
+        return render_template(f"{game}/character_sheet.html", 
+            game=game, max_hp=32, character_name="test_character")
     except TemplateNotFound:
         abort(404)
 

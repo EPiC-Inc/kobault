@@ -1,5 +1,5 @@
 {% extends "_core/base.html" %}
-{% block title %}[Character Name]{% endblock %}
+{% block title %}{{ character_name }}{% endblock %}
 
 {% block head %}
 <!-- Import positioning, etc. for the requested game -->
@@ -8,18 +8,31 @@
 
 {% block body %}
 <div id="character">
+    <div class="stats abilities">
+        <div>
+            Str <input class="stat" type="number" min="-2" max="99"><br>
+            (+2)
+        </div>
+        <div>Dex </div>
+        <div>Con </div>
+        <div>Int </div>
+        <div>Wis </div>
+        <div>Cha </div>
+    </div>
+</div>
+<!-- <div id="character">
     <div class="stats combat">
         <label for="hp">HP:</label>
         <input id="hp" name="hp" type="text" class="stat hp" maxlength="4"> / {{ max_hp }}
-        <!--<div class="adjustment">
+        <div class="adjustment">
             <button>+</button>
             <button>r</button>
             <button>-</button>
-        </div>-->
+        </div>
     </div>
     
     <div class="stats"></div>
 
     <div class="skills"></div>
-</div>
+</div> -->
 {% endblock %}

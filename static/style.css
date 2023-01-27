@@ -7,11 +7,12 @@
     font-size: larger;
     display: grid;
     grid-template-columns: 2fr 1.5fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
-.stats, .stats > *{
+.stats, .stat {
     font-size: x-large;
+    text-align: center;
 }
 
 input.stat {
