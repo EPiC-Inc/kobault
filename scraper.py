@@ -1,3 +1,4 @@
+from json import dumps
 from urllib.request import urlopen
 
 from bs4 import BeautifulSoup as Soup
@@ -62,9 +63,12 @@ for link in links:
                 case 5:
                     classes[class_name][level_label]["new_features"] = current_feature
                 case _:
-                    print('grr')
-        print()
-    print(classes)
+                    #TODO - spell slots
+                    pass
+        #print()
+# Oh that's a lot of stuff
+with open('classes.json', 'w') as class_file:
+    class_file.write(dumps(classes))
     
 
 # all_spells_page = urlopen(f"{URL}/spells")
