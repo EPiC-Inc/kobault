@@ -1,1 +1,37 @@
 {% extends "_core/character_sheet.html" %}
+
+{% block combat_stats %}
+<div class="armor_class">
+    <span class="stat" id="armor_class">0{{ armor_class }}</span><br>
+    <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
+</div>
+<div class="initiative">
+    <span class="stat" id="initiative">0{{ initiative }}</span><br>
+    <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
+</div>
+<div class="speed">
+    <span class="stat" id="speed">30</span><br>
+    <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
+</div>
+
+<div class="stat_label armor_class">AC</div>
+<div class="stat_label initiative">Initiative</div>
+<div class="stat_label speed">Speed</div>
+
+<div class="base_attack_bonus">
+    <span class="stat" id="base_attack_bonus">0</span><br>
+    <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
+</div>
+<div class="combat_maneuver_bonus">
+    <span class="stat" id="combat_maneuver_bonus">0</span><br>
+    <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
+</div>
+<div class="combat_maneuver_defense">
+    <span class="stat" id="combat_maneuver_defense">10</span><br>
+    <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
+</div>
+
+<div class="stat_label base_attack_bonus">BAB</div>
+<div class="stat_label combat_maneuver_bonus">CMB</div>
+<div class="stat_label combat_maneuver_defense">CMD</div>
+{% endblock %}

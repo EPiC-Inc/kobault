@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, abort, render_template, request
 from jinja2 import TemplateNotFound
 
 # This module is for the main functions of the site - characters, campaigns, spells, etc.
@@ -25,7 +25,10 @@ def character_sheet(game, character_id):
     #TODO - fetch character from storage
     try:
         return render_template(f"{game}/character_sheet.html", 
-            game=game, max_hp=32, character_name="test_character")
+            editable=False if request.args.get('readonly') else True,
+            game=game, character_id=character_id,
+            hp = 10,
+            max_hp=32, character_name="test_character")
     except TemplateNotFound:
         abort(404)
 

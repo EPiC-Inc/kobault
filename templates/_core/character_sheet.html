@@ -4,35 +4,164 @@
 {% block head %}
 <!-- Import positioning, etc. for the requested game -->
 <link rel="stylesheet" href="{{ url_for('static', filename='styles') }}/{{game}}.css">
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+
+<script>
+    function open_sidebar_tab(element) {
+        var i;
+        var x = document.getElementsByClassName("sidebar");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        document.getElementById(element).style.display = "block";
+    }
+</script>
 {% endblock%}
 
 {% block body %}
-<div id="character">
-    <div class="stats abilities">
-        <div>
-            Str <input class="stat" type="number" min="-2" max="99"><br>
-            (+2)
+<div class="character">
+    <div class="stats" style="display: flex; grid-row: 1; grid-column: 1;">
+        <img alt="img goes here">
+        <div class="stats info">
+            <span class="label">Class &amp; Level</span>
+            <span class="label">Background</span>
+            <span class="label">Player Name</span>
+            <div>
+                <span class="" id="class_">class</span> / 
+                <span id="subclass">subclass</span>
+                (<span id="level">0</span>)
+            </div>
+            <span class="fillable" id="background">background</span>
+            <span id="user_name">username</span>
+            <span class="label">Race</span>
+            <span class="label">Alignment</span>
+            <span class="label">Exp</span>
+            <span class="fillable" id="race">race</span>
+            <span class="fillable" id="alignment">alignment</span>
+            <span>N/A :]</span>
+            <span class="label">Age</span>
+            <span class="label">Height / Weight</span>
+            <span class="label">Eyes / Skin / Hair</span>
+            <span class="fillable" id="age">age</span>
+            <span class="fillable" id="body">body</span>
+            <span class="fillable" id="appearance">appearance</span>
         </div>
-        <div>Dex </div>
-        <div>Con </div>
-        <div>Int </div>
-        <div>Wis </div>
-        <div>Cha </div>
+    </div>
+    <div class="stats" style="grid-row: 1 / 3; grid-column: 2;">
+        <a href="#features" ><button class="stats features" id="features" onclick="open_sidebar_tab('features_box')">Class Features</button></a>
+
+        <a href="#items"><button class="stats inventory" id="items" onclick="open_sidebar_tab('inventory_box')">Items</button></a>
+
+        <div class="stats sidebar features" id="features_box">
+            <span>Features</span>
+            <div id="class_features">This is where features go</div>
+        </div>
+
+        <div class="stats sidebar features" id="inventory_box">
+            <span>Items</span> <button id="new_item">+</button>
+            <div id="class_features">This is where items go</div>
+        </div>
+    </div>
+    <div class="stats attributes" style="grid-row: 2; grid-column: 1;">
+        <span class="label">ABILITY SCORES</span>
+        <span class="label">HEALTH</span>
+        <span class="label">BRIEF</span>
+        <div class="stats scores"></div>
+        <div class="stats health">
+            <div style="margin-bottom: 10px;">
+                <div class="label">Conditions <button>+</button></div>
+                <!--TODO - conditions-->
+                <div class="conditions">None</div>
+            </div>
+
+            <div class="stats combat">
+                {% block combat_stats %}{% endblock %}
+                <!--AC, initiative, speed, BAB, CMD, CMB go here-->
+            </div>
+
+            <div class="label" style="margin: 10px 0;">Curent Hit Points</div>
+            <div class="stats">
+                <div class="hp">
+                    <span class="stat" id="hp">{{ hp }}</span>
+                    /<span class="stat hp" id="max_hp">{{ max_hp }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="stats brief"></div>
     </div>
 </div>
-<!-- <div id="character">
-    <div class="stats combat">
-        <label for="hp">HP:</label>
-        <input id="hp" name="hp" type="text" class="stat hp" maxlength="4"> / {{ max_hp }}
-        <div class="adjustment">
-            <button>+</button>
-            <button>r</button>
-            <button>-</button>
-        </div>
-    </div>
-    
-    <div class="stats"></div>
+{% endblock %}
 
-    <div class="skills"></div>
-</div> -->
+{% block afterbody %}
+<script>
+    CHARACTER_ID = "{{ character_id }}";
+</script>
+
+<script>
+    if (window.location.hash == "#items") {
+        open_sidebar_tab('inventory_box')
+    } else {
+        open_sidebar_tab('features_box')
+    }
+</script>
+
+{% if editable %}
+<script>
+    editing=false;
+    function verify(to_verify, pattern) {
+        return to_verify
+    }
+
+    $(document).on("dblclick", ".fillable", function(){
+        if (!editing) {
+        editing = true;
+
+        var old_content = $(this).text();
+        $(this).html('<input class="attribute_change" type="text" id="newcontent" value="'+old_content+'">');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+            console.log('in');
+        }).blur(function() {
+            var new_content = $("#newcontent").val().trim();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+
+            $(this).parent().text(new_content);
+            editing = false;
+        });
+    }})
+
+    $(document).on("dblclick", ".stat", function(){
+        if (!editing) {
+        editing = true;
+
+        var old_content = $(this).text();
+        $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+            console.log('in');
+        }).blur(function() {
+            var new_content = $("#newcontent").val();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+
+            //TODO - transfer new input to the server
+
+            $(this).parent().text(new_content);
+            editing = false;
+        });
+    }})
+
+    // This blurs (loses focus) when you press enter in an input
+    // when editing it
+    $(document).on("keyup", "#newcontent", function(e) {
+        if (e.which == 13) $(this).trigger("blur");
+    })
+</script>
+{% else %}
+{% endif %}
 {% endblock %}

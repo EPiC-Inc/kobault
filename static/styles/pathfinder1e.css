@@ -1,9 +1,27 @@
 .abilities {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(6, 1fr);
 }
 
 .abilities input {
-    width: 2em;
+    width: 1.4em;
+}
+
+.stats.combat {
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr auto);
+    width: 100%;
+}
+
+.armor_class {
+    background-color: rgb(227, 240, 240);
+}
+.initiative {
+    background-color: white;
+}
+.speed {
+    background-color: rgb(227, 227, 227);
 }

@@ -26,9 +26,9 @@ def create_app():
 
     app.register_error_handler(404, page_not_found)
 
-    login_manager = LoginManager()
-    login_manager.login_view = 'auth.login' # type: ignore
-    login_manager.init_app(app)
+    # login_manager = LoginManager()
+    # login_manager.login_view = 'auth.login' # type: ignore
+    # login_manager.init_app(app)
     #TODO - add a user loader
 
     return app
