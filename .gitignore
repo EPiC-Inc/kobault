@@ -4,3 +4,8 @@ __pycache__/
 static/line-awesome/
 
 main_database.json
+
+.replit
+replit.nix
+.venv
+venv/
