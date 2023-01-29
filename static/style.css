@@ -1,0 +1,267 @@
+* {
+    /*font-family: "Playfair Display";*/
+    font-family: "Caudex";
+}
+
+.character {
+    font-size: larger;
+    display: grid;
+    grid-template-columns: 2fr 0.7fr;
+    grid-template-rows: auto auto;
+}
+
+.character img {
+    width: auto; /*TEMP*/
+    max-width: 300px;
+    max-height: 300px;
+}
+
+button.features, button.inventory {
+    font-size: large;
+}
+button.features:target, button.inventory:target {
+    border-radius: 4px;
+    background-color: lightgray;
+}
+button.features {
+    width: 60%;
+}
+button.inventory {
+    width: 30%;
+}
+
+.stats.info {
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(3, auto auto);
+    width: 100%;
+}
+.stats.info * {
+    overflow-x: auto;
+}
+
+.stats.attributes {
+    display: grid;
+    grid-template-columns: 5fr 4fr 3fr;
+    grid-template-rows: 1.6em auto;
+}
+
+.stats.scores {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto;
+}
+.stats.ability_scores {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+}
+
+.ability_scores > div {
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.label {
+    font-size: 20px;
+    color: white;
+    background-color: black;
+}
+.agaegrfgdeagffgdadfg {
+    background-color: rgb(239, 239, 239);
+}
+
+.score_label {
+    font-size: medium;
+    padding-bottom: 16px;
+}
+
+.stats, input.stat {
+    font-size: larger;
+    text-align: center;
+}
+/* 
+.stat_label {
+    margin-bottom: 4px;
+} */
+
+.sidebar_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sidebar i {
+    font-size: 45px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.combat .stat, .combat .stat_static {
+    font-size: xx-large;
+    margin-top: 6px;
+    overflow-x: scroll;
+}
+
+input.stat_change, input.attribute_change {
+    text-align: center;
+}
+
+input.stat_adjustment {
+    text-align: center;
+    font-size: medium;
+    width: 3em;
+}
+
+.stat_change {
+    border-radius: 4px;
+}
+.stat_change:focus{
+    outline: 0;
+}
+.stat_change:hover {
+    border-color: lightblue;
+}
+.stat_change:focus {
+    border-color: navy;
+}
+
+/*ANCHOR - specific stats*/
+#character_name {
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+}
+
+#character_name input {
+    width: 80%;
+    font-size: 35px;
+}
+
+.combat .stat_change, .ability_scores .stat_change {
+    --stat-animation-duration: 280ms;
+    width: 3em;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 4px;
+    text-align: center;
+    transition: border var(--stat-animation-duration) ease-out;
+    /* border: 1px solid black; */
+    font-size: x-large;
+    padding: 0;
+    margin-top: 0;
+}
+
+.hp {
+    color: rgb(0, 93, 133);
+    font-weight: bold;
+    font-size: 54px;
+}
+.hp .stat_change{
+    width: 2em;
+    color: rgb(0, 93, 133);
+    font-weight: bold;
+    font-size: 54px;
+}
+#hp {
+    color: red;
+    font-size: 74px;
+}
+#hp .stat_change{
+    width: 2em;
+    color: red;
+    font-size: 74px;
+}
+
+.modifier {
+    font-size: 50px;
+    color: darkred;
+}
+
+#class_features, #inventory {
+    overflow-y: auto;
+}
+
+
+body {
+    margin: 0;
+}
+
+/*ANCHOR - overlay */
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+
+#overlay div {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+#keyword {
+    text-align: center;
+    /* background-image: url('/css/searchicon.png'); */
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 30vw;
+    font-size: 16px;
+    padding: 12px 20px 12px 20px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+}
+  
+#menu_items {
+    text-align: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 40vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#menu_items li {
+    text-align: center;
+    width: 30vw;
+}
+
+#menu_items li a {
+    width: 30vw;
+    border: 1px solid #ddd;
+    margin: auto;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+}
+  
+#menu_items li a:hover:not(.header) {
+    background-color: #eee;
+}
+
+/* for mobile devices (ew lol) */
+@media screen and (max-width: 500px) {
+    #character {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 1fr);
+    }
+}

@@ -1,0 +1,322 @@
+{% extends "_core/base.html" %}
+{% block title %}{{ name }}{% endblock %}
+
+{% block head %}
+<!-- Import positioning, etc. for the requested game -->
+<link rel="stylesheet" href="{{ url_for('static', filename='styles') }}/{{game}}.css">
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+
+<script>
+    CHARACTER_ID = "{{ character_id }}";
+    stat_modifiers = {
+    }
+
+    function add_sign(modifier) {
+        if (modifier >= 0) {
+            modifier = "+" + modifier;
+        }
+        return modifier;
+    }
+</script>
+
+<script>
+    // UI elements
+    function open_sidebar_tab(element) {
+        var i;
+        var x = document.getElementsByClassName("sidebar");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        document.getElementById(element).style.display = "block";
+    }
+
+    function show_overlay() {
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    function hide_overlay() {
+        document.getElementById("overlay").style.display = "none";
+    }
+
+    function filter_list() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("keyword");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("menu_items");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
+    function generate_searchable_list(prompt, items, callback) {
+        $("#menu").html('');
+        new_element = '<input type="text" id="keyword" onkeyup="filter_list()" placeholder="' + prompt + '"><ul id="menu_items">'
+        Object.entries(items).forEach(entry => {
+            new_element += `<li><a href="#" onclick="${callback}(\'${entry[1]}\');hide_overlay();">${entry[0]}</a></li>`;
+        });
+        new_element += "</ul>";
+        $("#menu").append(new_element);
+        show_overlay();
+        $("#keyword").focus();
+    }
+</script>
+{% endblock%}
+
+{% block body %}
+<div id="overlay" onclick="hide_overlay()">
+    <!--WHY DOES THIS WORK-->
+    <div id="menu" onclick="(event) => console.log('a'); event.stopPropagation();"></div>
+</div>
+
+<div class="character">
+    <div class="stats" style="display: flex; grid-row: 1; grid-column: 1;">
+        <img id="character_image" alt="img goes here" src="{{ image_url }}">
+        <div style="margin: auto;">
+            <div id="character_name"><span class="fillable" id="name">{{ name }}</span></div>
+            <div class="stats info">
+                <span class="label">Class &amp; Level</span>
+                <span class="label">Background</span>
+                <span class="label">Player Name</span>
+                <div>
+                    <span class="" id="class_">class</span> / 
+                    <span id="subclass">subclass</span>
+                    (<span id="level">0</span>)
+                </div>
+                <span class="fillable" id="background">{{ background }}</span>
+                <span id="user_name">user_name</span>
+                <span class="label">Race</span>
+                <span class="label">Alignment</span>
+                <span class="label">Exp</span>
+                <span id="race">race</span>
+                <span class="fillable" id="alignment">{{ alignment }}</span>
+                <span>N/A :]</span>
+                <span class="label">Age</span>
+                <span class="label">Height / Weight</span>
+                <span class="label">Eyes / Skin / Hair</span>
+                <span class="fillable" id="age">{{ age }}</span>
+                <span class="fillable" id="body">{{ body }}</span>
+                <span class="fillable" id="appearance">{{ appearance }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="stats" style="grid-row: 1 / 3; grid-column: 2;">
+        <button class="stats features" id="features" onclick="open_sidebar_tab('features_box')">Class Features</button>
+
+        <button class="stats inventory" id="items" onclick="open_sidebar_tab('inventory_box')">Items</button>
+
+        <div class="stats sidebar features" id="features_box">
+            <div class="sidebar_header">
+                <span>Features&nbsp;&nbsp;</span><a><i class="lar la-plus-square"></i></a>
+            </div>
+            <div id="class_features">This is where features go</div>
+        </div>
+
+        <div class="stats sidebar features" id="inventory_box">
+            <div class="sidebar_header">
+                <span>Items&nbsp;&nbsp;</span><a id="new_item"><i class="lar la-plus-square"></i></a>
+            </div>
+            <div id="inventory">This is where items go</div>
+        </div>
+    </div>
+    <div class="stats attributes" style="grid-row: 2; grid-column: 1;">
+        <span class="label">ABILITY SCORES</span>
+        <span class="label">HEALTH</span>
+        <span class="label">BRIEF</span>
+        <div class="stats scores">
+            {% block scores %}{% endblock %}
+        </div>
+        <div class="stats health">
+            <div style="margin-bottom: 10px;">
+                <div class="label"><a onclick="add_condition()">Conditions <i class="lar la-plus-square"></i></a></div>
+                <!--TODO - conditions-->
+                <div id="conditions">None</div>
+            </div>
+
+            <div class="stats combat">
+                {% block combat_stats %}{% endblock %}
+                <!--AC, initiative, speed, BAB, CMD, CMB go here-->
+            </div>
+
+            <div class="label" style="margin: 10px 0;">Curent Hit Points</div>
+            <div class="stats">
+                <div class="hp">
+                    <span class="stat" id="hp">{{ hp }}</span>
+                    /<span class="stat hp" id="max_hp">{{ max_hp }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="stats brief">
+            {% block brief %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block afterbody %}
+{% block extra_scripts %}{% endblock %}
+<script>
+    function update_ability_modifiers() {
+        ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(ability => {
+            score = $("#"+ability).text();
+            modifier = Math.floor((score / 2) - 5);
+            modifier = add_sign(modifier);
+            $("#"+ability+"_mod").text(modifier);
+        });
+        update_combat_stats();
+    }
+
+    //ANCHOR - initialization
+    open_sidebar_tab('features_box');
+    update_ability_modifiers();
+</script>
+
+{% if editable %}
+<script>
+    // conditions
+    function add_condition() {
+        // Clear out previous overlay items
+        generate_searchable_list('add condition', {
+            Poison: "poison",
+            a: "poison",
+            b: "poison",
+            Pdoison: "poison",
+            Poaqison: "poison",
+            Poisson: "poison",
+            Poissaoan: "poison",
+            Poisason: "poison",
+            Poisdasdadson: "poison",
+            qr3: 'wer',
+            dgsfdfg: 'werwer',
+            sdgfsfdgsf: 'ew',
+            ewrtygbsdfs:'f',
+            bdvfcx:'4',
+            lorem:'',
+            ipsum:''
+        }, "console.log");
+    }
+</script>
+
+<script>
+    editing=false;
+    function verify(to_verify, pattern) {
+        return to_verify
+    }
+
+    function update(attribute, value) {
+        $.post("{{ url_for('main.set_character', character_id=character_id) }}",
+            {"attribute": attribute, "value": value}
+        );
+    }
+
+    // Attributes
+    $(document).on("dblclick", ".fillable", function(){
+        if (!editing) {
+        editing = true;
+
+        var old_content = $(this).text();
+        var attribute = $(this).prop('id');
+        $(this).html('<input class="attribute_change" type="text" id="newcontent" value="'+old_content+'">');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+            console.log('in');
+        }).blur(function() {
+            var new_content = $("#newcontent").val().trim();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+            if (new_content != old_content) {update(attribute, new_content)}
+
+            $(this).parent().text(new_content);
+            editing = false;
+        });
+    }})
+
+    // combat stats, etc
+    $(document).on("dblclick", ".stat", function(){
+        if (!editing) {
+        editing = true;
+
+        var old_content = $(this).text();
+        var attribute = $(this).prop('id');
+        $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+            console.log('in');
+        }).blur(function() {
+            var new_content = $("#newcontent").val();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+
+            //TODO - transfer new input to the server
+            if (new_content != old_content) {update(attribute, new_content)}
+
+            $(this).parent().text(new_content);
+            editing = false;
+        });
+    }})
+
+    // ability scores
+    $(document).on("dblclick", ".score", function(){
+        if (!editing) {
+        editing = true;
+
+        old_content = $(this).text();
+        var attribute = $(this).prop('id');
+        $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+            console.log('in');
+        }).blur(function() {
+            new_content = $("#newcontent").val();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+
+            //TODO - transfer new input to the server
+            if (new_content != old_content) {update(attribute, new_content)}
+
+            $(this).parent().text(new_content);
+            update_ability_modifiers();
+            editing = false;
+        });
+    }})
+
+    // image
+    $(document).on("dblclick", "#character_image", function(){
+        if (!editing) {
+        editing = true;
+
+        new_url = prompt("enter image url");
+        if (new_url != null) {
+            $(this).prop('src', new_url);
+            update('image_url', new_url);
+        }
+        editing = false;
+    }})
+
+    // This blurs (loses focus) when you press enter in an input
+    // when editing it
+    $(document).on("keyup", "#newcontent", function(e) {
+        if (e.which == 13) {$(this).trigger("blur");}
+    })
+    $(document).on("keyup", "#newcontent", function(e) {
+        if (e.which == 27) {$(this).trigger("blur");}
+    })
+    $(document).on("keyup", "#menu", function(e) {
+        if (e.which == 27) {hide_overlay();}
+    })
+</script>
+{% else %}{% endif %}
+
+{% endblock %}
