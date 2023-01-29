@@ -32,21 +32,28 @@ def update_character(character_id: str, attribute:str, value: str | int) -> None
     print(value)
     character_db.update({attribute:value}, where('character_id')==character_id)
 
-def new_character(game: str) -> str | None:
+def new_character(game: str, user_id: str = "") -> str | None:
     if not game in GAMES:
         return None
     character_id = str(uuid1())
     character_db.insert({
         "character_id": character_id,
         "name": "Unnamed Character",
+        'game': game,
     })
 
     match game:
         case "pathfinder1e":
             character_db.update({
-                'game': game,
-                'ac': 10,
-                'max_hp': 10,
-                'skills': [],
+                'hp': 10, 'max_hp': 10,
+                'classes': {}, 'background': 'NA', 'user_id': user_id,
+                'race': 'NA', 'alignment': 'NA', 'exp': 'NA',
+                'age': 'NA', 'body': 'NA', 'appearance': 'NA',
+                'strength': 10, 'dexterity': 10, 'constitution': 10,
+                'intelligence': 10, 'wisdom': 10, 'charisma': 10,
+                'languages': "Common", 'personality': 'Mysterious',
+                'skills': [], 'items': [], 'traits': [],
+                'permanent_stat_modifiers': {},
+                'armor': None
             }, where('character_id') == character_id)
     return character_id

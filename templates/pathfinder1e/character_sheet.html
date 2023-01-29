@@ -42,6 +42,13 @@
 
 <div>
     <div>prof bonus</div>
+    <div class="label">Saving Throws</div>
+    <div class="saves">
+        <div>Fortitude <span id="fortitude_save"></span></div>
+        <div>Reflex <span id="reflex_save"></span></div>
+        <div>Will <span id="will_save"></span></div>
+    </div>
+
     <div class="label">Skills</div>
     <div class="skills">skills</div>
 </div>
@@ -49,15 +56,15 @@
 
 {% block combat_stats %}
 <div class="armor_class">
-    <span class="stat" id="armor_class">{{ armor_class }}</span><br>
+    <span class="stat_static" id="armor_class">[AC]</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="initiative">
-    <span class="stat" id="initiative">{{ initiative }}</span><br>
+    <span class="stat_static" id="initiative">[INIT]</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="speed">
-    <span class="stat" id="speed">{{ speed }}</span><br>
+    <span class="stat_static" id="speed">[SPD]</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
@@ -66,15 +73,15 @@
 <div class="stat_label speed">Speed</div>
 
 <div class="base_attack_bonus">
-    <span class="stat" id="base_attack_bonus">{{ base_attack_bonus }}</span><br>
+    <span class="stat_static" id="base_attack_bonus">[BAB]</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="combat_maneuver_bonus">
-    <span class="stat" id="combat_maneuver_bonus">{{ combat_maneuver_bonus }}</span><br>
+    <span class="stat_static" id="combat_maneuver_bonus">[CMB]</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="combat_maneuver_defense">
-    <span class="stat" id="combat_maneuver_defense">{{ combat_maneuver_defense }}</span><br>
+    <span class="stat_static" id="combat_maneuver_defense">[CMD]</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
@@ -86,16 +93,102 @@
 {% block brief %}
 <div class="label">Personality</div>
 <div class="multiline_stat">
-    blank
+    {{ personality }}
 </div>
 
-<div class="label">Traits <button>+</button></div>
-<div class="">
+<div class="label"><a>Traits <i class="lar la-plus-square"></i></a></div>
+<div id="traits" class="">
     None
 </div>
 
 <div class="label">Languages</div>
 <div class="multiline_stat">
-    Common
+    {{ languages }}
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    //TODO - get from race
+    speed = 30; //TEMP
+    size = 0; //TEMP
+    /*
+    fine = -4   
+    diminutive = -2
+    tiny = -1
+    small = -0.5
+    medium = 0
+    large = 0.5
+    huge = 1
+    gargantuan = 2
+    colossal = 4
+    */
+
+    //TODO - get from class
+    base_attack_bonus = +1; //TEMP
+
+    function update_combat_stats() {
+        strength = $("#strength").text()
+        str_mod = Math.floor((strength / 2) - 5);
+        dexterity = $("#dexterity").text()
+        dex_mod = Math.floor((dexterity / 2) - 5);
+        constitution = $("#constitution").text()
+        con_mod = Math.floor((constitution / 2) - 5);
+        intelligence = $("#intelligence").text()
+        int_mod = Math.floor((intelligence / 2) - 5);
+        wisdom = $("#wisdom").text()
+        wis_mod = Math.floor((wisdom / 2) - 5);
+        charisma = $("#charisma").text()
+        cha_mad = Math.floor((charisma / 2) - 5);
+
+        // AC = (dex + 10 base + armor bonus) minus anything over the dex cap
+        if (stat_modifiers.armor_bonus == null) stat_modifiers.armor_bonus = 0;
+        if (stat_modifiers.armor_dex_cap == null) stat_modifiers.armor_dex_cap = 999999;
+        $("#armor_class").text(
+            10 + dex_mod + stat_modifiers.armor_bonus - Math.max(0, Math.max(dex_mod, 0) - stat_modifiers.armor_dex_cap)
+        );
+
+        // initiative
+        if (stat_modifiers.initiative == null) stat_modifiers.initiative = 0;
+        $("#initiative").text(
+            add_sign(dex_mod + stat_modifiers.initiative)
+        );
+
+        // speed
+        if (stat_modifiers.speed == null) stat_modifiers.speed = 0;
+        $("#speed").text(speed + stat_modifiers.speed);
+
+        // BAB
+        if (stat_modifiers.base_attack_bonus == null) stat_modifiers.base_attack_bonus = 0;
+        $("#base_attack_bonus").text(
+            add_sign(base_attack_bonus + stat_modifiers.base_attack_bonus)
+        );
+
+        // CMB = BAB + STR + Size Mod + Other
+        if (stat_modifiers.combat_maneuver_bonus == null) stat_modifiers.combat_maneuver_bonus = 0;
+        $("#combat_maneuver_bonus").text(
+            add_sign(base_attack_bonus + str_mod + (size * 2) + stat_modifiers.combat_maneuver_bonus)
+        );
+
+        // CMD = 10 + BAB + STR + DEX + Size Mod + Other
+        if (stat_modifiers.combat_maneuver_defense == null) stat_modifiers.combat_maneuver_defense = 0;
+        $("#combat_maneuver_defense").text(
+            10 + base_attack_bonus + str_mod + dex_mod + (size * 2) + stat_modifiers.combat_maneuver_defense
+        );
+
+        // Saving throws
+        if (stat_modifiers.fortitude_save == null) stat_modifiers.fortitude_save = 0;
+        $("#fortitude_save").text(
+            add_sign(con_mod + stat_modifiers.fortitude_save)
+        );
+        if (stat_modifiers.reflex_save == null) stat_modifiers.reflex_save = 0;
+        $("#reflex_save").text(
+            add_sign(dex_mod + stat_modifiers.reflex_save)
+        );
+        if (stat_modifiers.will_save == null) stat_modifiers.will_save = 0;
+        $("#will_save").text(
+            add_sign(wis_mod + stat_modifiers.will_save)
+        );
+    }
+</script>
 {% endblock %}

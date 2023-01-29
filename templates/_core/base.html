@@ -3,14 +3,20 @@
     <head>
         <title>{% block title %}{% endblock %} | Kobault</title>
 
+        <!--font: playfair display-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
+        <!--font: caudex-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Caudex&display=swap" rel="stylesheet">
 
+        <!--icons-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='line-awesome') }}/css/line-awesome.min.css">
+
+        <!--internal stylesheet and icons-->
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
 

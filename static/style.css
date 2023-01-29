@@ -38,7 +38,7 @@ button.inventory {
     width: 100%;
 }
 .stats.info * {
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 .stats.attributes {
@@ -86,7 +86,20 @@ button.inventory {
     margin-bottom: 4px;
 } */
 
-.combat .stat {
+.sidebar_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sidebar i {
+    font-size: 45px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.combat .stat, .combat .stat_static {
     font-size: xx-large;
     margin-top: 6px;
     overflow-x: scroll;
@@ -163,17 +176,86 @@ input.stat_adjustment {
 }
 
 .modifier {
-    font-size: 40px;
+    font-size: 50px;
     color: darkred;
 }
 
 #class_features, #inventory {
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 
 body {
     margin: 0;
+}
+
+/*ANCHOR - overlay */
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+
+#overlay div {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+#keyword {
+    text-align: center;
+    /* background-image: url('/css/searchicon.png'); */
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 30vw;
+    font-size: 16px;
+    padding: 12px 20px 12px 20px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+}
+  
+#menu_items {
+    text-align: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 40vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#menu_items li {
+    text-align: center;
+    width: 30vw;
+}
+
+#menu_items li a {
+    width: 30vw;
+    border: 1px solid #ddd;
+    margin: auto;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+}
+  
+#menu_items li a:hover:not(.header) {
+    background-color: #eee;
 }
 
 /* for mobile devices (ew lol) */

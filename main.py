@@ -26,10 +26,13 @@ def character_sheet(game, character_id):
     #TODO - make sure user is authorized for that character
     #TODO - fetch character from storage
     try:
-        character = fetch.fetch_character(character_id)
-        if not character:
+        if character_id == "new":
             character_id = fetch.new_character(game)
             return redirect(url_for('main.character_sheet', game=game, character_id=character_id))
+
+        character = fetch.fetch_character(character_id)
+        if not character:
+            abort(404)
 
         return render_template(f"{game}/character_sheet.html", 
             editable=False if request.args.get('readonly') else True,
