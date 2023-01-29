@@ -1,5 +1,7 @@
-from flask import Blueprint, abort, render_template, request
+from flask import Blueprint, abort, redirect, render_template, request, url_for
 from jinja2 import TemplateNotFound
+
+import fetch
 
 # This module is for the main functions of the site - characters, campaigns, spells, etc.
 
@@ -24,19 +26,24 @@ def character_sheet(game, character_id):
     #TODO - make sure user is authorized for that character
     #TODO - fetch character from storage
     try:
+        character = fetch.fetch_character(character_id)
+        if not character:
+            character_id = fetch.new_character(game)
+            return redirect(url_for('main.character_sheet', game=game, character_id=character_id))
+
         return render_template(f"{game}/character_sheet.html", 
             editable=False if request.args.get('readonly') else True,
-            game=game, character_id=character_id,
-            hp = 10,
-            max_hp=32, character_name="test_character")
+            **character)
     except TemplateNotFound:
         abort(404)
 
 #ANCHOR - Edit character
 @main.route('/characters/<character_id>', methods=['POST'])
 def set_character(character_id):
+    fetch.update_character(character_id, request.form.get('attribute', ''),
+        request.form.get('value', ''))
     #TODO - make sure user is authorized for that character
-    return "test"
+    return {'success':True}
 
 #TODO - add a place to print the character and have it in a pathfinder pdf
 

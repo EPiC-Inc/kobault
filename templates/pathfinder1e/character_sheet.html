@@ -1,16 +1,63 @@
 {% extends "_core/character_sheet.html" %}
 
+{% block scores %}
+<div class="ability_scores">
+    <div>
+        <span class="modifier" id="strength_mod"></span><br>
+        <div class="score" id="strength">{{ strength }}</div>
+        <div class="score_label">Strength</div>
+    </div>
+
+    <div>
+        <span class="modifier" id="dexterity_mod"></span><br>
+        <div class="score" id="dexterity">{{ dexterity }}</div>
+        <div class="score_label">Dexterity</div>
+    </div>
+
+    <div>
+        <span class="modifier" id="constitution_mod"></span><br>
+        <div class="score" id="constitution">{{ constitution }}</div>
+        <div class="score_label">Constitution</div>
+    </div>
+
+    <div>
+        <span class="modifier" id="intelligence_mod"></span><br>
+        <div class="score" id="intelligence">{{ intelligence }}</div>
+        <div class="score_label">Intelligence</div>
+    </div>
+
+    <div>
+        <span class="modifier" id="wisdom_mod"></span><br>
+        <div class="score" id="wisdom">{{ wisdom }}</div>
+        <div class="score_label">Wisdom</div>
+    </div>
+
+    <div>
+        <span class="modifier" id="charisma_mod"></span><br>
+        <div class="score" id="charisma">{{ charisma }}</div>
+        <div class="score_label">Charisma</div>
+    </div>
+
+</div>
+
+<div>
+    <div>prof bonus</div>
+    <div class="label">Skills</div>
+    <div class="skills">skills</div>
+</div>
+{% endblock %}
+
 {% block combat_stats %}
 <div class="armor_class">
-    <span class="stat" id="armor_class">0{{ armor_class }}</span><br>
+    <span class="stat" id="armor_class">{{ armor_class }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="initiative">
-    <span class="stat" id="initiative">0{{ initiative }}</span><br>
+    <span class="stat" id="initiative">{{ initiative }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="speed">
-    <span class="stat" id="speed">30</span><br>
+    <span class="stat" id="speed">{{ speed }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
@@ -19,19 +66,36 @@
 <div class="stat_label speed">Speed</div>
 
 <div class="base_attack_bonus">
-    <span class="stat" id="base_attack_bonus">0</span><br>
+    <span class="stat" id="base_attack_bonus">{{ base_attack_bonus }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="combat_maneuver_bonus">
-    <span class="stat" id="combat_maneuver_bonus">0</span><br>
+    <span class="stat" id="combat_maneuver_bonus">{{ combat_maneuver_bonus }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="combat_maneuver_defense">
-    <span class="stat" id="combat_maneuver_defense">10</span><br>
+    <span class="stat" id="combat_maneuver_defense">{{ combat_maneuver_defense }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
 <div class="stat_label base_attack_bonus">BAB</div>
 <div class="stat_label combat_maneuver_bonus">CMB</div>
 <div class="stat_label combat_maneuver_defense">CMD</div>
+{% endblock %}
+
+{% block brief %}
+<div class="label">Personality</div>
+<div class="multiline_stat">
+    blank
+</div>
+
+<div class="label">Traits <button>+</button></div>
+<div class="">
+    None
+</div>
+
+<div class="label">Languages</div>
+<div class="multiline_stat">
+    Common
+</div>
 {% endblock %}

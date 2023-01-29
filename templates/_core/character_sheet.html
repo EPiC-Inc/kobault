@@ -1,5 +1,5 @@
 {% extends "_core/base.html" %}
-{% block title %}{{ character_name }}{% endblock %}
+{% block title %}{{ name }}{% endblock %}
 
 {% block head %}
 <!-- Import positioning, etc. for the requested game -->
@@ -21,30 +21,33 @@
 {% block body %}
 <div class="character">
     <div class="stats" style="display: flex; grid-row: 1; grid-column: 1;">
-        <img alt="img goes here">
-        <div class="stats info">
-            <span class="label">Class &amp; Level</span>
-            <span class="label">Background</span>
-            <span class="label">Player Name</span>
-            <div>
-                <span class="" id="class_">class</span> / 
-                <span id="subclass">subclass</span>
-                (<span id="level">0</span>)
+        <img id="character_image" alt="img goes here" src="{{ image_url }}">
+        <div style="margin-left: auto;">
+            <div id="character_name"><span class="fillable" id="name">{{ name }}</span></div>
+            <div class="stats info">
+                <span class="label">Class &amp; Level</span>
+                <span class="label">Background</span>
+                <span class="label">Player Name</span>
+                <div>
+                    <span class="" id="class_">class</span> / 
+                    <span id="subclass">subclass</span>
+                    (<span id="level">0</span>)
+                </div>
+                <span class="fillable" id="background">{{ background }}</span>
+                <span id="user_name">user_name</span>
+                <span class="label">Race</span>
+                <span class="label">Alignment</span>
+                <span class="label">Exp</span>
+                <span class="fillable" id="race">race</span>
+                <span class="fillable" id="alignment">{{ alignment }}</span>
+                <span>N/A :]</span>
+                <span class="label">Age</span>
+                <span class="label">Height / Weight</span>
+                <span class="label">Eyes / Skin / Hair</span>
+                <span class="fillable" id="age">{{ age }}</span>
+                <span class="fillable" id="body">{{ body }}</span>
+                <span class="fillable" id="appearance">{{ appearance }}</span>
             </div>
-            <span class="fillable" id="background">background</span>
-            <span id="user_name">username</span>
-            <span class="label">Race</span>
-            <span class="label">Alignment</span>
-            <span class="label">Exp</span>
-            <span class="fillable" id="race">race</span>
-            <span class="fillable" id="alignment">alignment</span>
-            <span>N/A :]</span>
-            <span class="label">Age</span>
-            <span class="label">Height / Weight</span>
-            <span class="label">Eyes / Skin / Hair</span>
-            <span class="fillable" id="age">age</span>
-            <span class="fillable" id="body">body</span>
-            <span class="fillable" id="appearance">appearance</span>
         </div>
     </div>
     <div class="stats" style="grid-row: 1 / 3; grid-column: 2;">
@@ -59,14 +62,16 @@
 
         <div class="stats sidebar features" id="inventory_box">
             <span>Items</span> <button id="new_item">+</button>
-            <div id="class_features">This is where items go</div>
+            <div id="inventory">This is where items go</div>
         </div>
     </div>
     <div class="stats attributes" style="grid-row: 2; grid-column: 1;">
         <span class="label">ABILITY SCORES</span>
         <span class="label">HEALTH</span>
         <span class="label">BRIEF</span>
-        <div class="stats scores"></div>
+        <div class="stats scores">
+            {% block scores %}{% endblock %}
+        </div>
         <div class="stats health">
             <div style="margin-bottom: 10px;">
                 <div class="label">Conditions <button>+</button></div>
@@ -87,7 +92,9 @@
                 </div>
             </div>
         </div>
-        <div class="stats brief"></div>
+        <div class="stats brief">
+            {% block brief %}{% endblock %}
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -105,6 +112,20 @@
     }
 </script>
 
+<script>
+    function update_ability_modifiers() {
+        ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(ability => {
+            score = $("#"+ability).text();
+            modifier = Math.floor((score / 2) - 5);
+            if (modifier >= 0) {
+                modifier = "+" + modifier;
+            }
+            $("#"+ability+"_mod").text(modifier);
+        });
+    }
+    update_ability_modifiers();
+</script>
+
 {% if editable %}
 <script>
     editing=false;
@@ -112,11 +133,19 @@
         return to_verify
     }
 
+    function update(attribute, value) {
+        $.post("{{ url_for('main.set_character', character_id=character_id) }}",
+            {"attribute": attribute, "value": value}
+        );
+    }
+
+    // Attributes
     $(document).on("dblclick", ".fillable", function(){
         if (!editing) {
         editing = true;
 
         var old_content = $(this).text();
+        var attribute = $(this).prop('id');
         $(this).html('<input class="attribute_change" type="text" id="newcontent" value="'+old_content+'">');
         $("#newcontent").focus();
 
@@ -127,17 +156,20 @@
 
             //TODO - verify the input
             if (!new_content) {new_content = old_content}
+            if (new_content != old_content) {update(attribute, new_content)}
 
             $(this).parent().text(new_content);
             editing = false;
         });
     }})
 
+    // combat stats, etc
     $(document).on("dblclick", ".stat", function(){
         if (!editing) {
         editing = true;
 
         var old_content = $(this).text();
+        var attribute = $(this).prop('id');
         $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
         $("#newcontent").focus();
 
@@ -150,16 +182,60 @@
             if (!new_content) {new_content = old_content}
 
             //TODO - transfer new input to the server
+            if (new_content != old_content) {update(attribute, new_content)}
 
             $(this).parent().text(new_content);
             editing = false;
         });
     }})
 
+    // ability scores
+    $(document).on("dblclick", ".score", function(){
+        if (!editing) {
+        editing = true;
+
+        old_content = $(this).text();
+        var attribute = $(this).prop('id');
+        $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+            console.log('in');
+        }).blur(function() {
+            new_content = $("#newcontent").val();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+
+            //TODO - transfer new input to the server
+            if (new_content != old_content) {update(attribute, new_content)}
+
+            $(this).parent().text(new_content);
+            update_ability_modifiers();
+            editing = false;
+        });
+    }})
+
+    // image
+    $(document).on("dblclick", "#character_image", function(){
+        if (!editing) {
+        editing = true;
+
+        new_url = prompt("enter image url");
+        if (new_url != null) {
+            $(this).prop('src', new_url);
+            update('image_url', new_url);
+        }
+        editing = false;
+    }})
+
     // This blurs (loses focus) when you press enter in an input
     // when editing it
     $(document).on("keyup", "#newcontent", function(e) {
-        if (e.which == 13) $(this).trigger("blur");
+        if (e.which == 13) {$(this).trigger("blur");}
+    })
+    $(document).on("keyup", "#newcontent", function(e) {
+        if (e.which == 27) {$(this).trigger("blur");}
     })
 </script>
 {% else %}
