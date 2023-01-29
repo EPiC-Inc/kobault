@@ -2,6 +2,7 @@
 .vscode/
 __pycache__/
 static/line-awesome/
+static/jquery.js
 
 main_database.json
 
