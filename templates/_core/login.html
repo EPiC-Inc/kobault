@@ -13,7 +13,7 @@
 {% endif %}
 {% endwith %}
 
-<form action="{{ url_for('auth.login') }}" method="post">
+<form action="{{ url_for('auth.login') }}?next={{ next }}" method="post">
     <label for="user_id">User ID:</label><br>
     <input type="text" name="user_id"><br>
     <label for="lname">Password:</label><br>

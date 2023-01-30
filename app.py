@@ -1,12 +1,26 @@
 from os import environ
 
 from flask import Flask, render_template
-from flask_login import LoginManager
-from tinydb import TinyDB
+from flask_login import LoginManager, UserMixin
+from tinydb import TinyDB, where
 
 db = TinyDB("./main_database.json")
 user_db = db.table('users')
 character_db = db.table('characters')
+
+class User(UserMixin):
+    def __init__(self, user_id: str) -> None:
+        super().__init__()
+        self.id = user_id
+
+    def get_id(self) -> str:
+        return self.id
+
+    def get_name(self) -> str:
+        user = user_db.get(where('user_id') == self.id)
+        if user:
+            return user['user_name']
+        return "N/A"
 
 def page_not_found(e):
     return render_template("_core/404.html"), 404
@@ -26,9 +40,12 @@ def create_app():
 
     app.register_error_handler(404, page_not_found)
 
-    # login_manager = LoginManager()
-    # login_manager.login_view = 'auth.login' # type: ignore
-    # login_manager.init_app(app)
-    #TODO - add a user loader
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login' # type: ignore
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id: str):
+        return User(user_id)
 
     return app

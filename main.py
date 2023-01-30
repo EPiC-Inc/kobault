@@ -1,4 +1,5 @@
 from flask import Blueprint, abort, redirect, render_template, request, url_for
+from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
 import fetch
@@ -17,17 +18,20 @@ def home():
     return 'home'
 
 @main.route('/characters')
+@login_required
 def characters():
     #TODO - Get a list of all the logged-in user's characters
     abort(501)
 
 @main.route('/characters/<game>/<character_id>')
+@login_required
 def character_sheet(game, character_id):
+    user_id = current_user.get_id() # type: ignore
+    user_name = current_user.get_name() # type: ignore
     #TODO - make sure user is authorized for that character
-    #TODO - fetch character from storage
     try:
         if character_id == "new":
-            character_id = fetch.new_character(game)
+            character_id = fetch.new_character(game, user_id, user_name)
             return redirect(url_for('main.character_sheet', game=game, character_id=character_id))
 
         character = fetch.fetch_character(character_id)

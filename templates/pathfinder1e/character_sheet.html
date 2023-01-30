@@ -96,7 +96,7 @@
     {{ personality }}
 </div>
 
-<div class="label"><a>Traits <i class="lar la-plus-square"></i></a></div>
+<div class="label">{% if editable %}<a>Traits <i class="lar la-plus-square"></i></a>{% else %}Traits{% endif %}</div>
 <div id="traits" class="">
     None
 </div>
@@ -191,4 +191,35 @@
         );
     }
 </script>
+
+{% if editable %}
+<script>
+    // conditions
+    function add_condition() {
+        // Clear out previous overlay items
+        generate_searchable_list('add condition', {
+            'Antagonized': "poison",
+            'Bleed': "poison",
+            'Blinded': "poison",
+            'Confused': "poison",
+            'Cowering': "poison",
+            'Dazed': "poison",
+            'Dazzled': "poison",
+            'Deafened': "poison",
+            'Disabled': 'wer',
+            'Dying': 'werwer',
+            'Entangled': 'ew',
+            'Exhausted': 'f',
+            'Fascinated': '4',
+            'Fatigued': '',
+            'Frightened': ''
+        }, "add_condition");
+    }
+
+    function add_condition(condition) {
+        console.log(condition);
+        update_combat_stats();
+    }
+</script>
+{% else %}{% endif %}
 {% endblock %}

@@ -22,9 +22,9 @@ def fetch_feature(game: str, class_: str, feature_name: str) -> str:
     return fetch(game, 'class')
 
 def fetch_character(character_id: str) -> dict:
-    character = character_db.search(where('character_id')==character_id)
+    character = character_db.get(where('character_id')==character_id)
     if not character: return {}
-    else: return character[0]
+    else: return character
 
 def update_character(character_id: str, attribute:str, value: str | int) -> None:
     print('updating character')
@@ -32,7 +32,7 @@ def update_character(character_id: str, attribute:str, value: str | int) -> None
     print(value)
     character_db.update({attribute:value}, where('character_id')==character_id)
 
-def new_character(game: str, user_id: str = "") -> str | None:
+def new_character(game: str, user_id: str, user_name: str) -> str | None:
     if not game in GAMES:
         return None
     character_id = str(uuid1())
@@ -54,6 +54,7 @@ def new_character(game: str, user_id: str = "") -> str | None:
                 'languages': "Common", 'personality': 'Mysterious',
                 'skills': [], 'items': [], 'traits': [],
                 'permanent_stat_modifiers': {},
-                'armor': None
+                'armor': None,
+                'owner': user_id,
             }, where('character_id') == character_id)
     return character_id

@@ -90,7 +90,7 @@
                     (<span id="level">0</span>)
                 </div>
                 <span class="fillable" id="background">{{ background }}</span>
-                <span id="user_name">user_name</span>
+                <span id="user_name">{{ owner }}</span>
                 <span class="label">Race</span>
                 <span class="label">Alignment</span>
                 <span class="label">Exp</span>
@@ -113,7 +113,7 @@
 
         <div class="stats sidebar features" id="features_box">
             <div class="sidebar_header">
-                <span>Features&nbsp;&nbsp;</span><a><i class="lar la-plus-square"></i></a>
+                <span>Features&nbsp;&nbsp;</span>{% if editable %}<a><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
             </div>
             <div id="class_features">This is where features go</div>
         </div>
@@ -134,7 +134,7 @@
         </div>
         <div class="stats health">
             <div style="margin-bottom: 10px;">
-                <div class="label"><a onclick="add_condition()">Conditions <i class="lar la-plus-square"></i></a></div>
+                <div class="label">{% if editable %}<a onclick="add_condition()">Conditions <i class="lar la-plus-square"></i></a>{% else %}Conditions{% endif %}</div>
                 <!--TODO - conditions-->
                 <div id="conditions">None</div>
             </div>
@@ -178,31 +178,6 @@
 </script>
 
 {% if editable %}
-<script>
-    // conditions
-    function add_condition() {
-        // Clear out previous overlay items
-        generate_searchable_list('add condition', {
-            Poison: "poison",
-            a: "poison",
-            b: "poison",
-            Pdoison: "poison",
-            Poaqison: "poison",
-            Poisson: "poison",
-            Poissaoan: "poison",
-            Poisason: "poison",
-            Poisdasdadson: "poison",
-            qr3: 'wer',
-            dgsfdfg: 'werwer',
-            sdgfsfdgsf: 'ew',
-            ewrtygbsdfs:'f',
-            bdvfcx:'4',
-            lorem:'',
-            ipsum:''
-        }, "console.log");
-    }
-</script>
-
 <script>
     editing=false;
     function verify(to_verify, pattern) {

@@ -8,6 +8,31 @@ from lxml.html import fromstring
 #ANCHOR - set up URLs and parsers
 URL = "https://www.aonprd.com/"
 
+with open('pathfinder_conditions.html', 'rb') as cond_file:
+    conditions_page = cond_file.read().decode('utf-8')
+cond_soup = Soup(conditions_page, 'lxml')
+
+conditions = {}
+
+dom = etree.HTML(str(cond_soup), parser=None)
+found_conditions = dom.xpath("//a[contains(@name, 'TOC-')]")
+for condition in found_conditions:
+    condition_name = ''.join(condition.getparent().itertext()).strip()
+    condition = condition.getparent().getparent()
+    #''.join(condition.itertext())
+    print(''.join(condition.itertext()))
+
+
+#['__new__', '__repr__', '__iter__', '__bool__', '__len__', '__getitem__', '__setitem__', '__delitem__', '__contains__', '_init', '__deepcopy__', '__copy__', 'set', 'append', 'addnext', 'addprevious', 'extend', 'clear', 'insert', 'remove', 'replace', '__reversed__', 'index', 'get', 'keys', 'values', 'items', 'getchildren', 'getparent', 'getnext', 'getprevious', 'itersiblings', 'iterancestors', 'iterdescendants', 'iterchildren', 'getroottree', 'getiterator', 'iter', 'itertext', 'makeelement', 'find', 'findtext', 'findall', 'iterfind', 'xpath', 'cssselect', 'tag', 'attrib', 'text', 'tail', 'prefix', 'sourceline', 'nsmap', 'base', '__doc__', '__hash__', '__str__', '__getattribute__', '__setattr__', '__delattr__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__init__', '__reduce_ex__', '__reduce__', '__getstate__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__']
+
+
+
+
+
+
+
+
+quit()
 class_page = urlopen(f"{URL}Classes.aspx")
 class_links = Soup(class_page, 'lxml')
 classes = {}
