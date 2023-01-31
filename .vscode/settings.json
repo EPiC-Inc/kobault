@@ -1,3 +1,5 @@
 {
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "editor.stopRenderingLineAfter": 100000,
+    "editor.maxTokenizationLineLength": 200000
 }

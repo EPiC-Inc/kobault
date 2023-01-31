@@ -52,6 +52,14 @@ def set_character(character_id):
     #TODO - make sure user is authorized for that character
     return {'success':True}
 
+@main.route('/fetch/<game>/<to_fetch>')
+def fetch_from_rules(game, to_fetch):
+    match to_fetch:
+        case value if value.startswith("condition"):
+            return fetch.fetch_condition(game, value[value.index(':')+1:])
+        case _:
+            return ''
+
 #TODO - add a place to print the character and have it in a pathfinder pdf
 
 @main.route('/campaigns')

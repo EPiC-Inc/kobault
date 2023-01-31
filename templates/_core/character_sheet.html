@@ -3,7 +3,7 @@
 
 {% block head %}
 <!-- Import positioning, etc. for the requested game -->
-<link rel="stylesheet" href="{{ url_for('static', filename='styles') }}/{{game}}.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles') }}/{{ game }}.css">
 <script src="{{ url_for('static', filename='jquery.js') }}"></script>
 
 <script>
@@ -59,7 +59,7 @@
         $("#menu").html('');
         new_element = '<input type="text" id="keyword" onkeyup="filter_list()" placeholder="' + prompt + '"><ul id="menu_items">'
         Object.entries(items).forEach(entry => {
-            new_element += `<li><a href="#" onclick="${callback}(\'${entry[1]}\');hide_overlay();">${entry[0]}</a></li>`;
+            new_element += `<li><a onclick="${callback}(\'${entry[1]}\');hide_overlay();">${entry[0]}</a></li>`;
         });
         new_element += "</ul>";
         $("#menu").append(new_element);

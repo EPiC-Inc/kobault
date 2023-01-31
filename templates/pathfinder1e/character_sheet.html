@@ -192,33 +192,71 @@
     }
 </script>
 
+<script>
+    conditions = []
+
+    function update_conditions(condition, add=true) {
+        if (add) {
+            conditions.push(condition);
+        }
+        $("#conditions").html('');
+        if (conditions.length === 0) {
+            $("#conditions").text('None');
+        }
+        conditions.forEach(element => {
+            c = $.get("{{ url_for('main.fetch_from_rules', game='pathfinder1e', to_fetch='') }}condition:" + element, data => {
+                console.log(data);
+                icon = `<div onclick="display_condition('${element}')"><i class='las ${data.icon}'></i></div>`
+                $("#conditions").append(icon);
+                console.log(icon);
+                update_combat_stats();
+            });
+        })
+    }
+</script>
+
 {% if editable %}
 <script>
+    //TODO - {"removes":"condition"}
+    // i.e. exhausted removes fatigued
     // conditions
     function add_condition() {
         // Clear out previous overlay items
         generate_searchable_list('add condition', {
-            'Antagonized': "poison",
-            'Bleed': "poison",
-            'Blinded': "poison",
-            'Confused': "poison",
-            'Cowering': "poison",
-            'Dazed': "poison",
-            'Dazzled': "poison",
-            'Deafened': "poison",
-            'Disabled': 'wer',
-            'Dying': 'werwer',
-            'Entangled': 'ew',
-            'Exhausted': 'f',
-            'Fascinated': '4',
-            'Fatigued': '',
-            'Frightened': ''
-        }, "add_condition");
-    }
-
-    function add_condition(condition) {
-        console.log(condition);
-        update_combat_stats();
+"Antagonized": "Antagonized",
+"Bleed": "Bleed",
+"Blinded": "Blinded",
+"Confused": "Confused",
+"Cowering": "Cowering",
+"Dazed": "Dazed",
+"Dazzled": "Dazzled",
+"Deafened": "Deafened",
+"Disabled": "Disabled",
+"Energy Drained": "Energy Drained",
+"Entangled": "Entangled",
+"Exhausted": "Exhausted",
+"Fascinated": "Fascinated",
+"Fatigued": "Fatigued",
+"Frightened": "Frightened",
+"Grappled": "Grappled",
+"Helpless": "Helpless",
+"Incorporeal": "Incorporeal",
+"Invisible": "Invisible",
+"Nauseated": "Nauseated",
+"Panicked": "Panicked",
+"Paralyzed": "Paralyzed",
+"Petrified": "Petrified",
+"Pinned": "Pinned",
+"Prone": "Prone",
+"Shaken": "Shaken",
+"Sickened": "Sickened",
+"Stable": "Stable",
+"Staggered": "Staggered",
+"Stunned": "Stunned",
+"Unconscious": "Unconscious",
+"Asleep": "Asleep",
+"Drowsy": "Drowsy"
+        }, "update_conditions");
     }
 </script>
 {% else %}{% endif %}

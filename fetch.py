@@ -1,3 +1,4 @@
+import json
 from uuid import uuid1
 
 from tinydb import where
@@ -8,8 +9,15 @@ from app import character_db
 
 GAMES = ['pathfinder1e']
 
-def fetch(game: str, attribute: str) -> str:
+def fetch(game: str, name: str, attribute: str | None = None):
     return ''
+
+def fetch_condition(game: str, condition: str) -> dict:
+    with open(f'data/{game}/conditions.json') as conditions_file:
+        conditions = json.load(conditions_file)
+    to_return = conditions[condition]
+    del conditions
+    return to_return
 
 def fetch_classes(game: str) -> str:
     return fetch(game, 'class')
