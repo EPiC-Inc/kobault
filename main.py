@@ -47,8 +47,9 @@ def character_sheet(game, character_id):
 #ANCHOR - Edit character
 @main.route('/characters/<character_id>', methods=['POST'])
 def set_character(character_id):
+    value = request.form.get('value', '') or request.form.getlist('value[]')
     fetch.update_character(character_id, request.form.get('attribute', ''),
-        request.form.get('value', ''))
+        value)
     #TODO - make sure user is authorized for that character
     return {'success':True}
 

@@ -184,6 +184,15 @@ input.stat_adjustment {
     overflow-y: auto;
 }
 
+#conditions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+#conditions .condition {
+    font-size: 50px;
+}
 
 body {
     margin: 0;
@@ -199,7 +208,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    background-color: rgba(0,0,0,0.8); /* Black background with opacity */
     z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
 }
@@ -212,6 +221,19 @@ body {
     color: white;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
+    cursor: auto;
+}
+#overlay div.description {
+    font-size: 20px;
+    width: 50vw;
+    padding: 10px 16px 26px 16px;
+    background-color: black;
+    border: 10px dashed gold;
+}
+#overlay div.description span {
+    font-size: 50px;
+    text-align: center;
+    width: 100%;
 }
 
 #keyword {

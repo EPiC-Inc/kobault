@@ -34,7 +34,7 @@ def fetch_character(character_id: str) -> dict:
     if not character: return {}
     else: return character
 
-def update_character(character_id: str, attribute:str, value: str | int) -> None:
+def update_character(character_id: str, attribute:str, value: str | int | list | dict) -> None:
     print('updating character')
     print(attribute)
     print(value)
@@ -62,7 +62,9 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
                 'languages': "Common", 'personality': 'Mysterious',
                 'skills': [], 'items': [], 'traits': [],
                 'permanent_stat_modifiers': {},
+                'conditions': [],
                 'armor': None,
                 'owner': user_id,
+                'user_name': user_name,
             }, where('character_id') == character_id)
     return character_id

@@ -192,29 +192,6 @@
     }
 </script>
 
-<script>
-    conditions = []
-
-    function update_conditions(condition, add=true) {
-        if (add) {
-            conditions.push(condition);
-        }
-        $("#conditions").html('');
-        if (conditions.length === 0) {
-            $("#conditions").text('None');
-        }
-        conditions.forEach(element => {
-            c = $.get("{{ url_for('main.fetch_from_rules', game='pathfinder1e', to_fetch='') }}condition:" + element, data => {
-                console.log(data);
-                icon = `<div onclick="display_condition('${element}')"><i class='las ${data.icon}'></i></div>`
-                $("#conditions").append(icon);
-                console.log(icon);
-                update_combat_stats();
-            });
-        })
-    }
-</script>
-
 {% if editable %}
 <script>
     //TODO - {"removes":"condition"}
@@ -256,7 +233,7 @@
 "Unconscious": "Unconscious",
 "Asleep": "Asleep",
 "Drowsy": "Drowsy"
-        }, "update_conditions");
+        }, "apply_condition");
     }
 </script>
 {% else %}{% endif %}
