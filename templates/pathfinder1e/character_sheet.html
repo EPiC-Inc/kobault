@@ -92,7 +92,7 @@
 
 {% block brief %}
 <div class="label">Personality</div>
-<div class="multiline_stat">
+<div class="multiline_stat" id="personality">
     {{ personality }}
 </div>
 
@@ -102,7 +102,7 @@
 </div>
 
 <div class="label">Languages</div>
-<div class="multiline_stat">
+<div class="multiline_stat" id="languages">
     {{ languages }}
 </div>
 {% endblock %}
@@ -128,17 +128,23 @@
     base_attack_bonus = +1; //TEMP
 
     function update_combat_stats() {
-        strength = $("#strength").text()
+        if (stat_modifiers.strength == null) stat_modifiers.strength = 0;
+        if (stat_modifiers.dexterity == null) stat_modifiers.dexterity = 0;
+        if (stat_modifiers.constitution == null) stat_modifiers.constitution = 0;
+        if (stat_modifiers.intelligence == null) stat_modifiers.intelligence = 0;
+        if (stat_modifiers.wisdom == null) stat_modifiers.wisdom = 0;
+        if (stat_modifiers.charisma == null) stat_modifiers.charisma = 0;
+        strength = $("#strength").text() / 1 + stat_modifiers.strength
         str_mod = Math.floor((strength / 2) - 5);
-        dexterity = $("#dexterity").text()
+        dexterity = $("#dexterity").text() / 1 + stat_modifiers.dexterity
         dex_mod = Math.floor((dexterity / 2) - 5);
-        constitution = $("#constitution").text()
+        constitution = $("#constitution").text() / 1 + stat_modifiers.constitution
         con_mod = Math.floor((constitution / 2) - 5);
-        intelligence = $("#intelligence").text()
+        intelligence = $("#intelligence").text() / 1 + stat_modifiers.intelligence
         int_mod = Math.floor((intelligence / 2) - 5);
-        wisdom = $("#wisdom").text()
+        wisdom = $("#wisdom").text() / 1 + stat_modifiers.wisdom
         wis_mod = Math.floor((wisdom / 2) - 5);
-        charisma = $("#charisma").text()
+        charisma = $("#charisma").text() / 1 + stat_modifiers.charisma
         cha_mad = Math.floor((charisma / 2) - 5);
 
         // AC = (dex + 10 base + armor bonus) minus anything over the dex cap

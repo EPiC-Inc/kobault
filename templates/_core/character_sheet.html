@@ -139,11 +139,11 @@
             </div>
 
             <div class="stats combat">
+                <!--AC, initiative, speed, BAB, CMD, CMB, etc. go here-->
                 {% block combat_stats %}{% endblock %}
-                <!--AC, initiative, speed, BAB, CMD, CMB go here-->
             </div>
 
-            <div class="label" style="margin: 10px 0;">Curent Hit Points</div>
+            <div class="label" style="margin: 10px 0;">Curent Hit Points{% if editable %}<a onclick="reset_hp()"> <i class="las la-undo-alt"></i></a>{% else %}{% endif %}</a></div>
             <div class="stats">
                 <div class="hp">
                     <span class="stat" id="hp">{{ hp }}</span>
@@ -182,7 +182,6 @@
     $("#conditions").html('None');
 
     function apply_condition(condition, update_character=true, reset=false) {
-        console.log(condition);
         $.get("{{ url_for('main.fetch_from_rules', game=game, to_fetch='') }}condition:" + condition, data => {
             if ((data.stackable || !conditions.includes(condition)) || reset) {
                 if (conditions.length === 0) {
@@ -190,7 +189,6 @@
                 }
                 conditions.push(condition);
                 icon = `<div class="condition" onclick="display_condition('${condition}')" style="color: ${data.color};"><i class='${data.icon}'></i></div>`
-                console.log('asdfasdfasfdsafdsaf')
                 $("#conditions").append(icon);
 
                 Object.entries(data.affects).forEach(modifier => {
@@ -246,6 +244,11 @@
         $.post("{{ url_for('main.set_character', character_id=character_id) }}",
             {"attribute": attribute, "value": value}
         );
+    }
+
+    function reset_hp() {
+        $("#hp").text($("#max_hp").text());
+        update("hp", $("#max_hp").text());
     }
 
     // Attributes
@@ -325,6 +328,32 @@
         });
     }})
 
+    // multiline stats
+    $(document).on("dblclick", ".multiline_stat", function(){
+        if (!editing) {
+        editing = true;
+
+        old_content = $(this).text().trim();
+        var attribute = $(this).prop('id');
+        $(this).html('<textarea class="multiline_stat_change" id="newcontent" style="resize: none;">'+old_content+'</textarea>');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+        }).blur(function() {
+            new_content = $("#newcontent").val();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+
+            //TODO - transfer new input to the server
+            if (new_content != old_content) {update(attribute, new_content)}
+
+            $(this).parent().text(new_content);
+            update_ability_modifiers();
+            editing = false;
+        });
+    }})
+
     // image
     $(document).on("dblclick", "#character_image", function(){
         if (!editing) {
@@ -341,7 +370,7 @@
     // This blurs (loses focus) when you press enter in an input
     // when editing it
     $(document).on("keyup", "#newcontent", function(e) {
-        if (e.which == 13) {$(this).trigger("blur");}
+        if (e.which == 13) {if ($(this).prop("tagName") != "TEXTAREA"){ $(this).trigger("blur"); }}
     })
     $(document).on("keyup", "#newcontent", function(e) {
         if (e.which == 27) {$(this).trigger("blur");}
