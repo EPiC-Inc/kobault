@@ -134,17 +134,17 @@
         if (stat_modifiers.intelligence == null) stat_modifiers.intelligence = 0;
         if (stat_modifiers.wisdom == null) stat_modifiers.wisdom = 0;
         if (stat_modifiers.charisma == null) stat_modifiers.charisma = 0;
-        strength = $("#strength").text() / 1 + stat_modifiers.strength
+        strength = $("#strength").text() / 1 + stat_modifiers.strength;
         str_mod = Math.floor((strength / 2) - 5);
-        dexterity = $("#dexterity").text() / 1 + stat_modifiers.dexterity
+        dexterity = $("#dexterity").text() / 1 + stat_modifiers.dexterity;
         dex_mod = Math.floor((dexterity / 2) - 5);
-        constitution = $("#constitution").text() / 1 + stat_modifiers.constitution
+        constitution = $("#constitution").text() / 1 + stat_modifiers.constitution;
         con_mod = Math.floor((constitution / 2) - 5);
-        intelligence = $("#intelligence").text() / 1 + stat_modifiers.intelligence
+        intelligence = $("#intelligence").text() / 1 + stat_modifiers.intelligence;
         int_mod = Math.floor((intelligence / 2) - 5);
-        wisdom = $("#wisdom").text() / 1 + stat_modifiers.wisdom
+        wisdom = $("#wisdom").text() / 1 + stat_modifiers.wisdom;
         wis_mod = Math.floor((wisdom / 2) - 5);
-        charisma = $("#charisma").text() / 1 + stat_modifiers.charisma
+        charisma = $("#charisma").text() / 1 + stat_modifiers.charisma;
         cha_mad = Math.floor((charisma / 2) - 5);
 
         // AC = (dex + 10 base + armor bonus) minus anything over the dex cap
