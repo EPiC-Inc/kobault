@@ -31,11 +31,17 @@
     }
 
     function show_overlay() {
-        document.getElementById("overlay").style.display = "block";
+        $("#overlay").css("display", "block");
+    }
+    function hide_overlay() {
+        $("#overlay").css("display", "none");
     }
 
-    function hide_overlay() {
-        document.getElementById("overlay").style.display = "none";
+    function show_options() {
+        $("#options").addClass("hidden");
+    }
+    function hide_options() {
+        $("#options").removeClass("hidden");
     }
 
     function filter_list() {
@@ -143,7 +149,7 @@
                 {% block combat_stats %}{% endblock %}
             </div>
 
-            <div class="label" style="margin: 10px 0;">Curent Hit Points{% if editable %}<a onclick="reset_hp()"> <i class="las la-undo-alt"></i></a>{% else %}{% endif %}</a></div>
+            <div class="label" style="margin: 10px 0;">Curent Hit Points{% if editable %}<a onclick="long_rest()"> <i class="las la-undo-alt"></i></a>{% else %}{% endif %}</a></div>
             <div class="stats">
                 <div class="hp">
                     <span class="stat" id="hp">{{ hp }}</span>
@@ -153,6 +159,22 @@
         </div>
         <div class="stats brief">
             {% block brief %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<div id="options">
+    <div class="button" onclick="show_options()">
+        <i class="las la-book"></i>
+    </div>
+    <!--TODO - check if chosen class(es) can cast spells-->
+    <div class="contents">
+        <div id="close_options"><a onclick="hide_options()"><i class="las la-times"></i></a></div>
+        <div>
+            <a>Spells!</a>
+            <a href="{{ url_for('main.characters') }}"><button id="back_to_characters">Characters</button></a>
+            <a>UI design is my passion</a>
+            <a>can't you tel????</a>
         </div>
     </div>
 </div>
@@ -246,7 +268,7 @@
         );
     }
 
-    function reset_hp() {
+    function long_rest() {
         $("#hp").text($("#max_hp").text());
         update("hp", $("#max_hp").text());
     }

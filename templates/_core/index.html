@@ -1,0 +1,23 @@
+{% extends "_core/base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="home">
+    <div>
+        {% if current_user.is_authenticated %}
+        <div>
+            Welcome, {{ current_user.get_id() }}
+        </div>
+        <a href="{{ url_for('main.characters') }}"><button>Characters</button></a><br>
+        <a href="{{ url_for('main.campaign_hub') }}"><button>Campaigns</button></a><br>
+        <a><button>Compendium (not a thing yet)</button></a>
+        {% else %}
+        <div>
+            <!--TODO - put funny thing here like a single kobold sitting folornly on a stump looking into the sunset -->
+            You're logged out.<br>
+            <a href="{{ url_for('auth.login') }}">Log in?</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

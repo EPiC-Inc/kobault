@@ -46,6 +46,8 @@ def login():
 
 @auth.route('/signup', methods=["GET", "POST"])
 def signup():
+    next = request.args.get('next', url_for('main.index'))
+
     if request.method == "GET":
         return render_template('_core/signup.html')
     # Get form data
@@ -72,7 +74,7 @@ def signup():
         "campaigns": [],
     })
 
-    return redirect(url_for('main.index'))
+    return redirect(next)
 
 @auth.route('/logout')
 def logout():

@@ -40,14 +40,16 @@
 
 </div>
 
-<div>
-    <div>prof bonus</div>
+<div><br>
+    <div class="">
+        Base attack bonus: <span class="stat_static" id="base_attack_bonus">[BAB]</span>
+    </div><br>
     <div class="label">Saving Throws</div>
     <div class="saves">
         <div>Fortitude <span id="fortitude_save"></span></div>
         <div>Reflex <span id="reflex_save"></span></div>
         <div>Will <span id="will_save"></span></div>
-    </div>
+    </div><br>
 
     <div class="label">Skills</div>
     <div class="skills">skills</div>
@@ -68,13 +70,13 @@
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
-<div class="stat_label armor_class">AC</div>
+<div class="stat_label armor_class">Armor Class</div>
 <div class="stat_label initiative">Initiative</div>
 <div class="stat_label speed">Speed</div>
 
-<div class="base_attack_bonus">
-    <span class="stat_static" id="base_attack_bonus">[BAB]</span><br>
-    <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
+<div class="armor_class">
+    Touch: <span class="stat_static" id="armor_class_touch">[AC]</span><br>
+    F-F: <span class="stat_static" id="armor_class_flat">[AC]</span>
 </div>
 <div class="combat_maneuver_bonus">
     <span class="stat_static" id="combat_maneuver_bonus">[CMB]</span><br>
@@ -85,7 +87,7 @@
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
-<div class="stat_label base_attack_bonus">BAB</div>
+<div class="stat_label armor_class"></div>
 <div class="stat_label combat_maneuver_bonus">CMB</div>
 <div class="stat_label combat_maneuver_defense">CMD</div>
 {% endblock %}
@@ -152,6 +154,12 @@
         if (stat_modifiers.armor_dex_cap == null) stat_modifiers.armor_dex_cap = 999999;
         $("#armor_class").text(
             10 + dex_mod + stat_modifiers.armor_bonus - Math.max(0, Math.max(dex_mod, 0) - stat_modifiers.armor_dex_cap)
+        );
+        $("#armor_class_touch").text(
+            10 + dex_mod
+        );
+        $("#armor_class_flat").text(
+            10 + stat_modifiers.armor_bonus
         );
 
         // initiative

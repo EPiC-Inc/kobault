@@ -1,8 +1,10 @@
 from flask import Blueprint, abort, redirect, render_template, request, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
+from tinydb import where
 
 import fetch
+from app import character_db
 
 # This module is for the main functions of the site - characters, campaigns, spells, etc.
 
@@ -10,18 +12,14 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return 'Index'
-
-@main.route('/home')
-def home():
-    #TODO - make a homepage with campaigns and characters
-    return 'home'
+    return render_template("_core/index.html")
 
 @main.route('/characters')
 @login_required
 def characters():
-    #TODO - Get a list of all the logged-in user's characters
-    abort(501)
+    return render_template("_core/characters.html",
+            characters = character_db.search(where('owner') == current_user.get_id()) # type: ignore
+    )
 
 @main.route('/characters/<game>/<character_id>')
 @login_required

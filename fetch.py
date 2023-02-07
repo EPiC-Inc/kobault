@@ -1,7 +1,7 @@
 import json
 from uuid import uuid1
 
-from tinydb import where
+from tinydb import TinyDB, where
 
 from app import character_db
 

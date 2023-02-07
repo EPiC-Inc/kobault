@@ -45,6 +45,7 @@ button.inventory {
     display: grid;
     grid-template-columns: 5fr 4fr 3fr;
     grid-template-rows: 1.6em auto;
+    gap: 20px;
 }
 
 .stats.scores {
@@ -200,6 +201,7 @@ input.stat_adjustment {
     justify-content: center;
     flex-wrap: wrap;
     max-width: 100%;
+    line-height: 52px;
 }
 #conditions .condition {
     font-size: 50px;
@@ -207,6 +209,68 @@ input.stat_adjustment {
 
 body {
     margin: 0;
+    overflow-x: hidden;
+}
+
+/*ANCHOR - sidebar menu thing */
+#options .button{
+    font-size: 60px;
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    top: 20%;
+    transition: width 0.32s ease-out, transform 200ms ease-out;
+    float: left;
+    width: 60px;
+    background-color: rgb(193, 193, 193);
+    line-height: 1.7em;
+    border: 4px solid black;
+    border-right: none;
+    border-radius: 15px 0 0 15px;
+    text-align: center;
+    transform: translate(40%);
+}
+#options .button:hover {
+    position: absolute;
+    right: 0;
+    top: 20%;
+    width: 100px;
+    transform: translate(0);
+}
+#options.hidden .button {
+    width: 0;
+    transform: translate(4px);
+}
+
+#options .contents {
+    z-index: 2;
+    font-size: 20px;
+    top: 0;
+    transition:transform 0.43s ease;
+    position: absolute;
+    right: 0;
+    transform: translate(100%);
+    width: 17vw;
+    background-color: black;
+    color: white;
+    height: 100%;
+    padding: 20px;
+    border-left: 10px dashed gold;
+}
+#options.hidden .contents {
+    transform: translate(0);
+}
+#options .contents #close_options {
+    font-size: 50px;
+}
+#options .contents a {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#back_to_characters {
+    color: lightblue;
+    background-color: cornflowerblue;
 }
 
 /*ANCHOR - overlay */
@@ -220,7 +284,7 @@ body {
     right: 0;
     bottom: 0;
     background-color: rgba(0,0,0,0.8); /* Black background with opacity */
-    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    z-index: 5; /* Specify a stack order in case you're using a different order for other elements */
     cursor: pointer; /* Add a pointer on hover */
 }
 
