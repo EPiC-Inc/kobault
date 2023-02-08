@@ -52,7 +52,23 @@
     </div><br>
 
     <div class="label">Skills</div>
-    <div class="skills">skills</div>
+    <div class="skills">
+        {% for skill in fetch.fetch_skills(game) %}
+        <!--TODO - check if the skill allows for a blank and adjust accordingly-->
+        <div>
+            <!--TODO - check if the skill is a class
+                 skill of the character's favored class-->
+            <input type="checkbox" disabled checked>
+        </div>
+        <div>
+            <span>{{ skill }}</span><br>
+            <span>Points: </span><span class="stat" id="skills:{{ skill.lower() }}">{{ skills.get(skill.lower(), 0) }}</span>
+        </div>
+        <div>
+            <span>+0</span>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
 

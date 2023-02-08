@@ -6,7 +6,7 @@
     <div>
         {% if current_user.is_authenticated %}
         <div>
-            Welcome, {{ current_user.get_id() }}
+            Welcome, {{ current_user.get_name() }}
         </div>
         <a href="{{ url_for('main.characters') }}"><button>Characters</button></a><br>
         <a href="{{ url_for('main.campaign_hub') }}"><button>Campaigns</button></a><br>

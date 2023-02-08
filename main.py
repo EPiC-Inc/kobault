@@ -38,6 +38,7 @@ def character_sheet(game, character_id):
 
         return render_template(f"{game}/character_sheet.html", 
             editable=False if request.args.get('readonly') else True,
+            fetch=fetch,
             **character)
     except TemplateNotFound:
         abort(404)
@@ -56,6 +57,8 @@ def fetch_from_rules(game, to_fetch):
     match to_fetch:
         case value if value.startswith("condition"):
             return fetch.fetch_condition(game, value[value.index(':')+1:])
+        case "skills":
+            return fetch.fetch_skills(game)
         case _:
             return ''
 

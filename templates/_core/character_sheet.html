@@ -73,6 +73,9 @@
         $("#keyword").focus();
     }
 </script>
+{% if editable %}{% else %}
+<meta http-equiv="refresh" content="300">
+{% endif %}
 {% endblock%}
 
 {% block body %}
@@ -178,10 +181,10 @@
     </div>
     <!--TODO - check if chosen class(es) can cast spells-->
     <div class="contents">
-        <div id="close_options"><a onclick="hide_options()"><i class="las la-times"></i></a></div>
+        <div class="close_button"><a onclick="hide_options()"><i class="las la-times"></i></a></div>
         <div>
-            <a>abc</a>
-            <a href="{{ url_for('main.characters') }}"><button id="back_to_characters">Characters</button></a>
+            <a onclick=""><button id="">Add character to campaign</button></a>
+            <a href="{{ url_for('main.characters') }}"><button id="back_to_characters">My characters</button></a>
             <a>UI design is my passion</a>
             <a>can't you tel????</a>
         </div>
@@ -253,7 +256,7 @@
     function display_condition(condition) {
         $("#menu").html('');
         $.get("{{ url_for('main.fetch_from_rules', game=game, to_fetch='') }}condition:" + condition, data => {
-            description = `<div class="description"><span>${condition}</span> <a onclick="remove_condition('${condition}');">(remove)</a><br>${data.description.replace('\n', '<br><br>')}</div>`;
+            description = `<div class="description"><span>${condition}</span> <a onclick="remove_condition('${condition}');">(remove)</a><i class="close_button close_button_right las la-times" onclick='hide_overlay();'></i><br>${data.description.replace('\n', '<br><br>')}</div>`;
             $("#menu").append(description);
             show_overlay();
         });
@@ -410,6 +413,7 @@
         if (e.which == 27) {hide_overlay();}
     })
 </script>
-{% else %}{% endif %}
+{% else %}
+{% endif %}
 
 {% endblock %}

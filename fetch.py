@@ -19,6 +19,11 @@ def fetch_condition(game: str, condition: str) -> dict:
     del conditions
     return to_return
 
+def fetch_skills(game: str) -> list:
+    with open(f"data/{game}/skills.json") as skillfile:
+        skills = json.load(skillfile)
+    return list(skills.keys())
+
 def fetch_classes(game: str) -> str:
     return fetch(game, 'class')
 
@@ -38,7 +43,13 @@ def update_character(character_id: str, attribute:str, value: str | int | list |
     print('updating character')
     print(attribute)
     print(value)
-    character_db.update({attribute:value}, where('character_id')==character_id)
+    if ":" in attribute:
+        attribute, section = attribute.split(":", maxsplit=1)
+        new_attribute = fetch_character(character_id)[attribute]
+        new_attribute[section] = value # type: ignore
+        character_db.update({attribute:new_attribute}, where('character_id')==character_id)
+    else:
+        character_db.update({attribute:value}, where('character_id')==character_id)
 
 def new_character(game: str, user_id: str, user_name: str) -> str | None:
     if not game in GAMES:
@@ -60,7 +71,7 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
                 'strength': 10, 'dexterity': 10, 'constitution': 10,
                 'intelligence': 10, 'wisdom': 10, 'charisma': 10,
                 'languages': "Common", 'personality': 'Mysterious',
-                'skills': [], 'items': [], 'traits': [],
+                'skills': {}, 'items': [], 'traits': [],
                 'permanent_stat_modifiers': {},
                 'conditions': [],
                 'armor': None,
