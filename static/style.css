@@ -45,13 +45,14 @@ button.inventory {
     display: grid;
     grid-template-columns: 5fr 4fr 3fr;
     grid-template-rows: 1.6em auto;
-    gap: 20px;
+    gap: 6px;
 }
 
 .stats.scores {
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-template-rows: auto;
+    gap: 8px;
 }
 .stats.ability_scores {
     display: grid;

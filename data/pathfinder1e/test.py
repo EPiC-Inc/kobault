@@ -1,14 +1,14 @@
 import json
 
-with open('data/pathfinder1e/conditions.json', 'r') as condfile:
-    conditions = json.load(condfile)
+with open('data/pathfinder1e/skills.json', 'r') as skillsfile:
+    skills = json.load(skillsfile)
 
-for cond_name in conditions:
-    print(f"\"{cond_name}\": \"{cond_name}\",")
+for skill in "Acrobatics | Appraise | Bluff | Climb | Craft | Diplomacy | Disable Device | Disguise | Escape Artist | Fly | Handle Animal | Heal | Intimidate | Knowledge | Linguistics | Perception | Perform | Profession | Ride | Sense Motive | Sleight of Hand | Spellcraft | Stealth | Survival | Swim | Use Magic Device".split(" | "):
+    skills[skill] = {
+        "ability": "intelligence",
+        "trained": False,
+        "blank": False,
+    }
 
-# for cond in conditions:
-#     conditions[cond]['color'] = 'black'
-# print(conditions)
-
-# with open('data/pathfinder1e/conditions.json', 'w') as condfile:
-#     condfile.write(json.dumps(conditions))
+with open('data/pathfinder1e/skills.json', 'w') as condfile:
+    condfile.write(json.dumps(skills))
