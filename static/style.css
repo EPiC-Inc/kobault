@@ -16,17 +16,20 @@
     max-height: 300px;
 }
 
-button.features, button.inventory {
+button.features, button.inventory, button.spells {
     font-size: large;
 }
-button.features:target, button.inventory:target {
+/* button.features:target, button.inventory:target, button.spells:target {
     border-radius: 4px;
     background-color: lightgray;
-}
+} */
 button.features {
-    width: 60%;
+    width: 30%;
 }
 button.inventory {
+    width: 30%;
+}
+button.spells {
     width: 30%;
 }
 
@@ -267,6 +270,7 @@ body {
 #options .contents a {
     display: block;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 #back_to_characters {
