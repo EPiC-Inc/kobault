@@ -45,3 +45,41 @@
 .skills .stat input {
     width: 3em;
 }
+
+#nonlethal {
+    font-size: large;
+    position: relative;
+    top: -10px;
+    height: 0;
+    margin: 20px 0;
+}
+#nonlethal_damage {
+    padding: 0 10px;
+}
+#nonlethal-progressbar-parent {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    height: 34px;
+    left: 0;
+    top: -30px;
+    position: relative;
+    z-index: -1;
+}
+#nonlethal-progressbar {
+    box-sizing: border-box;
+    display: block;
+    width: 0;
+    max-width: 100%;
+    margin-left: auto;
+    height: 30px;
+    position: relative;
+    z-index: -2;
+    background-color: rgba(255, 0, 0, 0.633);
+}
+#nonlethal input {
+    text-align: center;
+    font-size: medium;
+    width: 3em;
+}

@@ -219,6 +219,8 @@
         $("#will_save").text(
             add_sign(wis_mod + stat_modifiers.will_save)
         );
+
+        set_nonlethal_background(($("#nonlethal_damage").text() / $("#hp").text()) * 100);
     }
 </script>
 

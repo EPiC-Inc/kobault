@@ -163,6 +163,12 @@
 
             <div class="label" style="margin: 10px 0;">Curent Hit Points{% if editable %}<a onclick="long_rest()"> <i class="las la-undo-alt"></i></a>{% else %}{% endif %}</a></div>
             <div class="stats">
+                <div id="nonlethal">
+                    <span>Nonlethal damage: <span class="stat-nonlethal" id="nonlethal_damage">{{ nonlethal_damage }}</span></span>
+                    <div id="nonlethal-progressbar-parent">
+                        <div id="nonlethal-progressbar"></div>
+                    </div>
+                </div>
                 <div class="hp">
                     <span class="stat" id="hp">{{ hp }}</span>
                     /<span class="stat hp" id="max_hp">{{ max_hp }}</span>
@@ -195,6 +201,17 @@
 {% block afterbody %}
 {% block extra_scripts %}{% endblock %}
 <script>
+    function set_nonlethal_background(percent) {
+        $("#nonlethal-progressbar").css('width', `${percent}%`);
+        if (percent > 0) {
+            $("#nonlethal-progressbar-parent").css('border', "2px solid #000000");
+        } else {
+            $("#nonlethal-progressbar-parent").css('border', "");
+        }
+    }
+
+    set_nonlethal_background(('{{ nonlethal_damage }}' / '{{ hp }}') * 100);
+
     function update_ability_modifiers() {
         ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(ability => {
             score = $("#"+ability).text();
@@ -283,6 +300,9 @@
     function long_rest() {
         $("#hp").text($("#max_hp").text());
         update("hp", $("#max_hp").text());
+        $("#nonlethal_damage").text(0);
+        update("nonlethal_damage", 0);
+        set_nonlethal_background(0);
     }
 
     // Attributes
@@ -305,6 +325,33 @@
             if (new_content != old_content) {update(attribute, new_content)}
 
             $(this).parent().text(new_content);
+            editing = false;
+        });
+    }})
+
+    //stat-nonlethal
+    $(document).on("dblclick", ".stat-nonlethal", function(){
+        if (!editing) {
+        editing = true;
+
+        var old_content = $(this).text();
+        var attribute = $(this).prop('id');
+        $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
+        $("#newcontent").focus();
+
+        $("#newcontent").focus(function() {
+            $("#newcontent").selectionStart = $("#newcontent").selectionEnd = $("#newcontent").val().length;
+        }).blur(function() {
+            var new_content = $("#newcontent").val();
+
+            //TODO - verify the input
+            if (!new_content) {new_content = old_content}
+
+            //TODO - transfer new input to the server
+            if (new_content != old_content) {update(attribute, new_content)}
+
+            $(this).parent().text(new_content);
+            set_nonlethal_background((new_content / $("#hp").text()) * 100);
             editing = false;
         });
     }})
@@ -332,6 +379,7 @@
 
             $(this).parent().text(new_content);
             editing = false;
+            update_combat_stats();
         });
     }})
 
