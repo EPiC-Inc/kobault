@@ -19,10 +19,13 @@ def fetch_condition(game: str, condition: str) -> dict:
     del conditions
     return to_return
 
-def fetch_skills(game: str) -> list:
+def fetch_skills(game: str, full: bool = False) -> list | dict:
     with open(f"data/{game}/skills.json") as skillfile:
         skills = json.load(skillfile)
-    return list(skills.keys())
+    if full:
+        return skills
+    else:
+        return list(skills.keys())
 
 def fetch_classes(game: str) -> str:
     return fetch(game, 'class')

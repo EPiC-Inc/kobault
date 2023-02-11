@@ -219,7 +219,7 @@
             modifier = add_sign(modifier);
             $("#"+ability+"_mod").text(modifier);
         });
-        update_combat_stats();
+        update_stats();
     }
 
     //ANCHOR - initialization
@@ -249,7 +249,7 @@
                 if (update_character) {
                     update("conditions", conditions);
                 }
-                update_combat_stats();
+                update_stats();
             }
         });
     }
@@ -379,7 +379,7 @@
 
             $(this).parent().text(new_content);
             editing = false;
-            update_combat_stats();
+            update_stats();
         });
     }})
 

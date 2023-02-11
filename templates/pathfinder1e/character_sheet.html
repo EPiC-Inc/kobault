@@ -65,7 +65,7 @@
             <span>Points: </span><span class="stat" id="skills:{{ skill.lower() }}">{{ skills.get(skill.lower(), 0) }}</span>
         </div>
         <div>
-            <span>+0</span>
+            <span id="{{ skill.replace(' ', '_') }}_bonus" class="skill_bonus">+0</span>
         </div>
         {% endfor %}
     </div>
@@ -145,7 +145,7 @@
     //TODO - get from class
     base_attack_bonus = +1; //TEMP
 
-    function update_combat_stats() {
+    function update_stats() {
         if (stat_modifiers.strength == null) stat_modifiers.strength = 0;
         if (stat_modifiers.dexterity == null) stat_modifiers.dexterity = 0;
         if (stat_modifiers.constitution == null) stat_modifiers.constitution = 0;
@@ -163,7 +163,7 @@
         wisdom = $("#wisdom").text() / 1 + stat_modifiers.wisdom;
         wis_mod = Math.floor((wisdom / 2) - 5);
         charisma = $("#charisma").text() / 1 + stat_modifiers.charisma;
-        cha_mad = Math.floor((charisma / 2) - 5);
+        cha_mod = Math.floor((charisma / 2) - 5);
 
         // AC = (dex + 10 base + armor bonus) minus anything over the dex cap
         if (stat_modifiers.armor_bonus == null) stat_modifiers.armor_bonus = 0;
@@ -219,6 +219,39 @@
         $("#will_save").text(
             add_sign(wis_mod + stat_modifiers.will_save)
         );
+
+        // Skills
+        $.get("{{ url_for('main.fetch_from_rules', game=game, to_fetch='skills') }}", data => {
+            Object.entries(data).forEach(skill => {
+                skill_name = skill[0];
+                skill_properties = skill[1];
+                console.log(skill_properties);
+
+                stat = 0
+                switch (skill_properties.ability) {
+                    case "strength":
+                        stat = str_mod;
+                        break;
+                    case "dexterity":
+                        stat = dex_mod;
+                        break;
+                    case "intelligence":
+                        stat = int_mod;
+                        break;
+                    case "wisdom":
+                        stat = wis_mod;
+                        break;
+                    case "charisma":
+                        stat = cha_mod;
+                        break;
+                }
+
+                // NIGHTMARE NIGHTMARE NIGHTMARE
+                $(("#"+skill_name+"_bonus").replace("(", "\\(").replace(")", "\\)").replace(" ", "_")).text(
+                    add_sign(stat)
+                );
+            });
+        });
 
         set_nonlethal_background(($("#nonlethal_damage").text() / $("#hp").text()) * 100);
     }

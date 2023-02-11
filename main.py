@@ -56,7 +56,7 @@ def fetch_from_rules(game, to_fetch):
         case value if value.startswith("condition"):
             return fetch.fetch_condition(game, value[value.index(':')+1:])
         case "skills":
-            return fetch.fetch_skills(game)
+            return fetch.fetch_skills(game, full=True)
         case _:
             return ''
 
