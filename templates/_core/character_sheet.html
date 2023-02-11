@@ -4,7 +4,6 @@
 {% block head %}
 <!-- Import positioning, etc. for the requested game -->
 <link rel="stylesheet" href="{{ url_for('static', filename='styles') }}/{{ game }}.css">
-<script src="{{ url_for('static', filename='jquery.js') }}"></script>
 
 <script>
     CHARACTER_ID = "{{ character_id }}";
@@ -190,7 +189,8 @@
         <div class="close_button"><a onclick="hide_options()"><i class="las la-times"></i></a></div>
         <div>
             <a onclick=""><button id="">Add character to campaign</button></a>
-            <a href="{{ url_for('main.characters') }}"><button id="back_to_characters">My characters</button></a>
+            <a href="{{ url_for('main.index') }}"><button id="back_to_home">Homepage</button></a>
+            <a onclick=""><button id="delete_character">DELETE CHARACTER</button></a>
             <a>UI design is my passion</a>
             <a>can't you tel????</a>
         </div>

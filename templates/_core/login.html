@@ -13,12 +13,14 @@
 {% endif %}
 {% endwith %}
 
-<form action="{{ url_for('auth.login') }}?next={{ next }}" method="post">
-    <label for="user_id">User ID:</label><br>
-    <input type="text" name="user_id"><br>
-    <label for="lname">Password:</label><br>
-    <input type="password" name="password"><br><br>
-    <input type="submit" value="Submit">
-</form>
-<a href="{{ url_for('auth.signup') }}?next={{ next }}">I don't have an account</a>
+<div id="login">
+    <form action="{{ url_for('auth.login') }}?next={{ next }}" method="post">
+        <label for="user_id">User ID:</label>
+        <input type="text" name="user_id">
+        <label for="lname">Password:</label>
+        <input type="password" name="password">
+        <input type="submit" value="Submit">
+    </form>
+    <a href="{{ url_for('auth.signup') }}?next={{ next }}"><button id="signup">I don't have an account</button></a>
+</div>
 {% endblock %}

@@ -1,0 +1,84 @@
+.error {
+    display: block;
+    color: red;
+    font-size: xx-large;
+    border: 3px solid navy;
+    border-radius: 15px;
+    position: absolute;
+    top: 5%;
+    transform: translateX(-50%);
+    left: 50%;
+    max-width: 80vw;
+    text-align: center;
+    padding: 14px 20px;
+}
+
+.title {
+    font-size: larger;
+    font-weight: bold;
+}
+
+.character_button {
+    margin: 10px 0;
+}
+.character_button button {
+    font-size: x-large;
+}
+#new_character_options * {
+    font-size: larger;
+}
+#new_character_options select {
+    box-sizing: border-box;
+    font-size: large;
+    border: none;
+    border-bottom: 2px solid black;
+    background-color: inherit;
+    padding-right: 4px;
+}
+
+.home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    text-align: center;
+}
+.home #banner {
+    font-size: 200%;
+    grid-column: 1 / 3;
+}
+
+.new_character_area {
+    /*dummy rule to make my linter happy*/
+    display: block;
+}
+
+#login {
+    font-size: x-large;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+#login form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+#login form label {
+    margin-top: 15px;
+}
+#login form input[type=text], #login form input[type=password] {
+    font-size: x-large;
+}
+#login form input[type=submit] {
+    margin-top: 12px;
+    font-size: x-large;
+    width: auto;
+    padding: 0 20px;
+}
+#signup {
+    margin-top: 15%;
+}

@@ -2,22 +2,72 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<div class="home">
-    <div>
-        {% if current_user.is_authenticated %}
-        <div>
-            Welcome, {{ current_user.get_name() }}
+<!-- We'll need a background at some point; it's ugly as sin -->
+<div>
+    {% if current_user.is_authenticated %}
+    <div class="home">
+        <div id="banner">
+            Welcome, {{ current_user.get_name() }}.
         </div>
-        <a href="{{ url_for('main.characters') }}"><button>Characters</button></a><br>
-        <a href="{{ url_for('main.campaign_hub') }}"><button>Campaigns</button></a><br>
-        <a><button>Compendium (not a thing yet)</button></a>
-        {% else %}
         <div>
-            <!--TODO - put funny thing here like a single kobold sitting folornly on a stump looking into the sunset -->
-            You're logged out.<br>
-            <a href="{{ url_for('auth.login') }}">Log in?</a>
+            <div class="character_area">
+                <div class="character_list">
+                    {% if characters %}
+                    <div class="title">Your characters</div>
+                    <div>Show NPCs? <input type="checkbox"></div>
+                    {% else %}
+                    <div>You have no characters.</div>
+                    {% endif %}
+
+                    {% for character in characters %}
+                    <div class="character_button">
+                        <a href="{{ url_for('main.character_sheet', game=character['game'], character_id=character['character_id']) }}">
+                            <button>{{ character['name'] }}</button>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="new_character_area">
+                    <div id="new_character_options">
+                        <label for="game">Game:</label>
+                        <select name="game" id="game">
+                            <option value="pathfinder1e" selected>Pathfinder</option>
+                        </select>
+
+                        <br>
+                        <label for="is_npc">NPC?</label>
+                        <input name="is_npc" id='npc' type="checkbox">
+                        <br>
+                        <button onclick="new_character()">Create</button>
+                    </div>
+                    <button onclick="$('#new_character_options').slideDown(250);$(this).slideUp(170);" id="new_character">Create a new character</button>
+                </div>
+            </div>
         </div>
-        {% endif %}
+        <div class="">
+            <div class="title">Other links</div>
+            <a href="{{ url_for('main.campaign_hub') }}"><button>Campaigns</button></a><br>
+            <a><button>Compendium (not a thing yet)</button></a>
+        </div>
     </div>
+    {% else %}
+    <div>
+        <!--TODO - put funny thing here like a single kobold sitting folornly on a stump looking into the sunset -->
+        You're logged out.<br>
+        <a href="{{ url_for('auth.login') }}">Log in?</a>
+    </div>
+    {% endif %}
 </div>
+{% endblock %}
+
+{% block afterbody %}
+<script>
+    $("#new_character_options").hide(20);
+
+    function new_character() {
+        is_npc = document.getElementById('npc').checked;
+        window.location.href = "characters/"+$('#game').val()+"/new?npc="+is_npc;
+    }
+</script>
 {% endblock %}

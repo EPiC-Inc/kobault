@@ -12,13 +12,11 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return render_template("_core/index.html")
-
-@main.route('/characters')
-@login_required
-def characters():
-    return render_template("_core/characters.html",
-            characters = character_db.search(where('owner') == current_user.get_id()) # type: ignore
+    characters = []
+    if current_user.is_authenticated: # type: ignore
+        characters = character_db.search(where('owner') == current_user.get_id()) # type: ignore
+    return render_template("_core/index.html",
+        characters = characters
     )
 
 @main.route('/characters/<game>/<character_id>')

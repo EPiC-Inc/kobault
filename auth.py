@@ -73,8 +73,12 @@ def signup():
         "characters": [],
         "campaigns": [],
     })
-
-    return redirect(next)
+    
+    login_user(User(user_id), remember=True)
+    if next:
+        return redirect(next)
+    else:
+        return redirect(url_for('main.index'))
 
 @auth.route('/logout')
 def logout():
