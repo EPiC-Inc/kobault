@@ -68,7 +68,7 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
         case "pathfinder1e":
             character_db.update({
                 'hp': 10, 'max_hp': 10, "nonlethal_damage": 0,
-                'classes': {}, 'background': 'NA', 'user_id': user_id,
+                'class_': 'class / subclass (0)', 'background': 'NA', 'user_id': user_id,
                 'race': 'NA', 'alignment': 'NA', 'exp': 'NA',
                 'age': 'NA', 'body': 'NA', 'appearance': 'NA',
                 'strength': 10, 'dexterity': 10, 'constitution': 10,
