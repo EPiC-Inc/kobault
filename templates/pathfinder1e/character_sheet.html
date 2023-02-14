@@ -82,7 +82,7 @@
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="speed">
-    <span class="stat_static" id="speed">[SPD]</span><br>
+    <span class="stat" id="speed">{{ speed }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
@@ -128,7 +128,6 @@
 {% block extra_scripts %}
 <script>
     //TODO - get from race
-    speed = 30; //TEMP
     size = 0; //TEMP
     /*
     fine = -4   
@@ -182,10 +181,6 @@
         $("#initiative").text(
             add_sign(dex_mod + stat_modifiers.initiative)
         );
-
-        // speed
-        if (stat_modifiers.speed == null) stat_modifiers.speed = 0;
-        $("#speed").text(speed + stat_modifiers.speed);
 
         // CMB = BAB + STR + Size Mod + Other
         if (stat_modifiers.combat_maneuver_bonus == null) stat_modifiers.combat_maneuver_bonus = 0;
