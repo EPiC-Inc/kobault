@@ -7,6 +7,10 @@
 
 <script>
     CHARACTER_ID = "{{ character_id }}";
+    RATE_LIMIT = 800;
+    RATE_LIMITING = false;
+    UPDATE_QUEUE_MAX = 10;
+    update_queue = 0;
     stat_modifiers = {
     }
 
@@ -295,9 +299,29 @@
     }
 
     function update(attribute, value) {
-        $.post("{{ url_for('main.set_character', character_id=character_id) }}",
-            {"attribute": attribute, "value": value}
-        );
+        // Very wonky (client-side lmao) rate limiting
+        update_queue += 1;
+        console.log(update_queue);
+        if (update_queue > UPDATE_QUEUE_MAX * 1.1) {
+            console.log("Please take a break....")
+        } else if (RATE_LIMITING) {
+            console.log("unavailable")
+        } else if (update_queue > UPDATE_QUEUE_MAX) {
+            RATE_LIMITING = true;
+            console.log("Cooling down......");
+            for (let i = 0; i < update_queue; i++) {
+                setTimeout(() => {update_queue = Math.max(0, update_queue - 1) }, i * RATE_LIMIT * 1.1);
+            }
+            setTimeout(() => {
+                update(attribute, value);
+                RATE_LIMITING = false;
+            }, (UPDATE_QUEUE_MAX + 1) * RATE_LIMIT);
+        } else {
+            $.post("{{ url_for('main.set_character', character_id=character_id) }}",
+                {"attribute": attribute, "value": value}
+            );
+            setTimeout(() => {update_queue -= 1}, RATE_LIMIT);
+        }
     }
 
     function long_rest() {
