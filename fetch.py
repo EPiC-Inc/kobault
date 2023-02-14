@@ -102,6 +102,7 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
                 'skills': {}, 'items': [], 'traits': [],
                 'class_skills': {},
                 'permanent_stat_modifiers': {},
+                'base_attack_bonus': '0',
                 'conditions': [],
                 'armor': None,
                 'owner': user_id,

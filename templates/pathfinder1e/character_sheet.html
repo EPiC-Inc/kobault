@@ -42,7 +42,7 @@
 
 <div><br>
     <div class="">
-        Base attack bonus: <span class="stat_static" id="base_attack_bonus">[BAB]</span>
+        Base attack bonus:<br>+<span class="stat" id="base_attack_bonus">{{ base_attack_bonus }}</span>
     </div><br>
     <div class="label">Saving Throws</div>
     <div class="saves">
@@ -142,8 +142,7 @@
     colossal = 4
     */
 
-    //TODO - get from class
-    base_attack_bonus = +1; //TEMP
+    base_attack_bonus = $("#base_attack_bonus").text() / 1;
 
     function update_stats() {
         if (stat_modifiers.strength == null) stat_modifiers.strength = 0;
@@ -187,12 +186,6 @@
         // speed
         if (stat_modifiers.speed == null) stat_modifiers.speed = 0;
         $("#speed").text(speed + stat_modifiers.speed);
-
-        // BAB
-        if (stat_modifiers.base_attack_bonus == null) stat_modifiers.base_attack_bonus = 0;
-        $("#base_attack_bonus").text(
-            add_sign(base_attack_bonus + stat_modifiers.base_attack_bonus)
-        );
 
         // CMB = BAB + STR + Size Mod + Other
         if (stat_modifiers.combat_maneuver_bonus == null) stat_modifiers.combat_maneuver_bonus = 0;

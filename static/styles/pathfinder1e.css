@@ -25,6 +25,10 @@
 .speed {
     background-color: rgb(227, 227, 227);
 }
+#base_attack_bonus, #base_attack_bonus input {
+    text-align: left;
+    width: 1.4em;
+}
 
 /*ANCHOR - skills*/
 .skills {
