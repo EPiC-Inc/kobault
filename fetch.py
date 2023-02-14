@@ -1,4 +1,5 @@
 import json
+from time import sleep
 from uuid import uuid1
 
 from tinydb import TinyDB, where
@@ -8,6 +9,27 @@ from app import character_db
 # This program acts as middleware from the frontend to the database
 
 GAMES = ['pathfinder1e']
+
+# Just a simple mutex - probably very vulnerable to deadlocks if anything crashes before it's released
+DB_LOCK = False
+def obtain_database_lock(write=False):
+    global DB_LOCK
+    print("Lock", DB_LOCK, "Writing", write)
+    c = 0
+    while DB_LOCK:
+        c += 1
+        print('character db locked')
+        if c > 4 and not write:
+            print("Breaking out :3 (VERY BAD IDEA METHINKS)")
+            break
+        if c > 100:
+            raise LookupError()
+        sleep(0.2)
+    if write: DB_LOCK = True
+def release_database_lock():
+    print("unlocking...")
+    global DB_LOCK
+    DB_LOCK = False
 
 def fetch(game: str, name: str, attribute: str | None = None):
     return ''
@@ -27,9 +49,6 @@ def fetch_skills(game: str, full: bool = False) -> list | dict:
     else:
         return list(skills.keys())
 
-def fetch_classes(game: str) -> str:
-    return fetch(game, 'class')
-
 # alters='mesmerist/Towering Ego'
 # replaces='mesmerist/Painful Stare'
 # per_day=3
@@ -38,6 +57,7 @@ def fetch_feature(game: str, class_: str, feature_name: str) -> str:
     return fetch(game, 'class')
 
 def fetch_character(character_id: str) -> dict:
+    obtain_database_lock()
     character = character_db.get(where('character_id')==character_id)
     if not character: return {}
     else: return character
@@ -46,6 +66,8 @@ def update_character(character_id: str, attribute:str, value: str | int | list |
     print('updating character')
     print(attribute)
     print(value)
+    print("obtaining lock...")
+    obtain_database_lock(write=True)
     if ":" in attribute:
         attribute, section = attribute.split(":", maxsplit=1)
         new_attribute = fetch_character(character_id)[attribute]
@@ -53,11 +75,14 @@ def update_character(character_id: str, attribute:str, value: str | int | list |
         character_db.update({attribute:new_attribute}, where('character_id')==character_id)
     else:
         character_db.update({attribute:value}, where('character_id')==character_id)
+    release_database_lock()
 
 def new_character(game: str, user_id: str, user_name: str) -> str | None:
     if not game in GAMES:
         return None
     character_id = str(uuid1())
+
+    obtain_database_lock(write=True)
     character_db.insert({
         "character_id": character_id,
         "name": "Unnamed Character",
@@ -67,18 +92,20 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
     match game:
         case "pathfinder1e":
             character_db.update({
-                'hp': 10, 'max_hp': 10, "nonlethal_damage": 0,
+                'hp': '10', 'max_hp': '10', "nonlethal_damage": '0',
                 'class_': 'class / subclass (0)', 'background': 'NA', 'user_id': user_id,
                 'race': 'NA', 'alignment': 'NA', 'exp': 'NA',
                 'age': 'NA', 'body': 'NA', 'appearance': 'NA',
-                'strength': 10, 'dexterity': 10, 'constitution': 10,
-                'intelligence': 10, 'wisdom': 10, 'charisma': 10,
+                'strength': '10', 'dexterity': '10', 'constitution': '10',
+                'intelligence': '10', 'wisdom': '10', 'charisma': '10',
                 'languages': "Common", 'personality': 'Mysterious',
                 'skills': {}, 'items': [], 'traits': [],
+                'class_skills': {},
                 'permanent_stat_modifiers': {},
                 'conditions': [],
                 'armor': None,
                 'owner': user_id,
                 'user_name': user_name,
             }, where('character_id') == character_id)
+    release_database_lock()
     return character_id

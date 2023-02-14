@@ -13,7 +13,7 @@
 .character img {
     object-fit: contain;
     max-width: 350px;
-    max-height: 300px;
+    max-height: 200px;
     width: auto;
     height: auto;
 }
@@ -38,12 +38,12 @@ button.spells {
 .stats.info {
     font-size: 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, auto auto);
     width: 100%;
 }
 .stats.info * {
-    overflow-x: auto;
+    overflow-x: auto;;
 }
 
 .stats.attributes {
@@ -154,7 +154,7 @@ input.stat_adjustment {
 }
 
 #character_name input {
-    width: 80%;
+    width: 100%;
     font-size: 35px;
 }
 
@@ -289,10 +289,13 @@ body {
     border: none;
     box-sizing: border-box;
     background-color: #eee;
+    margin: 0;
+}
+.info #newcontent {
+    width: 100%;
 }
 #newcontent[type="number"] {
     padding: 0;
-    margin: 0;
 }
 
 /*ANCHOR - overlay */

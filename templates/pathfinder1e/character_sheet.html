@@ -58,11 +58,11 @@
         <div>
             <!--TODO - check if the skill is a class
                  skill of the character's favored class-->
-            <input type="checkbox" disabled checked>
+            <input type="checkbox" id="{{ skill }}_is_class_skill" {% if skill in class_skills.keys() and class_skills[skill] == 'true' %}checked{% else %}{% endif %} onclick="update('class_skills:{{ skill }}', this.checked); update_stats()">
         </div>
         <div>
             <span>{{ skill }}</span><br>
-            <span>Points: </span><span class="stat" id="skills:{{ skill.lower() }}">{{ skills.get(skill.lower(), 0) }}</span>
+            <span>Points: </span><span class="stat" id='skills:{{ skill.lower().replace(" ", "_") }}'>{{ skills.get(skill.lower(), 0) }}</span>
         </div>
         <div>
             <span id="{{ skill.replace(' ', '_') }}_bonus" class="skill_bonus">+0</span>
@@ -220,12 +220,11 @@
             add_sign(wis_mod + stat_modifiers.will_save)
         );
 
-        // Skills
+        //ANCHOR - Skills
         $.get("{{ url_for('main.fetch_from_rules', game=game, to_fetch='skills') }}", data => {
             Object.entries(data).forEach(skill => {
                 skill_name = skill[0];
                 skill_properties = skill[1];
-                console.log(skill_properties);
 
                 stat = 0
                 switch (skill_properties.ability) {
@@ -247,6 +246,12 @@
                 }
 
                 // NIGHTMARE NIGHTMARE NIGHTMARE
+                stat /= 1;
+                stat_points = (document.getElementById("skills:"+skill_name.toLowerCase().replaceAll(" ", "_")).innerHTML) / 1;
+                if (stat_points > 0 && document.getElementById(skill_name+"_is_class_skill").checked) {
+                    stat += 3;
+                }
+                stat += stat_points;
                 $(("#"+skill_name+"_bonus").replace("(", "\\(").replace(")", "\\)").replace(" ", "_")).text(
                     add_sign(stat)
                 );

@@ -86,7 +86,7 @@
 <div class="character">
     <div class="stats" style="display: flex; grid-row: 1; grid-column: 1;">
         <img id="character_image" alt="img goes here" src="{{ image_url }}">
-        <div style="margin: auto;">
+        <div style="width: 100%;">
             <div id="character_name"><span class="fillable" id="name">{{ name }}</span></div>
             <div class="stats info">
                 <span class="label">Class &amp; Level</span>
@@ -204,6 +204,13 @@
         } else {
             $("#nonlethal-progressbar-parent").css('border', "");
         }
+        if (percent == 100) {
+            $("#nonlethal-progressbar").css('background-color', "#FDDA0D");
+        } else if (percent > 100) {
+            $("#nonlethal-progressbar").css('background-color', "red");
+        } else {
+            $("#nonlethal-progressbar").css('background-color', "");
+        }
     }
 
     set_nonlethal_background(('{{ nonlethal_damage }}' / '{{ hp }}') * 100);
@@ -309,10 +316,10 @@
         var old_content = $(this).text();
         var attribute = $(this).prop('id');
         $(this).html('<input class="attribute_change" type="text" id="newcontent" value="'+old_content+'">');
-        $("#newcontent").focus();
 
         $("#newcontent").focus(function() {
-            $("#newcontent").selectionStart = $("#newcontent").selectionEnd = $("#newcontent").val().length;
+            this.setSelectionRange(0,-1);
+            // $("#newcontent").selectionStart = $("#newcontent").selectionEnd = $("#newcontent").val().length;
         }).blur(function() {
             var new_content = $("#newcontent").val().trim();
 
@@ -323,6 +330,7 @@
             $(this).parent().text(new_content);
             editing = false;
         });
+        $("#newcontent").focus();
     }})
 
     //stat-nonlethal
@@ -333,10 +341,9 @@
         var old_content = $(this).text();
         var attribute = $(this).prop('id');
         $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
-        $("#newcontent").focus();
 
         $("#newcontent").focus(function() {
-            $("#newcontent").selectionStart = $("#newcontent").selectionEnd = $("#newcontent").val().length;
+            // this.setSelectionRange(0,-1);
         }).blur(function() {
             var new_content = $("#newcontent").val();
 
@@ -350,6 +357,7 @@
             set_nonlethal_background((new_content / $("#hp").text()) * 100);
             editing = false;
         });
+        $("#newcontent").focus();
     }})
 
     // combat stats, etc
@@ -360,10 +368,9 @@
         var old_content = $(this).text();
         var attribute = $(this).prop('id');
         $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
-        $("#newcontent").focus();
 
         $("#newcontent").focus(function() {
-            $("#newcontent").selectionStart = $("#newcontent").selectionEnd = $("#newcontent").val().length;
+            // this.setSelectionRange(0,-1);
         }).blur(function() {
             var new_content = $("#newcontent").val();
 
@@ -377,6 +384,7 @@
             editing = false;
             update_stats();
         });
+        $("#newcontent").focus();
     }})
 
     // ability scores
@@ -387,10 +395,9 @@
         old_content = $(this).text();
         var attribute = $(this).prop('id');
         $(this).html('<input class="stat_change" type="number" id="newcontent" value="'+old_content+'">');
-        $("#newcontent").focus();
 
         $("#newcontent").focus(function() {
-            $("#newcontent").selectionStart = $("#newcontent").selectionEnd = $("#newcontent").val().length;
+            this.setSelectionRange(0,-1);
         }).blur(function() {
             new_content = $("#newcontent").val();
 
@@ -404,6 +411,7 @@
             update_ability_modifiers();
             editing = false;
         });
+        $("#newcontent").focus();
     }})
 
     // multiline stats
@@ -414,9 +422,9 @@
         old_content = $(this).text().trim();
         var attribute = $(this).prop('id');
         $(this).html('<textarea class="multiline_stat_change" id="newcontent" style="resize: none;">'+old_content+'</textarea>');
-        $("#newcontent").focus();
 
         $("#newcontent").focus(function() {
+            this.setSelectionRange(0,-1);
         }).blur(function() {
             new_content = $("#newcontent").val();
 
@@ -430,6 +438,7 @@
             update_ability_modifiers();
             editing = false;
         });
+        $("#newcontent").focus();
     }})
 
     // image
