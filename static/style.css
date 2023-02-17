@@ -59,7 +59,7 @@
     transform: rotateY(180deg);
     align-items: end;
 }
-.character_image_back a {
+.character_image_back a, .character_image_front a {
     position: absolute;
     right: 8px;
     top: 8px;

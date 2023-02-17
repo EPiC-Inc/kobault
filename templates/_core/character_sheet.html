@@ -92,6 +92,7 @@
         <div id="character_image_container" onclick="$(this).addClass('flipped')">
             <div class="character_image">
                 <div class="character_image_front">
+                    <a onclick="event.stopPropagation()" id="character_image_edit"><i class="las la-pen-square"></i></a>
                     <img alt="img goes here" src="{{ image_url }}">
                 </div>
                 <div class="character_image_back">
@@ -478,7 +479,7 @@
     }})
 
     // image
-    $(document).on("dblclick", "#character_image", function(){
+    $(document).on("dblclick", "#character_image_edit", function(){
         if (!editing) {
         editing = true;
 
