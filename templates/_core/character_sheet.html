@@ -84,13 +84,31 @@
 {% block body %}
 <div id="overlay" onclick="hide_overlay()">
     <!--WHY DOES THIS WORK-->
-    <div id="menu" onclick="(event) => console.log('a'); event.stopPropagation();"></div>
+    <div id="menu" onclick="event.stopPropagation();"></div>
 </div>
 
 <div class="character">
     <div class="stats" style="display: flex; grid-row: 1; grid-column: 1;">
-        <img id="character_image" alt="img goes here" src="{{ image_url }}">
-        <div style="width: 100%;">
+        <div id="character_image_container" onclick="$(this).addClass('flipped')">
+            <div class="character_image">
+                <div class="character_image_front">
+                    <img alt="img goes here" src="{{ image_url }}">
+                </div>
+                <div class="character_image_back">
+                    <a onclick="event.stopPropagation(); $('#character_image_container').removeClass('flipped')"><i class="las la-times"></i></a>
+                    <div class="info">
+                        <span>Age</span><span>/</span><span id="age" class="fillable">{{ age if age else "NA" }}</span>
+                        <span>Race</span><span>/</span><span id="race" class="fillable">{{ race }}</span>
+                        <span>Height</span><span>/</span><span id="age" class="fillable">{{ height if height else "NA" }}</span>
+                        <span>Weight</span><span>/</span><span id="age" class="fillable">{{ weight if weight else "NA" }}</span>
+                        <span>Eyes</span><span>/</span><span id="age" class="fillable">{{ eyes if eyes else "NA" }}</span>
+                        <span>Skin</span><span>/</span><span id="age" class="fillable">{{ skin if skin else "NA" }}</span>
+                        <span>Hair</span><span>/</span><span id="age" class="fillable">{{ hair if hair else "NA" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 20%;"><!--FIXME -->
             <div id="character_name"><span class="fillable" id="name">{{ name }}</span></div>
             <div class="stats info">
                 <span class="label">Class &amp; Level</span>
