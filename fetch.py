@@ -66,14 +66,16 @@ def update_character(character_id: str, attribute:str, value: str | int | list |
     print('updating character')
     print(attribute)
     print(value)
-    print("obtaining lock...")
-    obtain_database_lock(write=True)
     if ":" in attribute:
         attribute, section = attribute.split(":", maxsplit=1)
         new_attribute = fetch_character(character_id)[attribute]
+        print("obtaining lock...")
+        obtain_database_lock(write=True)
         new_attribute[section] = value # type: ignore
         character_db.update({attribute:new_attribute}, where('character_id')==character_id)
     else:
+        print("obtaining lock...")
+        obtain_database_lock(write=True)
         character_db.update({attribute:value}, where('character_id')==character_id)
     release_database_lock()
 
