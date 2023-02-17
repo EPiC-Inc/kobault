@@ -93,7 +93,7 @@
             <div class="character_image">
                 <div class="character_image_front">
                     <a onclick="event.stopPropagation()" id="character_image_edit"><i class="las la-pen-square"></i></a>
-                    <img alt="img goes here" src="{{ image_url }}">
+                    <img alt="img goes here" id="char_img" src="{{ image_url }}">
                 </div>
                 <div class="character_image_back">
                     <a onclick="event.stopPropagation(); $('#character_image_container').removeClass('flipped')"><i class="las la-times"></i></a>
@@ -485,7 +485,7 @@
 
         new_url = prompt("enter image url");
         if (new_url != null) {
-            $(this).prop('src', new_url);
+            $("#char_img").prop('src', new_url);
             update('image_url', new_url);
         }
         editing = false;

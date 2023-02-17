@@ -89,7 +89,7 @@
 }
 .appearance .fillable {
     margin-left: auto;
-    overflow-x: scroll;
+    overflow-x: auto;
     max-width: 100%;
     text-align: right;
     width: 90%;
