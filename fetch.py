@@ -101,7 +101,7 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
                 'intelligence': '10', 'wisdom': '10', 'charisma': '10',
                 'languages': "Common", 'personality': 'Mysterious',
                 'skills': {}, 'items': {}, 'traits': {},
-                'features': {}, 'spells': {},
+                'features': {}, 'spells': {}, 'class_skills': {},
                 'permanent_stat_modifiers': {},
                 'base_attack_bonus': '+1', 'speed': '30',
                 'conditions': [],

@@ -40,7 +40,7 @@
     font-size: 18px;
 }
 .skills *:nth-child(6n-1), .skills *:nth-child(6n), .skills *:nth-child(6n-2) {
-    background-color: rgb(231, 231, 231);
+    background-color: rgb(86, 86, 86);
 }
 .skills .stat {
     display: inline-block;
