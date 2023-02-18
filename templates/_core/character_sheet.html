@@ -173,13 +173,17 @@
                 {% block combat_stats %}{% endblock %}
             </div>
 
-            <div class="label" style="margin: 10px 0;">Curent Hit Points{% if editable %}<a onclick="long_rest()"> <i class="las la-undo-alt"></i></a>{% else %}{% endif %}</a></div>
+            <div class="label" style="margin: 10px 0;">Current Hit Points{% if editable %}<a onclick="long_rest()"> <i class="las la-undo-alt"></i></a>{% else %}{% endif %}</a></div>
             <div class="stats">
                 <div id="nonlethal">
                     <span>Nonlethal damage: <span class="stat-nonlethal" id="nonlethal_damage">{{ nonlethal_damage }}</span></span>
                     <div id="nonlethal-progressbar-parent">
                         <div id="nonlethal-progressbar"></div>
                     </div>
+                </div>
+                <div class="temp_hp">
+                    <span>Temp HP:</span>
+                    <span class="stat-nonlethal temp_hp" id="temp_hp">{{ temp_hp if temp_hp else 0 }}</span>
                 </div>
                 <div class="hp">
                     <span class="stat" id="hp">{{ hp }}</span>
@@ -230,7 +234,7 @@
         }
     }
 
-    set_nonlethal_background(('{{ nonlethal_damage }}' / '{{ hp }}') * 100);
+    set_nonlethal_background(('{{ nonlethal_damage }}' / ('{{ hp }}' / 1 + '{{ temp_hp }}' / 1)) * 100);
 
     function update_ability_modifiers() {
         ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(ability => {
@@ -343,6 +347,8 @@
         $("#nonlethal_damage").text(0);
         update("nonlethal_damage", 0);
         set_nonlethal_background(0);
+        $("#temp_hp").text(0);
+        update("temp_hp", 0);
     }
 
     // Attributes
@@ -391,7 +397,7 @@
             if (new_content != old_content) {update(attribute, new_content)}
 
             $(this).parent().text(new_content);
-            set_nonlethal_background((new_content / $("#hp").text()) * 100);
+            set_nonlethal_background(($("#nonlethal_damage").text() / ($("#hp").text() / 1 + $("#temp_hp").text() / 1)) * 100);
             editing = false;
         });
         $("#newcontent").focus();

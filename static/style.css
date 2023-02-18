@@ -6,7 +6,7 @@
     row-gap: 16px;
 }
 
-.fillable {
+.fillable, .stat, .stat-nonlethal {
     cursor: pointer;
 }
 
@@ -64,6 +64,9 @@
     right: 8px;
     top: 8px;
     vertical-align: baseline;
+}
+.character_image_front a {
+    text-shadow: 0 0 3px navy;
 }
 .character_image_back a i {
     transition: transform 0.6s ease;
@@ -234,6 +237,13 @@ input.stat_adjustment {
     text-align: center;
 }
 
+.skill_bonus {
+    display: inline-block;
+    width: 2em;
+    text-align: right;
+    padding-right: 4px;
+}
+
 /*ANCHOR - specific stats*/
 #character_name {
     width: 100%;
@@ -261,29 +271,43 @@ input.stat_adjustment {
 }
 
 .hp {
-    color: rgb(0, 93, 133);
+    color: rgb(70, 164, 204);
     font-weight: bold;
     font-size: 54px;
 }
 .hp .stat_change{
     width: 2em;
-    color: rgb(0, 93, 133);
+    color: inherit;
     font-weight: bold;
     font-size: 54px;
+    background-color: #4e4e4e;
 }
 #hp {
-    color: red;
+    color: rgb(147, 228, 191);
     font-size: 74px;
+    text-shadow: 0 0 6px rgb(0, 179, 255);
 }
 #hp .stat_change{
     width: 2em;
-    color: red;
+    color: inherit;
     font-size: 74px;
+    background-color: #4e4e4e;
+}
+.temp_hp {
+    font-size: 20px;
+}
+.temp_hp .temp_hp {
+    display: inline-block;
+    width: 3em;
+}
+.temp_hp .stat_change {
+    width: 3em;
 }
 
 .modifier {
     font-size: 50px;
     color: darkred;
+    text-shadow: 0 0 1px whitesmoke, 1px 1px 1px whitesmoke, -1px -1px 1px whitesmoke, -1px 1px 1px whitesmoke, 1px -1px 1px whitesmoke;
 }
 
 #class_features, #inventory {
@@ -420,7 +444,7 @@ input.stat_adjustment {
 
 #keyword {
     text-align: center;
-    /* background-image: url('/css/searchicon.png'); */
+    /* background-image: url('/css/something.png'); */
     background-position: 10px 12px;
     background-repeat: no-repeat;
     width: 30vw;
