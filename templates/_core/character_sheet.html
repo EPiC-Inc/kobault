@@ -485,7 +485,7 @@
 
         new_url = prompt("enter image url");
         if (new_url != null) {
-            $(this).prop('src', new_url);
+            $('img#character_img').prop('src', new_url);
             update('image_url', new_url);
         }
         editing = false;
