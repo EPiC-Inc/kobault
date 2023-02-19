@@ -127,6 +127,11 @@
     width: 100%;
 }
 
+.saves .fillable, .saves input {
+    display: inline-block;
+    width: 2em;
+}
+
 
 button.features, button.inventory, button.spells {
     font-size: large;
@@ -197,10 +202,15 @@ a {
     cursor: pointer;
 }
 
-.combat .stat, .combat .stat_static {
+.combat .stat, .combat .stat_static, .combat .fillable {
+    display: inline-block;
     font-size: xx-large;
     margin-top: 6px;
     overflow-x: scroll;
+    width: 100%;
+}
+.combat input {
+    width: 100%;
 }
 
 input.stat_change, input.attribute_change {
@@ -327,6 +337,7 @@ input.stat_adjustment {
 
 /*ANCHOR - sidebar menu thing */
 #options .button{
+    color: black;
     font-size: 60px;
     position: fixed;
     z-index: 3;

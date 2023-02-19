@@ -46,9 +46,9 @@
     </div><br>
     <div class="label">Saving Throws</div>
     <div class="saves">
-        <div>Fortitude <span id="fortitude_save"></span></div>
-        <div>Reflex <span id="reflex_save"></span></div>
-        <div>Will <span id="will_save"></span></div>
+        <div>Fortitude <span class="fillable" id="fortitude_save">{{ fortitude_save if fortitude_save else '+0' }}</span></div>
+        <div>Reflex <span class="fillable" id="reflex_save">{{ reflex_save if reflex_save else '+0' }}</span></div>
+        <div>Will <span class="fillable" id="will_save">{{ will_save if will_save else '+0' }}</span></div>
     </div><br>
 
     <div class="label">Skills</div>
@@ -74,11 +74,11 @@
 
 {% block combat_stats %}
 <div class="armor_class">
-    <span class="stat_static" id="armor_class">[AC]</span><br>
+    <span class="stat" id="armor_class">{{ armor_class if armor_class else "10" }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="initiative">
-    <span class="stat_static" id="initiative">[INIT]</span><br>
+    <span class="fillable" id="initiative">{{ initiative if initiative else "+0" }}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="speed">
@@ -86,24 +86,24 @@
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
-<div class="stat_label armor_class">Armor Class</div>
+<div class="stat_label armor_class">AC</div>
 <div class="stat_label initiative">Initiative</div>
 <div class="stat_label speed">Speed</div>
 
 <div class="armor_class">
-    Touch: <span class="stat_static" id="armor_class_touch">[AC]</span><br>
-    F-F: <span class="stat_static" id="armor_class_flat">[AC]</span>
+    T: <span class="stat" style="width: 60%;" id="armor_class_touch">{{ armor_class_touch if armor_class_touch else "10"}}</span><br>
+    FF: <span class="stat" style="width: 60%;" id="armor_class_flat">{{ armor_class_flat if armor_class_flat else "10"}}</span>
 </div>
 <div class="combat_maneuver_bonus">
-    <span class="stat_static" id="combat_maneuver_bonus">[CMB]</span><br>
+    <span class="fillable" id="combat_maneuver_bonus">{{ combat_maneuver_bonus if combat_maneuver_bonus else "+0"}}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 <div class="combat_maneuver_defense">
-    <span class="stat_static" id="combat_maneuver_defense">[CMD]</span><br>
+    <span class="stat" id="combat_maneuver_defense">{{ combat_maneuver_defense if combat_maneuver_defense else "10"}}</span><br>
     <input class="stat_adjustment" type="number" value="0" min="-99" max="999">
 </div>
 
-<div class="stat_label armor_class"></div>
+<div class="stat_label armor_class">Alt AC</div>
 <div class="stat_label combat_maneuver_bonus">CMB</div>
 <div class="stat_label combat_maneuver_defense">CMD</div>
 {% endblock %}

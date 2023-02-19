@@ -12,7 +12,7 @@
     font-size: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: repeat(2, 1fr auto);
+    grid-template-rows: repeat(2, auto auto);
     width: 100%;
 }
 
@@ -93,4 +93,29 @@
     text-align: center;
     font-size: medium;
     width: 3em;
+}
+
+.currency {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+}
+.currency span {
+    display: block;
+    width: 100%;
+}
+.currency span:nth-child(1) {
+    background-color: rgb(78, 129, 145);
+}
+.currency span:nth-child(2) {
+    background-color: rgb(203, 166, 87);
+}
+.currency span:nth-child(3) {
+    background-color: rgb(106, 114, 114);
+}
+.currency span:nth-child(4) {
+    background-color: rgb(151, 106, 32);
+}
+.currency input {
+    width: 100%;
 }
