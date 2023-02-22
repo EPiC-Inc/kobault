@@ -1,3 +1,5 @@
+from json import loads
+
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
@@ -27,8 +29,11 @@ def character_sheet(game, character_id):
     #TODO - make sure user is authorized for that character
     try:
         if character_id == "new":
-            character_id = fetch.new_character(game, user_id, user_name)
-            return redirect(url_for('main.character_sheet', game=game, character_id=character_id))
+            if request.args.get("npc") == "true":
+                return render_template(f"{game}/new_npc.html")
+            else:
+                character_id = fetch.new_character(game, user_id, user_name)
+                return redirect(url_for('main.character_sheet', game=game, character_id=character_id))
 
         character = fetch.fetch_character(character_id)
         if not character:
@@ -44,7 +49,8 @@ def character_sheet(game, character_id):
 #ANCHOR - Edit character
 @main.route('/characters/<character_id>', methods=['POST'])
 def set_character(character_id):
-    value = request.form.get('value', '') or request.form.getlist('value[]')
+    value = request.form.get('value', '')
+    value = loads(value)
     fetch.update_character(character_id, request.form.get('attribute', ''),
         value)
     #TODO - make sure user is authorized for that character
@@ -52,6 +58,8 @@ def set_character(character_id):
 
 @main.route('/fetch/<game>/<to_fetch>')
 def fetch_from_rules(game, to_fetch):
+    if game == 'character':
+        return fetch.fetch_character(to_fetch)
     match to_fetch:
         case value if value.startswith("condition"):
             return fetch.fetch_condition(game, value[value.index(':')+1:])
@@ -70,7 +78,7 @@ def campaign_hub():
 def campaign(campaign_id):
     abort(501)
 
-#TODO - much much later, maybe make a seperate blueprint for this
+#TODO - much much later, maybe make a separate blueprint for this
 # @main.route("/compendium")
 # def compendium_hub():
 #     abort(501)

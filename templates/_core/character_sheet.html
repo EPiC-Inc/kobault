@@ -75,6 +75,12 @@
         show_overlay();
         $("#keyword").focus();
     }
+
+    function add_new_item(type) {
+        $("#menu").html('');
+        $("#menu").load(`{{ url_for('static', filename='overlays/') }}${type}.html`)
+        show_overlay();
+    }
 </script>
 {% if editable %}{% else %}
 <meta http-equiv="refresh" content="300">
@@ -112,23 +118,22 @@
         <div style="width: 100%;">
             <div id="character_name"><span class="fillable" id="name">{{ name }}</span></div>
             <div class="stats info">
-                <span class="label">Class &amp; Level</span>
-                <span class="label">Background</span>
+                <span class="label" style="grid-column: 1 / 3;">Class &amp; Level</span>
                 <span class="label">Player Name</span>
-                <span class="fillable" id="class_">{{ class_ }}</span>
-                <span class="fillable" id="background">{{ background }}</span>
+                <span class="fillable" id="class_" style="grid-column: 1 / 3;">{{ class_ }}</span>
                 <span class="fillable" id="user_name">{{ user_name}}</span>
-                <span class="label">unknwon</span>
+                <span class="label">Background</span>
                 <span class="label">Alignment</span>
                 <span class="label">Exp</span>
-                <span class="" id="">put smthn here</span>
+                <span class="fillable" id="background">{{ background }}</span>
                 <span class="fillable" id="alignment">{{ alignment }}</span>
                 <span>N/A :]</span>
             </div>
         </div>
     </div>
+    <!--ANCHOR - features box-->
     <div class="stats" style="grid-row: 1 / 3; grid-column: 2;">
-        <button class="stats features" id="features" onclick="open_sidebar_tab('features_box')">Features</button>
+        <button class="stats features" id="features_btn" onclick="open_sidebar_tab('features_box')">Features</button>
 
         <button class="stats inventory" id="items" onclick="open_sidebar_tab('inventory_box')">Items</button>
 
@@ -138,7 +143,8 @@
             <div class="sidebar_header">
                 <span>Features&nbsp;&nbsp;</span>{% if editable %}<a><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
             </div>
-            <div id="class_features">This is where features go</div>
+            <div id="features">
+            </div>
         </div>
 
         <div class="stats sidebar inventory" id="inventory_box">
@@ -151,7 +157,7 @@
                 <span id="silver" class="stat">{{ silver if silver else 0 }}</span>
                 <span id="copper" class="stat">{{ copper if copper else 0 }}</span>
             </div>
-            <div id="inventory">This is where items go</div>
+            <div id="inventory">placeholder</div>
         </div>
 
         <div class="stats sidebar spells" id="spells_box">
@@ -341,7 +347,7 @@
             }, (UPDATE_QUEUE_MAX + 1) * RATE_LIMIT);
         } else {
             $.post("{{ url_for('main.set_character', character_id=character_id) }}",
-                {"attribute": attribute, "value": value}
+                {"attribute": attribute, "value": JSON.stringify(value)},
             );
             setTimeout(() => {update_queue -= 1}, RATE_LIMIT);
         }
@@ -514,6 +520,13 @@
     $(document).on("keyup", "#menu", function(e) {
         if (e.which == 27) {hide_overlay();}
     })
+
+    $("textarea").each(function () {
+        this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+    }).on("input", function () {
+        this.style.height = 0;
+        this.style.height = (this.scrollHeight) + "px";
+    });
 </script>
 {% else %}
 {% endif %}

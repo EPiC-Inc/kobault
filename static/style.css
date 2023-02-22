@@ -15,6 +15,22 @@
     text-align: center;
 }
 
+.new_item {
+    background-color: #3b3b3b;
+    padding: 12px;
+    width: auto;
+    max-width: 60vw;
+    text-align: center;
+    border: 2px solid #dedede;
+}
+.new_item * {
+    font-size: x-large;
+    flex-grow: 1;
+}
+.new_item textarea {
+    resize: vertical;
+}
+
 #character_image_container {
     display: block;
     width: 225px;
@@ -149,6 +165,10 @@ button.inventory {
 button.spells {
     width: 30%;
 }
+#features {
+    display: flex;
+    flex-direction: column;
+}
 
 .stats.attributes {
     display: grid;
@@ -239,13 +259,14 @@ input.stat_adjustment {
 .multiline_stat {
     font-size: large;
     width: 100%;
+    overflow-x: auto;
 }
-.multiline_stat textarea {
+/* .multiline_stat textarea {
     font-size: large;
     width: 100%;
     max-width: 100%;
     text-align: center;
-}
+} */
 
 .skill_bonus {
     display: inline-block;
@@ -374,7 +395,7 @@ input.stat_adjustment {
     right: 0;
     transform: translate(100%);
     width: 20vw;
-    background-color: black;
+    background-color: #3b3b3b;
     color: white;
     height: 100%;
     padding: 20px;
@@ -442,8 +463,8 @@ input.stat_adjustment {
     font-size: 20px;
     width: 50vw;
     padding: 10px 16px 26px 16px;
-    background-color: black;
-    border: 10px dashed gold;
+    background-color: #3b3b3b;
+    border: 10px dashed #dedede;
     max-height: 80vh;
     overflow-y: auto;
 }

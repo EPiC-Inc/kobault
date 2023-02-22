@@ -95,6 +95,32 @@
     width: 3em;
 }
 
+#traits {
+    display: flex;
+    flex-direction: column;
+    font-size: 22px;
+    font-size: x-large;
+}
+#traits span i {
+    transition: transform 0.5s;
+}
+#traits .expanded span i {
+    transform: rotate(-180deg);
+}
+#traits * span {
+    cursor: pointer;
+}
+#traits * div {
+    font-size: large;
+    text-align: left;
+    background-color: #3b3b3b;
+    padding: 2px 4px;
+}
+#traits .drawback::before {
+    content: "— ";
+    color: rgb(255, 121, 121);
+}
+
 .currency {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

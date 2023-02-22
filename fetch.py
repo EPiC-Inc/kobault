@@ -100,14 +100,13 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
                 'strength': '10', 'dexterity': '10', 'constitution': '10',
                 'intelligence': '10', 'wisdom': '10', 'charisma': '10',
                 'languages': "Common", 'personality': 'Mysterious',
-                'skills': {}, 'items': {}, 'traits': {},
-                'features': {}, 'spells': {}, 'class_skills': {},
-                'permanent_stat_modifiers': {},
+                'skills': [], 'items': [], 'traits': {},
+                'features': [], 'spells': [], 'class_skills': [],
+                'permanent_stat_modifiers': [],
                 'base_attack_bonus': '+1', 'speed': '30',
                 'conditions': [],
                 'armor': None,
-                'owner': user_id,
-                'user_name': user_name,
+                'owner': user_id, 'user_name': user_name, 'npc': False
             }, where('character_id') == character_id)
     release_database_lock()
     return character_id

@@ -114,7 +114,7 @@
     {{ personality }}
 </div>
 
-<div class="label">{% if editable %}<a>Traits <i class="lar la-plus-square"></i></a>{% else %}Traits{% endif %}</div>
+<div class="label">{% if editable %}<a onclick="add_new_item('new_trait');">Traits <i class="lar la-plus-square"></i></a>{% else %}Traits{% endif %}</div>
 <div id="traits" class="">
     None
 </div>
@@ -246,6 +246,38 @@
             });
         });
     }
+</script>
+
+<script>
+    function update_traits(traits) {
+        $("#traits").html('')
+        if (Object.keys(traits).length == 0) {
+            $("#traits").text('None')
+        }
+        Object.entries(traits).forEach(entry => {
+            [name, attrs] = entry;
+            new_element = `<div class="${attrs.type}"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${name} <i class="las la-angle-down"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;" onclick="remove_trait('${name}')">Remove</button></div></div>`
+            $("#traits").append(new_element);
+        });
+    }
+
+    function remove_trait(name){
+        $.get("/fetch/character/"+CHARACTER_ID, data => {
+            let traits = data.traits;
+            delete traits[name];
+            update('traits', traits);
+            update_traits(traits);
+        });
+    }
+
+    function update_features() {
+        // Get features from character
+        $.get("{{ url_for('main.fetch_from_rules', game='character', to_fetch=character_id) }}", data => {
+            console.log(data);
+            update_traits(data.traits);
+        });
+    }
+    update_features();
 </script>
 
 {% if editable %}

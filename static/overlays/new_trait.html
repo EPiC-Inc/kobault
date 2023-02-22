@@ -1,0 +1,36 @@
+<div class="new_item" style="display: grid;grid-template-columns: auto auto;row-gap: 8px;column-gap: 16px;">
+    <label style="grid-column: 1 / 3;">Add Trait</label>
+    <label for="name">Name:</label>
+    <input id='new_trait_name' name="name" type="text">
+    <label for="text">What's it do?</label>
+    <textarea name="text" id="new_trait_text"></textarea>
+    <label for="type">Type:</label>
+    <select id='new_trait_type' name="type">
+        <option value="trait" selected>Trait</option>
+        <option value="drawback">Drawback</option>
+    </select>
+    <span style="grid-column: 1 / 3;color: cyan;" id="error">
+    </span>
+    <span style="grid-column: 1 / 3;">
+        <button onclick="add_trait();" style="width: auto; margin: 0 auto;">Add</button>
+        <button onclick="hide_overlay();" style="width: auto; margin: 0 auto;">Cancel</button>
+    </span>
+</div>
+<script>
+    function add_trait(){
+        $.get("/fetch/character/"+CHARACTER_ID, data => {
+            if ($('#new_trait_name').val() && $('#new_trait_text').val()) {
+                let traits = data.traits;
+                traits[$('#new_trait_name').val()] = {
+                    'text': $('#new_trait_text').val(),
+                    'type': $('#new_trait_type').val()
+                };
+                update('traits', traits);
+                update_traits(traits);
+                hide_overlay();
+            } else {
+                $("#error").text("Please make sure all fields are filled out")
+            }
+        });
+    }
+</script>
