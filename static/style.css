@@ -260,6 +260,7 @@ input.stat_adjustment {
     font-size: large;
     width: 100%;
     overflow-x: auto;
+    word-break: break-all;
 }
 /* .multiline_stat textarea {
     font-size: large;
