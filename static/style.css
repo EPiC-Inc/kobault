@@ -335,6 +335,10 @@ input.stat_adjustment {
 .temp_hp .stat_change {
     width: 3em;
 }
+.hp input {
+    position: relative;
+    z-index: 2;
+}
 
 .modifier {
     font-size: 50px;

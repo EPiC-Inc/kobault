@@ -264,6 +264,16 @@
         });
     }
 
+    function update_features(features) {
+        $("#class_features").html('');
+        $("#feats").html('');
+        Object.entries(features).forEach(entry => {
+            [id, attrs] = entry;
+            new_element = `<div class="feature"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_feature('${id}');}">Remove</button></div></div>`
+            $(`#${attrs.type}`).append(new_element);
+        });
+    }
+
     function remove_trait(name){
         $.get("/fetch/character/"+CHARACTER_ID, data => {
             let traits = data.traits;
@@ -273,14 +283,25 @@
         });
     }
 
-    function update_features() {
+    function remove_feature(id){
+        $.get("/fetch/character/"+CHARACTER_ID, data => {
+            let features = data.features;
+            delete features[id];
+            update('features', features);
+            update_features(features);
+        });
+    }
+
+
+    function update_all() {
         // Get features from character
         $.get("{{ url_for('main.fetch_from_rules', game='character', to_fetch=character_id) }}", data => {
             // console.log(data);
             update_traits(data.traits);
+            update_features(data.features);
         });
     }
-    update_features();
+    update_all();
 </script>
 
 {% if editable %}

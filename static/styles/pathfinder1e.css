@@ -124,6 +124,26 @@
     color: rgb(255, 121, 121);
 }
 
+#features, #features i {
+    font-size: 24px;
+}
+#features * span {
+    cursor: pointer;
+}
+#features span i {
+    transition: transform 0.5s;
+}
+#features .expanded span i {
+    transform: rotate(180deg);
+}
+.feature div {
+    font-size: 18px;
+    text-align: left;
+    background-color: #3b3b3b;
+    padding: 2px 4px;
+    word-break: break-all;
+}
+
 .currency {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -132,6 +152,7 @@
 .currency span {
     display: block;
     width: 100%;
+    overflow-x: auto;
 }
 .currency span:nth-child(1) {
     background-color: rgb(78, 129, 145);

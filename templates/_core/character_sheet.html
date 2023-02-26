@@ -141,9 +141,11 @@
 
         <div class="stats sidebar features" id="features_box">
             <div class="sidebar_header">
-                <span>Features&nbsp;&nbsp;</span>{% if editable %}<a><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
+                <span>Features&nbsp;&nbsp;</span>{% if editable %}<a onclick="add_new_item('new_feature');"><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
             </div>
             <div id="features">
+                <div id="feats"></div>
+                <div id="class_features"></div>
             </div>
         </div>
 
@@ -322,6 +324,13 @@
 
 {% if editable %}
 <script>
+    function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+    }
+</script>
+<script>
     editing=false;
     function verify(to_verify, pattern) {
         return to_verify
@@ -333,8 +342,10 @@
         console.log(update_queue);
         if (update_queue > UPDATE_QUEUE_MAX * 1.1) {
             console.log("Please take a break....")
+            alert("You're being rate limited. Please refresh and try again")
         } else if (RATE_LIMITING) {
             console.log("unavailable")
+            alert("You're being rate limited. Please refresh and try again")
         } else if (update_queue > UPDATE_QUEUE_MAX) {
             RATE_LIMITING = true;
             console.log("Cooling down......");
