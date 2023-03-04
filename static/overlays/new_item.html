@@ -85,6 +85,7 @@
                 switch (item_type) {
                     case "armor":
                         items[Date.now()] = {
+                            'quantity': 1,
                             'name': $('#new_item_name').val(),
                             'text': $('#new_item_description').val(),
                             'type': $('#armor_type').val(),
@@ -96,6 +97,7 @@
                         break;
                     case "weapons":
                         items[Date.now()] = {
+                            'quantity': 1,
                             'name': $('#new_item_name').val(),
                             'text': $('#new_item_description').val(),
                             'range': $('#weapon_range').val(),
@@ -105,6 +107,7 @@
                         break;
                     case "trinkets":
                         items[Date.now()] = {
+                            'quantity': 1,
                             'name': $('#new_item_name').val(),
                             'text': $('#new_item_description').val(),
                             'value': $('#trinket_value').val()
@@ -112,6 +115,7 @@
                         break;
                     case "items":
                         items[Date.now()] = {
+                            'quantity': 1,
                             'name': $('#new_item_name').val(),
                             'text': $('#new_item_description').val()
                         };

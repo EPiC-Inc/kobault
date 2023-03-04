@@ -275,12 +275,13 @@
     }
 
     function update_items(items, item_type) {
+        //TODO - allow quantities and item removal
         $(`#${item_type}`).text('');
         switch (item_type) {
             case "armor":
                 Object.entries(items).forEach(entry => {
                     [id, attrs] = entry;
-                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Type: ${attrs.type}<br>AC bonus: ${attrs.ac_bonus}<br>Max Dex: ${attrs.max_dex_bonus}<br>Check penalty: ${attrs.check_penalty}<br>ASF chance: ${attrs.spell_failure_chance}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Type: ${attrs.type}<br>AC bonus: ${attrs.ac_bonus}<br>Max Dex: ${attrs.max_dex_bonus}<br>Check penalty: ${attrs.check_penalty}<br>Arcane spell failure chance: ${attrs.spell_failure_chance}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`
                     $(`#${item_type}`).append(new_element);
                 });
                 break;
@@ -329,6 +330,15 @@
             delete features[id];
             update('features', features);
             update_features(features);
+        });
+    }
+
+    function remove_item(id, item_type){
+        $.get("/fetch/character/"+CHARACTER_ID, data => {
+            let items = data[item_type];
+            delete items[id];
+            update(item_type, items);
+            update_items(items, item_type);
         });
     }
 
