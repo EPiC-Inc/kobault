@@ -22,6 +22,8 @@
     max-width: 60vw;
     text-align: center;
     border: 2px solid #dedede;
+    overflow-y: auto;
+    max-height: 80vh;
 }
 .new_item * {
     font-size: x-large;

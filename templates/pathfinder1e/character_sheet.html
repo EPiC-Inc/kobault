@@ -259,7 +259,7 @@
         }
         Object.entries(traits).forEach(entry => {
             [name, attrs] = entry;
-            new_element = `<div class="${attrs.type}"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${name}?')){remove_trait('${name}');}">Remove</button></div></div>`
+            let new_element = `<div class="${attrs.type}"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${name}?')){remove_trait('${name}');}">Remove</button></div></div>`
             $("#traits").append(new_element);
         });
     }
@@ -269,9 +269,49 @@
         $("#feats").html('');
         Object.entries(features).forEach(entry => {
             [id, attrs] = entry;
-            new_element = `<div class="feature"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_feature('${id}');}">Remove</button></div></div>`
+            let new_element = `<div class="feature"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_feature('${id}');}">Remove</button></div></div>`
             $(`#${attrs.type}`).append(new_element);
         });
+    }
+
+    function update_items(items, item_type) {
+        $(`#${item_type}`).text('');
+        switch (item_type) {
+            case "armor":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Type: ${attrs.type}<br>AC bonus: ${attrs.ac_bonus}<br>Max Dex: ${attrs.max_dex_bonus}<br>Check penalty: ${attrs.check_penalty}<br>ASF chance: ${attrs.spell_failure_chance}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            case "weapons":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let range = '';
+                    if (attrs.type.endsWith('Ranged')) {
+                        range = `Range: ${attrs.range}<br>`;
+                    }
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Type: ${attrs.type}<br>${range}Damage: ${attrs.damage}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            case "trinkets":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Value: ${attrs.value}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`;
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            case "items":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Value: ${attrs.value}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`;
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            default:
+                alert("Invalid item type - have Emmett check the update_all function");
+        }
     }
 
     function remove_trait(name){
@@ -299,6 +339,10 @@
             // console.log(data);
             update_traits(data.traits);
             update_features(data.features);
+            update_items(data.armor, "armor");
+            update_items(data.weapons, "weapons");
+            update_items(data.trinkets, "trinkets");
+            update_items(data.items, "items");
         });
     }
     update_all();

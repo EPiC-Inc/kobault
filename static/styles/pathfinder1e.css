@@ -144,6 +144,42 @@
     word-break: break-all;
 }
 
+.inventory_label {
+    box-sizing: border-box;
+    border-bottom: 2px solid #fff;
+    background-color: black;
+}
+#inventory .item {
+    margin: 4px;
+    width: calc(100% - 8px);
+}
+#inventory .item span {
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    padding: 4px 4px 0 4px;
+}
+#inventory .item span:hover {
+    background-color: #3b3b3b;
+}
+#inventory .item, #inventory .item i {
+    font-size: 24px;
+    display: inline-block;
+}
+#inventory .item span i {
+    transition: transform 0.5s;
+}
+#inventory .item.expanded span i {
+    transform: rotate(180deg);
+}
+#inventory .item div {
+    font-size: 18px;
+    text-align: left;
+    background-color: #3b3b3b;
+    padding: 2px 4px;
+    word-break: break-all;
+}
+
 .currency {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -153,12 +189,14 @@
     display: block;
     width: 100%;
     overflow-x: auto;
+    font-size: 22px;
+    font-weight: bold;
 }
 .currency span:nth-child(1) {
     background-color: rgb(78, 129, 145);
 }
 .currency span:nth-child(2) {
-    background-color: rgb(203, 166, 87);
+    background-color: rgb(233, 173, 43);
 }
 .currency span:nth-child(3) {
     background-color: rgb(106, 114, 114);

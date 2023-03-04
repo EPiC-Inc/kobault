@@ -135,9 +135,9 @@
     <div class="stats" style="grid-row: 1 / 3; grid-column: 2;">
         <button class="stats features" id="features_btn" onclick="open_sidebar_tab('features_box')">Features</button>
 
-        <button class="stats inventory" id="items" onclick="open_sidebar_tab('inventory_box')">Items</button>
+        <button class="stats inventory" id="items_btn" onclick="open_sidebar_tab('inventory_box')">Items</button>
 
-        <button class="stats spells" id="spells" onclick="open_sidebar_tab('spells_box')">Spells</button>
+        <button class="stats spells" id="spells_btn" onclick="open_sidebar_tab('spells_box')">Spells</button>
 
         <div class="stats sidebar features" id="features_box">
             <div class="sidebar_header">
@@ -151,7 +151,7 @@
 
         <div class="stats sidebar inventory" id="inventory_box">
             <div class="sidebar_header">
-                <span>Items&nbsp;&nbsp;</span><a id="new_item"><i class="lar la-plus-square"></i></a>
+                <span>Items&nbsp;&nbsp;</span>{% if editable %}<a onclick="add_new_item('new_item');"><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
             </div>
             <div class="currency">
                 <span id="platinum" class="stat">{{ platinum if platinum else 0 }}</span>
@@ -159,12 +159,21 @@
                 <span id="silver" class="stat">{{ silver if silver else 0 }}</span>
                 <span id="copper" class="stat">{{ copper if copper else 0 }}</span>
             </div>
-            <div id="inventory">placeholder</div>
+            <div id="inventory">
+                <div onclick="$('#armor').slideToggle();" class="inventory_label">Armor</div>
+                <div id="armor"></div>
+                <div onclick="$('#weapons').slideToggle();" class="inventory_label">Weapons</div>
+                <div id="weapons"></div>
+                <div onclick="$('#trinkets').slideToggle();" class="inventory_label">Trinkets</div>
+                <div id="trinkets"></div>
+                <div onclick="$('#items').slideToggle();" class="inventory_label">Other</div>
+                <div id="items"></div>
+            </div>
         </div>
 
         <div class="stats sidebar spells" id="spells_box">
             <div class="sidebar_header">
-                <span>Spells&nbsp;&nbsp;</span><a id="new_item"><i class="lar la-plus-square"></i></a>
+                <span>Spells&nbsp;&nbsp;</span><a><i class="lar la-plus-square"></i></a>
             </div>
             <div id="spellbook">This is where spells go</div>
         </div>
@@ -323,13 +332,6 @@
 </script>
 
 {% if editable %}
-<script>
-    function uuidv4() {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
-    }
-</script>
 <script>
     editing=false;
     function verify(to_verify, pattern) {

@@ -4,6 +4,7 @@
     "editor.maxTokenizationLineLength": 200000,
     "cSpell.words": [
         "lmao",
+        "maxsplit",
         "newcontent",
         "stackable",
         "uuidv"

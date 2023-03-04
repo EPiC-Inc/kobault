@@ -1,11 +1,11 @@
 <div class="new_item" style="display: grid;grid-template-columns: auto auto;row-gap: 8px;column-gap: 16px;">
     <label style="grid-column: 1 / 3;">Add Feature</label>
-    <label for="name">Name:</label>
-    <input id='new_feature_name' name="name" type="text" autocomplete="off">
-    <label for="text">What's it do?</label>
-    <textarea name="text" id="new_feature_text" rows="5"></textarea>
-    <label for="type">Type:</label>
-    <select id='new_feature_type' name="type">
+    <label for="new_feature_name">Name:</label>
+    <input id='new_feature_name' name="new_feature_name" type="text" autocomplete="off">
+    <label for="new_feature_text">What's it do?</label>
+    <textarea name="new_feature_text" id="new_feature_text" rows="5"></textarea>
+    <label for="new_feature_type">Type:</label>
+    <select id='new_feature_type' name="new_feature_type">
         <option value="class_features" selected>Class Feature</option>
         <option value="feats">Feat</option>
     </select>
@@ -21,7 +21,7 @@
         $.get("/fetch/character/"+CHARACTER_ID, data => {
             if ($('#new_feature_name').val() && $('#new_feature_text').val()) {
                 let features = data.features;
-                features[uuidv4()] = {
+                features[Date.now()] = {
                     'name': $('#new_feature_name').val(),
                     'text': $('#new_feature_text').val(),
                     'type': $('#new_feature_type').val()
