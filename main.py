@@ -77,12 +77,3 @@ def campaign_hub():
 @main.route('/campaign/<campaign_id>')
 def campaign(campaign_id):
     abort(501)
-
-#TODO - much much later, maybe make a separate blueprint for this
-# @main.route("/compendium")
-# def compendium_hub():
-#     abort(501)
-
-# @main.route("/compendium/<category>")
-# def compendium_category():
-#     abort(501)

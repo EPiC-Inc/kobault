@@ -88,7 +88,6 @@ for link in links:
                 case 5:
                     classes[class_name][level_label]["new_features"] = current_feature
                 case _:
-                    #TODO - spell slots
                     pass
         #print()
 # Oh that's a lot of stuff
