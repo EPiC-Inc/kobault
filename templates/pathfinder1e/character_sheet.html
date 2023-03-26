@@ -60,8 +60,8 @@
         </div>
         <div>
             <span>{{ skill }}</span><br>
-            <span>Points: </span><span class="stat" id='skills:{{ skill.lower().replace(" ", "_") }}'>{{ skills.get(skill.lower(), 0) }}</span>
-            <span style="background-color: inherit;">Bonus: </span><span class="stat" id='skill_bonuses:{{ skill.lower().replace(" ", "_") }}'>{{ skill_bonuses.get(skill.lower(), 0) }}</span>
+            <span>Points: </span><span class="stat" id='skills:{{ skill.lower().replace(" ", "_") }}'>{{ skills.get(skill.lower().replace(' ', '_'), 0) }}</span>
+            <span style="background-color: inherit;">Bonus: </span><span class="stat" id='skill_bonuses:{{ skill.lower().replace(" ", "_") }}'>{{ skill_bonuses.get(skill.lower().replace(' ', '_'), 0) }}</span>
         </div>
         <div>
             <span id="{{ skill.replace(' ', '_') }}_bonus" class="skill_bonus">+0</span>

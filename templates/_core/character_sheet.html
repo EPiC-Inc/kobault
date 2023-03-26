@@ -328,6 +328,15 @@
     {{ conditions | tojson }}.forEach(condition => {
         apply_condition(condition, update_character=false);
     });
+
+    function display_feature(feature_id) {
+        $("#menu").html('');
+        $.get("{{ url_for('main.fetch_from_rules', game='character', to_fetch=character_id) }}", data => {
+            feature = data.features[id];
+            console.log(feature);
+        });
+        let new_element = `<div class='display_feature'></div>`;
+    }
 </script>
 
 {% if editable %}
