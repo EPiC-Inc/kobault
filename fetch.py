@@ -42,19 +42,12 @@ def fetch_condition(game: str, condition: str) -> dict:
     return to_return
 
 def fetch_skills(game: str, full: bool = False) -> list | dict:
-    with open(f"data/{game}/skills.json") as skillfile:
-        skills = json.load(skillfile)
+    with open(f"data/{game}/skills.json") as skill_file:
+        skills = json.load(skill_file)
     if full:
         return skills
     else:
         return list(skills.keys())
-
-# alters='mesmerist/Towering Ego'
-# replaces='mesmerist/Painful Stare'
-# per_day=3
-# uses_left=2
-def fetch_feature(game: str, class_: str, feature_name: str) -> str:
-    return fetch(game, 'class')
 
 def fetch_character(character_id: str) -> dict:
     obtain_database_lock()
@@ -100,8 +93,9 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
                 'strength': '10', 'dexterity': '10', 'constitution': '10',
                 'intelligence': '10', 'wisdom': '10', 'charisma': '10',
                 'languages': "Common", 'personality': 'Mysterious',
-                'skills': {}, 'skill_bonuses': [], 'items': [], 'traits': {},
-                'features': [], 'spells': [], 'class_skills': {},
+                'skills': {}, 'skill_bonuses': {}, 'items': {}, 'armor': {},
+                'traits': {}, 'weapons': {}, 'class_skills': {},
+                'spells': {}, 'features': {}, 'trinkets': {},
                 'permanent_stat_modifiers': [],
                 'base_attack_bonus': '+1', 'speed': '30',
                 'conditions': [],

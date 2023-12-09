@@ -135,21 +135,23 @@
     <div class="stats" style="grid-row: 1 / 3; grid-column: 2;">
         <button class="stats features" id="features_btn" onclick="open_sidebar_tab('features_box')">Features</button>
 
-        <button class="stats inventory" id="items" onclick="open_sidebar_tab('inventory_box')">Items</button>
+        <button class="stats inventory" id="items_btn" onclick="open_sidebar_tab('inventory_box')">Items</button>
 
-        <button class="stats spells" id="spells" onclick="open_sidebar_tab('spells_box')">Spells</button>
+        <button class="stats spells" id="spells_btn" onclick="open_sidebar_tab('spells_box')">Spells</button>
 
         <div class="stats sidebar features" id="features_box">
             <div class="sidebar_header">
-                <span>Features&nbsp;&nbsp;</span>{% if editable %}<a><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
+                <span>Features&nbsp;&nbsp;</span>{% if editable %}<a onclick="add_new_item('new_feature');"><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
             </div>
             <div id="features">
+                <div id="feats"></div>
+                <div id="class_features"></div>
             </div>
         </div>
 
         <div class="stats sidebar inventory" id="inventory_box">
             <div class="sidebar_header">
-                <span>Items&nbsp;&nbsp;</span><a id="new_item"><i class="lar la-plus-square"></i></a>
+                <span>Items&nbsp;&nbsp;</span>{% if editable %}<a onclick="add_new_item('new_item');"><i class="lar la-plus-square"></i></a>{% else %}{% endif %}
             </div>
             <div class="currency">
                 <span id="platinum" class="stat">{{ platinum if platinum else 0 }}</span>
@@ -157,12 +159,21 @@
                 <span id="silver" class="stat">{{ silver if silver else 0 }}</span>
                 <span id="copper" class="stat">{{ copper if copper else 0 }}</span>
             </div>
-            <div id="inventory">placeholder</div>
+            <div id="inventory">
+                <div onclick="$('#armor').slideToggle();" class="inventory_label">Armor</div>
+                <div id="armor"></div>
+                <div onclick="$('#weapons').slideToggle();" class="inventory_label">Weapons</div>
+                <div id="weapons"></div>
+                <div onclick="$('#trinkets').slideToggle();" class="inventory_label">Trinkets</div>
+                <div id="trinkets"></div>
+                <div onclick="$('#items').slideToggle();" class="inventory_label">Other</div>
+                <div id="items"></div>
+            </div>
         </div>
 
         <div class="stats sidebar spells" id="spells_box">
             <div class="sidebar_header">
-                <span>Spells&nbsp;&nbsp;</span><a id="new_item"><i class="lar la-plus-square"></i></a>
+                <span>Spells&nbsp;&nbsp;</span><a><i class="lar la-plus-square"></i></a>
             </div>
             <div id="spellbook">This is where spells go</div>
         </div>
@@ -213,7 +224,6 @@
     <div class="button" onclick="show_options()">
         <i class="las la-book"></i>
     </div>
-    <!--TODO - check if chosen class(es) can cast spells-->
     <div class="contents">
         <div class="close_button"><a onclick="hide_options()"><i class="las la-times"></i></a></div>
         <div>
@@ -309,7 +319,7 @@
     function display_condition(condition) {
         $("#menu").html('');
         $.get("{{ url_for('main.fetch_from_rules', game=game, to_fetch='') }}condition:" + condition, data => {
-            description = `<div class="description"><span>${condition}</span> <a onclick="remove_condition('${condition}');">(remove)</a><i class="close_button close_button_right las la-times" onclick='hide_overlay();'></i><br>${data.description.replace('\n', '<br><br>')}</div>`;
+            description = `<div class="description"><span>${condition}</span> <a onclick="remove_condition('${condition}');">(remove)</a><i class="close_button close_button_right las la-times" onclick='hide_overlay();'></i><br>${data.description.replaceAll('\n', '<br><br>')}</div>`;
             $("#menu").append(description);
             show_overlay();
         });
@@ -318,6 +328,15 @@
     {{ conditions | tojson }}.forEach(condition => {
         apply_condition(condition, update_character=false);
     });
+
+    function display_feature(feature_id) {
+        $("#menu").html('');
+        $.get("{{ url_for('main.fetch_from_rules', game='character', to_fetch=character_id) }}", data => {
+            feature = data.features[id];
+            console.log(feature);
+        });
+        let new_element = `<div class='display_feature'></div>`;
+    }
 </script>
 
 {% if editable %}
@@ -333,8 +352,10 @@
         console.log(update_queue);
         if (update_queue > UPDATE_QUEUE_MAX * 1.1) {
             console.log("Please take a break....")
+            alert("You're being rate limited. Please refresh and try again")
         } else if (RATE_LIMITING) {
             console.log("unavailable")
+            alert("You're being rate limited. Please refresh and try again")
         } else if (update_queue > UPDATE_QUEUE_MAX) {
             RATE_LIMITING = true;
             console.log("Cooling down......");
@@ -405,7 +426,6 @@
             //TODO - verify the input
             if (!new_content) {new_content = old_content}
 
-            //TODO - transfer new input to the server
             if (new_content != old_content) {update(attribute, new_content)}
 
             $(this).parent().text(new_content);
@@ -432,9 +452,11 @@
             //TODO - verify the input
             if (!new_content) {new_content = old_content}
 
-            //TODO - transfer new input to the server
             if (new_content != old_content) {update(attribute, new_content)}
 
+            if ($(this).parent().prop('id') == "hp") {
+                set_nonlethal_background(($("#nonlethal_damage").text() / (new_content / 1 + $("#temp_hp").text() / 1)) * 100);
+            }
             $(this).parent().text(new_content);
             editing = false;
             update_stats();
@@ -459,7 +481,6 @@
             //TODO - verify the input
             if (!new_content) {new_content = old_content}
 
-            //TODO - transfer new input to the server
             if (new_content != old_content) {update(attribute, new_content)}
 
             $(this).parent().text(new_content);
@@ -486,7 +507,6 @@
             //TODO - verify the input
             if (!new_content) {new_content = old_content}
 
-            //TODO - transfer new input to the server
             if (new_content != old_content) {update(attribute, new_content)}
 
             $(this).parent().text(new_content);

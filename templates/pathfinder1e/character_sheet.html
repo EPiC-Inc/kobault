@@ -56,14 +56,12 @@
         {% for skill in fetch.fetch_skills(game) %}
         <!--TODO - check if the skill allows for a blank and adjust accordingly-->
         <div>
-            <!--TODO - check if the skill is a class
-                 skill of the character's favored class-->
             <input type="checkbox" id="{{ skill }}_is_class_skill" {% if skill in class_skills.keys() and class_skills[skill] == 'true' or class_skills[skill] == True %}checked{% else %}{% endif %} onclick="update('class_skills:{{ skill }}', this.checked); update_stats()">
         </div>
         <div>
             <span>{{ skill }}</span><br>
-            <span>Points: </span><span class="stat" id='skills:{{ skill.lower().replace(" ", "_") }}'>{{ skills.get(skill.lower(), 0) }}</span>
-            <span style="background-color: inherit;">Bonus: </span><span class="stat" id='skill_bonuses:{{ skill.lower().replace(" ", "_") }}'>{{ skill_bonuses.get(skill.lower(), 0) }}</span>
+            <span>Points: </span><span class="stat" id='skills:{{ skill.lower().replace(" ", "_") }}'>{{ skills.get(skill.lower().replace(' ', '_'), 0) }}</span>
+            <span style="background-color: inherit;">Bonus: </span><span class="stat" id='skill_bonuses:{{ skill.lower().replace(" ", "_") }}'>{{ skill_bonuses.get(skill.lower().replace(' ', '_'), 0) }}</span>
         </div>
         <div>
             <span id="{{ skill.replace(' ', '_') }}_bonus" class="skill_bonus">+0</span>
@@ -128,7 +126,6 @@
 
 {% block extra_scripts %}
 <script>
-    //TODO - get from race
     size = 0; //TEMP
     /*
     fine = -4   
@@ -164,51 +161,6 @@
         charisma = $("#charisma").text() / 1 + stat_modifiers.charisma;
         cha_mod = Math.floor((charisma / 2) - 5);
 
-        // // AC = (dex + 10 base + armor bonus) minus anything over the dex cap
-        // if (stat_modifiers.armor_bonus == null) stat_modifiers.armor_bonus = 0;
-        // if (stat_modifiers.armor_dex_cap == null) stat_modifiers.armor_dex_cap = 999999;
-        // $("#armor_class").text(
-        //     10 + dex_mod + stat_modifiers.armor_bonus - Math.max(0, Math.max(dex_mod, 0) - stat_modifiers.armor_dex_cap)
-        // );
-        // $("#armor_class_touch").text(
-        //     10 + dex_mod
-        // );
-        // $("#armor_class_flat").text(
-        //     10 + stat_modifiers.armor_bonus
-        // );
-
-        // // initiative
-        // if (stat_modifiers.initiative == null) stat_modifiers.initiative = 0;
-        // $("#initiative").text(
-        //     add_sign(dex_mod + stat_modifiers.initiative)
-        // );
-
-        // // CMB = BAB + STR + Size Mod + Other
-        // if (stat_modifiers.combat_maneuver_bonus == null) stat_modifiers.combat_maneuver_bonus = 0;
-        // $("#combat_maneuver_bonus").text(
-        //     add_sign(base_attack_bonus + str_mod + (size * 2) + stat_modifiers.combat_maneuver_bonus)
-        // );
-
-        // // CMD = 10 + BAB + STR + DEX + Size Mod + Other
-        // if (stat_modifiers.combat_maneuver_defense == null) stat_modifiers.combat_maneuver_defense = 0;
-        // $("#combat_maneuver_defense").text(
-        //     10 + base_attack_bonus + str_mod + dex_mod + (size * 2) + stat_modifiers.combat_maneuver_defense
-        // );
-
-        // // Saving throws
-        // if (stat_modifiers.fortitude_save == null) stat_modifiers.fortitude_save = 0;
-        // $("#fortitude_save").text(
-        //     add_sign(con_mod + stat_modifiers.fortitude_save)
-        // );
-        // if (stat_modifiers.reflex_save == null) stat_modifiers.reflex_save = 0;
-        // $("#reflex_save").text(
-        //     add_sign(dex_mod + stat_modifiers.reflex_save)
-        // );
-        // if (stat_modifiers.will_save == null) stat_modifiers.will_save = 0;
-        // $("#will_save").text(
-        //     add_sign(wis_mod + stat_modifiers.will_save)
-        // );
-
         //ANCHOR - Skills
         $.get("{{ url_for('main.fetch_from_rules', game=game, to_fetch='skills') }}", data => {
             Object.entries(data).forEach(skill => {
@@ -243,7 +195,7 @@
                 stat += stat_points;
                 stat_bonus = (document.getElementById("skill_bonuses:"+skill_name.toLowerCase().replaceAll(" ", "_")).innerHTML) / 1;
                 stat += stat_bonus;
-                $(("#"+skill_name+"_bonus").replace("(", "\\(").replace(")", "\\)").replace(" ", "_")).text(
+                $(("#"+skill_name+"_bonus").replace("(", "\\(").replace(")", "\\)").replaceAll(" ", "_")).text(
                     add_sign(stat)
                 );
             });
@@ -259,9 +211,60 @@
         }
         Object.entries(traits).forEach(entry => {
             [name, attrs] = entry;
-            new_element = `<div class="${attrs.type}"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${name}?')){remove_trait('${name}');}">Remove</button></div></div>`
+            let new_element = `<div class="${attrs.type}"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${name}?')){remove_trait('${name}');}">Remove</button></div></div>`
             $("#traits").append(new_element);
         });
+    }
+
+    function update_features(features) {
+        $("#class_features").html('');
+        $("#feats").html('');
+        Object.entries(features).forEach(entry => {
+            [id, attrs] = entry;
+            let new_element = `<div class="feature"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_feature('${id}');}">Remove</button></div></div>`
+            $(`#${attrs.type}`).append(new_element);
+        });
+    }
+
+    function update_items(items, item_type) {
+        //TODO - allow quantities
+        $(`#${item_type}`).text('');
+        switch (item_type) {
+            case "armor":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Type: ${attrs.type}<br>AC bonus: ${attrs.ac_bonus}<br>Max Dex: ${attrs.max_dex_bonus}<br>Check penalty: ${attrs.check_penalty}<br>Arcane spell failure chance: ${attrs.spell_failure_chance}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            case "weapons":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let range = '';
+                    if (attrs.type.endsWith('Ranged')) {
+                        range = `Range: ${attrs.range}<br>`;
+                    }
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Type: ${attrs.type}<br>${range}Damage: ${attrs.damage}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            case "trinkets":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">Value: ${attrs.value}<br>${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`;
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            case "items":
+                Object.entries(items).forEach(entry => {
+                    [id, attrs] = entry;
+                    let new_element = `<div class="item"><span onclick="$(this).parent().children('div').slideToggle();$(this).parent().toggleClass('expanded');">${attrs.name} <i class="las la-angle-right"></i></span><div style="display:none;">${attrs.text}<button class='remove' style="display:block;margin:0 auto;" onclick="if (confirm('Remove ${attrs.name}?')){remove_item('${id}', '${item_type}');}">Remove</button></div></div>`;
+                    $(`#${item_type}`).append(new_element);
+                });
+                break;
+            default:
+                alert("Invalid item type - have Emmett check the update_all function (or maybe the character database is corrupted lol)");
+        }
     }
 
     function remove_trait(name){
@@ -273,14 +276,38 @@
         });
     }
 
-    function update_features() {
+    function remove_feature(id){
+        $.get("/fetch/character/"+CHARACTER_ID, data => {
+            let features = data.features;
+            delete features[id];
+            update('features', features);
+            update_features(features);
+        });
+    }
+
+    function remove_item(id, item_type){
+        $.get("/fetch/character/"+CHARACTER_ID, data => {
+            let items = data[item_type];
+            delete items[id];
+            update(item_type, items);
+            update_items(items, item_type);
+        });
+    }
+
+
+    function update_all() {
         // Get features from character
         $.get("{{ url_for('main.fetch_from_rules', game='character', to_fetch=character_id) }}", data => {
             // console.log(data);
             update_traits(data.traits);
+            update_features(data.features);
+            update_items(data.armor, "armor");
+            update_items(data.weapons, "weapons");
+            update_items(data.trinkets, "trinkets");
+            update_items(data.items, "items");
         });
     }
-    update_features();
+    update_all();
 </script>
 
 {% if editable %}
