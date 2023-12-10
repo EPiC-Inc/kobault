@@ -2,13 +2,15 @@ from os import environ
 
 from flask import Flask, render_template
 from flask_login import LoginManager, UserMixin
-from tinydb import TinyDB, where
 
-db = TinyDB("./main_database.json")
-user_db = db.table('users')
-character_db = db.table('characters')
+from dbapi import Database, Table
+from objects import Characters, User
 
-class User(UserMixin):
+db = Database()
+user_db = Table("Users")
+pathfinder_character_db = Table("Characters_Pathfinder")
+
+class User_(UserMixin):
     def __init__(self, user_id: str) -> None:
         super().__init__()
         self.id = user_id
@@ -17,9 +19,9 @@ class User(UserMixin):
         return self.id
 
     def get_name(self) -> str:
-        user = user_db.get(where('user_id') == self.id)
+        user = user_db.query("user_name", where_column="user_id", where_data=self.id)
         if user:
-            return user['user_name']
+            return user[0][0]
         return "N/A"
 
 def page_not_found(e):
@@ -46,6 +48,6 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id: str):
-        return User(user_id)
+        return User_(user_id)
 
     return app

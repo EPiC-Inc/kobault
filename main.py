@@ -6,7 +6,7 @@ from jinja2 import TemplateNotFound
 from tinydb import where
 
 import fetch
-from app import character_db
+from app import pathfinder_character_db
 
 # This module is for the main functions of the site - characters, campaigns, spells, etc.
 
@@ -16,7 +16,7 @@ main = Blueprint('main', __name__)
 def index():
     characters = []
     if current_user.is_authenticated: # type: ignore
-        characters = character_db.search(where('owner') == current_user.get_id()) # type: ignore
+        characters = pathfinder_character_db.query("name, character_id", where_column="user_id", where_data=current_user.get_id()) # type: ignore
     return render_template("_core/index.html",
         characters = characters
     )
@@ -39,7 +39,7 @@ def character_sheet(game, character_id):
         if not character:
             abort(404)
 
-        return render_template(f"{game}/character_sheet.html", 
+        return render_template(f"{game}/character_sheet.html",
             editable=False if request.args.get('readonly') else True,
             fetch=fetch,
             **character)
