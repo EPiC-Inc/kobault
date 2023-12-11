@@ -26,7 +26,8 @@ class Characters:
         user_id: str
         character_id: str = field(default_factory=new_uuid)
         npc: bool = False
-        name: str = "Nameless"
+        game: str = "pathfinder1e"
+        name: str = "Unnamed Character"
         hp: str | int = 10
         max_hp: str | int = 10
         nonlethal_damage: str | int = 0
