@@ -23,7 +23,7 @@ class Table:
         self.name = name
 
     def query(
-        self, columns, where_column: str | None = None, where_data: str | None = None
+        self, columns, where_column: str | None = None, where_data: list | None = None
     ) -> list:
         """Queries the table's current data."""
         with connect(Database.database) as connection:

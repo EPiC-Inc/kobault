@@ -35,7 +35,7 @@ def fetch_character(character_id: str) -> Characters.Pathfinder | None:
     character = None
     for game in GAMES:
         if game == "pathfinder1e":
-            character = pathfinder_character_db.query("*", where_column="character_id", where_data=character_id)
+            character = pathfinder_character_db.query("*", where_column="character_id", where_data=[character_id])
             if character:
                 character = Characters.Pathfinder(*character[0])
                 break

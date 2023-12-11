@@ -3,7 +3,6 @@ from json import loads
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
-from tinydb import where
 
 import fetch
 from app import pathfinder_character_db
@@ -16,7 +15,7 @@ main = Blueprint('main', __name__)
 def index():
     characters = []
     if current_user.is_authenticated: # type: ignore
-        characters = pathfinder_character_db.query("name, character_id", where_column="user_id", where_data=current_user.get_id()) # type: ignore
+        characters = pathfinder_character_db.query("name, character_id", where_column="user_id", where_data=[current_user.get_id()]) # type: ignore
     return render_template("_core/index.html",
         characters = characters
     )

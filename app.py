@@ -19,7 +19,7 @@ class User_(UserMixin):
         return self.id
 
     def get_name(self) -> str:
-        user = user_db.query("user_name", where_column="user_id", where_data=self.id)
+        user = user_db.query("user_name", where_column="user_id", where_data=[self.id])
         if user:
             return user[0][0]
         return "N/A"
@@ -32,11 +32,8 @@ def create_app():
 
     app.config['SECRET_KEY'] = environ.get("KOBAULT_SECRET_KEY")
 
-    # blueprint for auth routes in our app
     from auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
-
-    # blueprint for non-auth parts of app
     from main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

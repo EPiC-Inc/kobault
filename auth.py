@@ -38,7 +38,7 @@ def login():
 
     user_exists = stored_password = None
     response = user_db.query(
-        "user_id, password", where_column="user_id", where_data=user_id
+        "user_id, password", where_column="user_id", where_data=[user_id]
     )
     if response:
         user_exists, stored_password = response[0]
@@ -77,7 +77,7 @@ def signup():
         flash("Please make sure all fields are filled out", category="warning")
         return redirect(url_for("auth.signup"))
 
-    user_exists = user_db.query("user_id", where_column="user_id", where_data=user_id)
+    user_exists = user_db.query("user_id", where_column="user_id", where_data=[user_id])
     if user_exists:
         flash("User ID already exists", category="warning")
         # Make sure duplicate users can't exist lol

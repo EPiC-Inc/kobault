@@ -1,10 +1,7 @@
 """Holds all the required objects."""
 
 from dataclasses import dataclass, field
-from uuid import uuid1
-
-def new_uuid() -> str:
-    return str(uuid1())
+from uuid import uuid4
 
 class Updateable(object):
     def update(self, new):
@@ -24,9 +21,8 @@ class Characters:
     @dataclass(slots=True)
     class Pathfinder(Updateable):
         user_id: str
-        character_id: str = field(default_factory=new_uuid)
+        character_id: str = field(default_factory=lambda: str(uuid4()))
         npc: bool = False
-        game: str = "pathfinder1e"
         name: str = "Unnamed Character"
         hp: str | int = 10
         max_hp: str | int = 10

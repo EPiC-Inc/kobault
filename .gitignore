@@ -6,7 +6,6 @@ static/jquery.js
 
 main_database.json
 data/db/
-data/i.db
 
 .replit
 replit.nix
