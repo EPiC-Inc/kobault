@@ -10,6 +10,7 @@ from objects import Characters
 
 GAMES = ["pathfinder1e"]
 
+
 def fetch(game: str, name: str, attribute: str | None = None):
     return ""
 
@@ -31,26 +32,35 @@ def fetch_skills(game: str, full: bool = False) -> list | dict:
         return list(skills.keys())
 
 
-def fetch_character(character_id: str) -> Characters.Pathfinder | None:
+def fetch_character(character_id: str) -> dict | None:
     character = None
+    character_game = None
     for game in GAMES:
         if game == "pathfinder1e":
-            character = pathfinder_character_db.query("*", where_column="character_id", where_data=[character_id])
+            character_game = game
+            character = pathfinder_character_db.query(
+                "*", where_column="character_id", where_data=[character_id]
+            )
             if character:
                 character = Characters.Pathfinder(*character[0])
                 break
     if not character:
         return None
     else:
-        return character # type: ignore
+        character = asdict(character) # type: ignore
+        character["game"] = character_game
+        return character  # type: ignore
 
 
 def update_character(
-    character_id: str, attribute: str, value: str | int | list | dict
+    character_id: str, attribute: str, value: str | int | list | dict, game: str
 ) -> None:
     print("updating character")
     print(attribute)
     print(value)
+    character_db = None
+    if game == "pathfinder1e":
+        character_db = pathfinder_character_db
     if ":" in attribute:
         attribute, section = attribute.split(":", maxsplit=1)
         character = fetch_character(character_id)
@@ -58,11 +68,12 @@ def update_character(
             return
         new_attribute = asdict(character)[attribute]
         new_attribute[section] = value  # type: ignore
-        character_db.update(
-            {attribute: new_attribute}, where("character_id") == character_id
+
+        character_db.update_property(
+            attribute, new_attribute, "character_id", character_id
         )
     else:
-        character_db.update({attribute: value}, where("character_id") == character_id)
+        character_db.update_property(attribute, value, "character_id", character_id)
 
 
 def new_character(game: str, user_id: str, user_name: str) -> str | None:

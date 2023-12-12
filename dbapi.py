@@ -44,16 +44,26 @@ class Table:
         with connect(Database.database) as connection:
             cursor = connection.cursor()
             command = f"INSERT INTO {self.name} VALUES({('?, ' * len(values))[:-2]})"
-            print(command)
-            print(values)
             cursor.execute(command, values)
             connection.commit()
 
-    def update(self) -> None:
-        """Not currently implemented."""
-        pass
+    def update_property(
+        self,
+        property_column: str,
+        property_data: str,
+        where_column: str,
+        where_data: str,
+    ) -> None:
+        """Updates a SINGLE property."""
+        with connect(Database.database) as connection:
+            cursor = connection.cursor()
+            command = f"UPDATE {self.name} SET {property_column} = ? WHERE {where_data} = ?"
+            cursor.execute(command, [property_data, where_data])
+            connection.commit()
 
     def insert_object(self, object_) -> None:
         """Inserts an object or its properties into the current table."""
-        # Database.database.insert(object_)
-        # Database.database.commit()
+        data = object_.__dict__
+        if not data:
+            data = object_.__slots__
+        self.insert([str(getattr(object_, attr)) for attr in data])

@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, field
 from uuid import uuid4
+from json import loads
 
 class Updateable(object):
     def update(self, new):
@@ -54,3 +55,10 @@ class Characters:
         base_attack_bonus: str = "+1"
         speed: str | int = 30
         conditions: list = field(default_factory=list)
+
+        def __post_init__(self):
+            json_attrs = ("traits", "skills", "skill_bonuses", "class_skills", "items", "armor", "weapons", "spells", "features", "permanent_stat_modifiers", "conditions")
+            for attr in json_attrs:
+                data = getattr(self, attr)
+                if isinstance(data, str):
+                    setattr(self, attr, loads(data))
