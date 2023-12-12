@@ -57,8 +57,8 @@ class Table:
         """Updates a SINGLE property."""
         with connect(Database.database) as connection:
             cursor = connection.cursor()
-            command = f"UPDATE {self.name} SET {property_column} = ? WHERE {where_data} = ?"
-            cursor.execute(command, [property_data, where_data])
+            command = f"UPDATE {self.name} SET {property_column} = ? WHERE {where_column} = ?"
+            cursor.execute(command, [str(property_data), str(where_data)])
             connection.commit()
 
     def insert_object(self, object_) -> None:

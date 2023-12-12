@@ -21,13 +21,13 @@
 
                     {% for character in characters %}
                     <div class="character_button">
-                        <a href="{{ url_for('main.character_sheet', game=character['game'], character_id=character['character_id']) }}">
-                            <button>{{ character['name'] }}</button>
+                        <a href="{{ url_for('main.character_sheet', game=character[2], character_id=character[1]) }}">
+                            <button>{{ character[0] }}</button>
                         </a>
                     </div>
                     {% endfor %}
                 </div>
-                
+
                 <div class="new_character_area">
                     <div id="new_character_options">
                         <label for="game">Game:</label>

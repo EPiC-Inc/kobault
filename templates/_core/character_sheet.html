@@ -368,7 +368,7 @@
             }, (UPDATE_QUEUE_MAX + 1) * RATE_LIMIT);
         } else {
             $.post("{{ url_for('main.set_character', character_id=character_id) }}",
-                {"attribute": attribute, "value": JSON.stringify(value)},
+                {"attribute": attribute, "value": JSON.stringify(value), "game": '{{ game }}'},
             );
             setTimeout(() => {update_queue -= 1}, RATE_LIMIT);
         }

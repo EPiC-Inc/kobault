@@ -1,7 +1,7 @@
 """This program acts as middleware from the frontend to the database api."""
 
 from dataclasses import asdict
-from json import load
+from json import load, dumps
 from time import sleep
 from uuid import uuid1
 
@@ -53,21 +53,23 @@ def fetch_character(character_id: str) -> dict | None:
 
 
 def update_character(
-    character_id: str, attribute: str, value: str | int | list | dict, game: str
+    character_id: str, attribute: str, value: str | int | list | dict
 ) -> None:
     print("updating character")
     print(attribute)
     print(value)
     character_db = None
+    character = fetch_character(character_id)
+    if not character:
+        return
+    game = character.get("game")
     if game == "pathfinder1e":
         character_db = pathfinder_character_db
     if ":" in attribute:
         attribute, section = attribute.split(":", maxsplit=1)
-        character = fetch_character(character_id)
-        if not character:
-            return
-        new_attribute = asdict(character)[attribute]
+        new_attribute = character[attribute]
         new_attribute[section] = value  # type: ignore
+        new_attribute = dumps(new_attribute)
 
         character_db.update_property(
             attribute, new_attribute, "character_id", character_id

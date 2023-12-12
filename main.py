@@ -15,7 +15,8 @@ main = Blueprint('main', __name__)
 def index():
     characters = []
     if current_user.is_authenticated: # type: ignore
-        characters = pathfinder_character_db.query("name, character_id", where_column="user_id", where_data=[current_user.get_id()]) # type: ignore
+        characters = pathfinder_character_db.query("name, character_id, game", where_column="user_id", where_data=[current_user.get_id()]) # type: ignore
+        print(characters)
     return render_template("_core/index.html",
         characters = characters
     )
@@ -49,6 +50,7 @@ def character_sheet(game, character_id):
 @main.route('/characters/<character_id>', methods=['POST'])
 def set_character(character_id):
     value = request.form.get('value', '')
+    game = request.form.get("game", '')
     value = loads(value)
     fetch.update_character(character_id, request.form.get('attribute', ''),
         value)
@@ -57,8 +59,10 @@ def set_character(character_id):
 
 @main.route('/fetch/<game>/<to_fetch>')
 def fetch_from_rules(game, to_fetch):
+    print("AAAAA")
     if game == 'character':
-        return fetch.fetch_character(to_fetch)
+        if (response := fetch.fetch_character(to_fetch)):
+            return response
     match to_fetch:
         case value if value.startswith("condition"):
             return fetch.fetch_condition(game, value[value.index(':')+1:])

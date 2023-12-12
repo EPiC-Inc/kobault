@@ -22,7 +22,9 @@ class Characters:
     @dataclass(slots=True)
     class Pathfinder(Updateable):
         user_id: str
+        user_name: str = "You"
         character_id: str = field(default_factory=lambda: str(uuid4()))
+        game: str = "pathfinder1e"
         npc: bool = False
         name: str = "Unnamed Character"
         hp: str | int = 10
