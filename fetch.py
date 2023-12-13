@@ -75,7 +75,9 @@ def update_character(
             attribute, new_attribute, "character_id", character_id
         )
     else:
-        if str(value).startswith("{") and str(value).endswith("}"):
+        if (str(value).startswith("{") and str(value).endswith("}")) or (
+            str(value).startswith("[") and str(value).endswith("]")
+        ):
             value = dumps(value)
         character_db.update_property(attribute, value, "character_id", character_id)  # type: ignore
 
