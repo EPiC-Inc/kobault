@@ -51,6 +51,10 @@ class Characters:
         skill_bonuses: dict = field(default_factory=dict)
         class_skills: dict = field(default_factory=dict)
         items: dict = field(default_factory=dict)
+        platinum: str | int = 0
+        gold: str | int = 0
+        silver: str | int = 0
+        copper: str | int = 0
         armor: dict = field(default_factory=dict)
         weapons: dict = field(default_factory=dict)
         spells: dict = field(default_factory=dict)
@@ -72,7 +76,7 @@ class Characters:
         nonlethal_damage: str | int = 0
 
         def __post_init__(self):
-            json_attrs = ("traits", "skills", "skill_bonuses", "class_skills", "items", "armor", "weapons", "spells", "features", "permanent_stat_modifiers", "conditions")
+            json_attrs = ("traits", "skills", "skill_bonuses", "class_skills", "items", "armor", "weapons", "spells", "features", "trinkets", "permanent_stat_modifiers", "conditions")
             for attr in json_attrs:
                 data = getattr(self, attr)
                 if isinstance(data, str):
