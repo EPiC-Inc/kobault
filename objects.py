@@ -27,12 +27,15 @@ class Characters:
         game: str = "pathfinder1e"
         npc: bool = False
         name: str = "Unnamed Character"
-        hp: str | int = 10
-        max_hp: str | int = 10
-        nonlethal_damage: str | int = 0
         class_: str = "class / subclass (0)"
         background: str = "N/A"
+        age: str  = "N/A"
         race: str = "N/A"
+        height: str = "N/A"
+        weight: str = "N/A"
+        eyes: str = "N/A"
+        skin: str = "N/A"
+        hair: str = "N/A"
         alignment: str = "True Neutral"
         exp: str | int = "N/A"
         strength: str | int = 10
@@ -55,8 +58,18 @@ class Characters:
         trinkets: dict = field(default_factory=dict)
         permanent_stat_modifiers: list = field(default_factory=list)
         base_attack_bonus: str = "+1"
+        armor_class: str | int = 10
+        armor_class_touch: str | int = 10
+        armor_class_flat: str | int = 10
+        initiative: str | int = "+0"
         speed: str | int = 30
+        combat_maneuver_bonus: str | int = "+0"
+        combat_maneuver_defense: str | int = 10
         conditions: list = field(default_factory=list)
+        hp: str | int = 10
+        max_hp: str | int = 10
+        temp_hp: str | int = 0
+        nonlethal_damage: str | int = 0
 
         def __post_init__(self):
             json_attrs = ("traits", "skills", "skill_bonuses", "class_skills", "items", "armor", "weapons", "spells", "features", "permanent_stat_modifiers", "conditions")

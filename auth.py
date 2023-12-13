@@ -86,13 +86,7 @@ def signup():
     new_user = User(
         user_id=user_id, user_name=user_name, password=password_hash(password)
     )
-    user_db.insert(
-        [
-            new_user.user_id,
-            new_user.user_name,
-            new_user.password,
-        ]
-    )
+    user_db.insert_object(new_user)
 
     login_user(User_(user_id), remember=True)
     if next:

@@ -44,6 +44,7 @@ class Table:
         with connect(Database.database) as connection:
             cursor = connection.cursor()
             command = f"INSERT INTO {self.name} VALUES({('?, ' * len(values))[:-2]})"
+            print(command)
             cursor.execute(command, values)
             connection.commit()
 
@@ -63,7 +64,10 @@ class Table:
 
     def insert_object(self, object_) -> None:
         """Inserts an object or its properties into the current table."""
-        data = object_.__dict__
-        if not data:
+        try:
+            data = object_.__dict__
+            if not data:
+                data = object_.__slots__
+        except AttributeError:
             data = object_.__slots__
         self.insert([str(getattr(object_, attr)) for attr in data])

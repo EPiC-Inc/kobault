@@ -16,7 +16,7 @@ def fetch(game: str, name: str, attribute: str | None = None):
 
 
 def fetch_condition(game: str, condition: str) -> dict:
-    with open(f"data/{game}/conditions.json") as conditions_file:
+    with open(f"data/{game}/conditions.json", mode="r") as conditions_file:
         conditions = load(conditions_file)
     to_return = conditions[condition]
     del conditions
@@ -24,7 +24,7 @@ def fetch_condition(game: str, condition: str) -> dict:
 
 
 def fetch_skills(game: str, full: bool = False) -> list | dict:
-    with open(f"data/{game}/skills.json") as skill_file:
+    with open(f"data/{game}/skills.json", mode="r") as skill_file:
         skills = load(skill_file)
     if full:
         return skills
@@ -47,7 +47,7 @@ def fetch_character(character_id: str) -> dict | None:
     if not character:
         return None
     else:
-        character = asdict(character) # type: ignore
+        character = asdict(character)  # type: ignore
         character["game"] = character_game
         return character  # type: ignore
 
@@ -71,11 +71,13 @@ def update_character(
         new_attribute[section] = value  # type: ignore
         new_attribute = dumps(new_attribute)
 
-        character_db.update_property(
+        character_db.update_property(  # type: ignore
             attribute, new_attribute, "character_id", character_id
         )
     else:
-        character_db.update_property(attribute, value, "character_id", character_id)
+        if str(value).startswith("{") and str(value).endswith("}"):
+            value = dumps(value)
+        character_db.update_property(attribute, value, "character_id", character_id)  # type: ignore
 
 
 def new_character(game: str, user_id: str, user_name: str) -> str | None:
@@ -85,6 +87,7 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
     match game:
         case "pathfinder1e":
             new_character = Characters.Pathfinder(user_id=user_id)
+            print(new_character)
             pathfinder_character_db.insert_object(new_character)
         case _:
             return None
