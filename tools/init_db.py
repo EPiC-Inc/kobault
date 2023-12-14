@@ -32,7 +32,7 @@ def gen_command(object_: object, object_name: str, alterations: dict | None = No
 objects = [User, Characters.Pathfinder]
 object_names = ["Users", "Characters.Pathfinder"]
 alterations = [
-    {"user_id": "TEXT PRIMARY KEY"},
+    {"user_id": "TEXT PRIMARY KEY", "password": "BLOB"},
     {
         "user_id": 'TEXT NOT NULL REFERENCES "Users"("user_id")',
         "character_id": "TEXT PRIMARY KEY",

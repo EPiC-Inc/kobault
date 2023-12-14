@@ -44,7 +44,6 @@ class Table:
         with connect(Database.database) as connection:
             cursor = connection.cursor()
             command = f"INSERT INTO {self.name} VALUES({('?, ' * len(values))[:-2]})"
-            print(command)
             cursor.execute(command, values)
             connection.commit()
 

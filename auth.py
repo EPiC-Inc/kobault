@@ -43,16 +43,13 @@ def login():
     if response:
         user_exists, stored_password = response[0]
 
-    print(user_exists)
     if not user_exists:
         flash("User ID not found", category="warning")
         return redirect(url_for("auth.login"))
 
     # ANCHOR - actual login
-    if password_hash(password) == stored_password:
+    if str(password_hash(password)) == stored_password:
         to_login = User_(user_exists)
-        print(to_login)
-        print(current_user)
         login_user(to_login, remember=True)
 
         return redirect(next)

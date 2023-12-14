@@ -16,7 +16,6 @@ def index():
     characters = []
     if current_user.is_authenticated: # type: ignore
         characters = pathfinder_character_db.query("name, character_id, game", where_column="user_id", where_data=[current_user.get_id()]) # type: ignore
-        print(characters)
     return render_template("_core/index.html",
         characters = characters
     )
