@@ -1,10 +1,9 @@
 """This module handles authentication."""
 
 from hashlib import scrypt
-from urllib.parse import urljoin, urlparse
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, logout_user
 
 # This is to prevent data races or other multithreading stupidity
 from app import User_, user_db
@@ -65,9 +64,9 @@ def signup():
     if request.method == "GET":
         return render_template("_core/signup.html")
     # Get form data
-    user_id = request.form.get("user_id")
-    user_name = request.form.get("user_name")
-    password = request.form.get("password")
+    user_id = request.form.get("user_id", '')[:50]
+    user_name = request.form.get("user_name", '')[:50]
+    password = request.form.get("password", '')[:100]
 
     # TODO - verify user id and password
     if not (user_id and user_name and password):
@@ -94,4 +93,5 @@ def signup():
 
 @auth.route("/logout")
 def logout():
-    return "Logout"
+    logout_user()
+    return redirect(url_for("main.index"))

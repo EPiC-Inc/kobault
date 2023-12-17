@@ -206,7 +206,7 @@ button.spells {
     font-size: medium;
     padding-bottom: 16px;
 }
-/* 
+/*
 .stat_label {
     margin-bottom: 4px;
 } */
@@ -492,7 +492,7 @@ input.stat_adjustment {
     border: 1px solid #ddd;
     margin-bottom: 12px;
 }
-  
+
 #menu_items {
     text-align: center;
     list-style-type: none;
@@ -520,9 +520,14 @@ input.stat_adjustment {
     color: black;
     display: block
 }
-  
+
 #menu_items li a:hover:not(.header) {
     background-color: #eee;
+}
+
+#logout {
+    background-color: darkred;
+    color: whitesmoke;
 }
 
 /* for mobile devices (ew lol) */

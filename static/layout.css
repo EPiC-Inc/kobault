@@ -60,6 +60,12 @@ body {
     grid-column: 1 / 3;
 }
 
+#links {
+    display: flex;
+    flex-direction: column;
+    gap: 4%;
+}
+
 .new_character_area {
     /*dummy rule to make my linter happy*/
     display: block;
@@ -91,4 +97,21 @@ body {
     font-size: x-large;
     width: auto;
     padding: 0 20px;
+}
+
+#logged_out {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 2em;
+    gap: 2rem;
+    margin-top: 5%;
+    width: 100%;
+}
+#logged_out a {
+    color: whitesmoke;
+    width: fit-content;
+}
+#logged_out a button{
+    font-size: 2rem;
 }

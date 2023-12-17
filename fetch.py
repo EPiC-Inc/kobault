@@ -80,6 +80,8 @@ def update_character(
             str(value).startswith("[") and str(value).endswith("]")
         ):
             value = dumps(value)
+        if isinstance(value, str):
+            value = value[:100]
         character_db.update_property(attribute, value, "character_id", character_id)  # type: ignore
 
 

@@ -45,17 +45,19 @@
                 </div>
             </div>
         </div>
-        <div class="">
+        <section id="links">
             <div class="title">Other links</div>
             <a href="{{ url_for('main.campaign_hub') }}"><button>Campaigns</button></a>
-        </div>
+            <hr style="color: whitesmoke;width: 10%;">
+            <a href="{{ url_for('auth.logout') }}"><button id="logout">Log Out</button></a>
+        </section>
     </div>
     {% else %}
-    <div>
+    <section id="logged_out">
         <!--TODO - put funny thing here like a single kobold sitting forlornly on a stump looking into the sunset -->
-        You're logged out.<br>
-        <a href="{{ url_for('auth.login') }}">Log in?</a>
-    </div>
+        <span>You're logged out.</span>
+        <a href="{{ url_for('auth.login') }}"><button>Log in?</button></a>
+    </section>
     {% endif %}
 </div>
 {% endblock %}

@@ -16,11 +16,11 @@
 <div id="login">
     <form action="{{ url_for('auth.signup') }}?next={{ next }}" method="post">
         <label for="user_id">User ID:</label>
-        <input type="text" name="user_id" autocomplete="username">
+        <input type="text" name="user_id" autocomplete="username" maxlength="50">
         <label for="lname">Name:</label>
-        <input type="text" name="user_name" autocomplete="off">
+        <input type="text" name="user_name" autocomplete="off" maxlength="50">
         <label for="lname">Password:</label>
-        <input type="password" name="password" autocomplete="new-password">
+        <input type="password" name="password" autocomplete="new-password" maxlength="100">
         <input type="submit" value="Sign Up">
     </form>
 </div>
