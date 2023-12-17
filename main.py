@@ -58,7 +58,6 @@ def set_character(character_id):
 
 @main.route('/fetch/<game>/<to_fetch>')
 def fetch_from_rules(game, to_fetch):
-    print("AAAAA")
     if game == 'character':
         if (response := fetch.fetch_character(to_fetch)):
             return response

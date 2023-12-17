@@ -55,9 +55,10 @@ def fetch_character(character_id: str) -> dict | None:
 def update_character(
     character_id: str, attribute: str, value: str | int | list | dict
 ) -> None:
-    print("updating character")
-    print(attribute)
-    print(value)
+    #TEMP
+    # print("updating character")
+    # print(attribute)
+    # print(value)
     character_db = None
     character = fetch_character(character_id)
     if not character:
@@ -89,7 +90,7 @@ def new_character(game: str, user_id: str, user_name: str) -> str | None:
     match game:
         case "pathfinder1e":
             new_character = Characters.Pathfinder(user_id=user_id)
-            print(new_character)
+            new_character.user_name = user_name
             pathfinder_character_db.insert_object(new_character)
         case _:
             return None
