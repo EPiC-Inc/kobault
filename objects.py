@@ -62,6 +62,9 @@ class Characters:
         trinkets: dict = field(default_factory=dict)
         permanent_stat_modifiers: list = field(default_factory=list)
         base_attack_bonus: str = "+1"
+        fortitude_save: str = "+0"
+        reflex_save: str = "+0"
+        will_save: str = "+0"
         armor_class: str | int = 10
         armor_class_touch: str | int = 10
         armor_class_flat: str | int = 10
