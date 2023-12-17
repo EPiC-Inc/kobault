@@ -20,30 +20,31 @@ def index():
         characters = characters
     )
 
-@main.route('/characters/<game>/<character_id>')
+@main.route('/characters/<game>/new')
 @login_required
-def character_sheet(game, character_id):
+def new_character(game):
     user_id = current_user.get_id() # type: ignore
     user_name = current_user.get_name() # type: ignore
     #TODO - make sure user is authorized for that character
-    try:
-        if character_id == "new":
-            if request.args.get("npc") == "true":
-                return render_template(f"{game}/new_npc.html")
-            else:
-                character_id = fetch.new_character(game, user_id, user_name)
-                return redirect(url_for('main.character_sheet', game=game, character_id=character_id))
+    if request.args.get("npc") == "true":
+        return render_template(f"{game}/new_npc.html")
+    else:
+        character_id = fetch.new_character(game, user_id, user_name)
+        return redirect(url_for('main.character_sheet', game=game, character_id=character_id))
 
-        character = fetch.fetch_character(character_id)
-        if not character:
-            abort(404)
-
-        return render_template(f"{game}/character_sheet.html",
-            editable=False if request.args.get('readonly') else True,
-            fetch=fetch,
-            **character)
-    except TemplateNotFound:
+@main.route('/characters/<game>/<character_id>')
+@login_required
+def character_sheet(game, character_id):
+    #TODO - make sure user is authorized for that character
+    character = fetch.fetch_character(character_id)
+    if not character:
         abort(404)
+
+    return render_template(f"{game}/character_sheet.html",
+        editable=False if request.args.get('readonly') else True,
+        fetch=fetch,
+        **character)
+
 
 #ANCHOR - Edit character
 @main.route('/characters/<character_id>', methods=['POST'])

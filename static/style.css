@@ -380,7 +380,7 @@ input.stat_adjustment {
     border-right: none;
     border-radius: 15px 0 0 15px;
     text-align: center;
-    transform: translate(40%);
+    transform: translate(10%);
 }
 #options .button:hover {
     right: 0;
