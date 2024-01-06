@@ -29,6 +29,7 @@ class Characters:
         name: str = "Unnamed Character"
         class_: str = "class / subclass (0)"
         background: str = "N/A"
+        image_url: str = ""
         age: str  = "N/A"
         race: str = "N/A"
         height: str = "N/A"
