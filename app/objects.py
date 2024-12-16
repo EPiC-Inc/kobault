@@ -15,7 +15,7 @@ class Characters:
     @dataclass(slots=True)
     class Pathfinder:
         user_id: str
-        user_name: str = "You"
+        user_name: str = "Your Name"
         character_id: str = field(default_factory=lambda: uuid4().hex)
         game: str = "pathfinder1e"
         npc: bool = False

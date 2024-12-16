@@ -1,15 +1,20 @@
-from json import load
+from dataclasses import asdict
+from json import dumps, load
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
 
+from .objects import Characters
+
 
 fetch = FastAPI()
 
-GAMES = ("pathfinder1e",)
 ROOT_PATH = Path(__file__).parent.parent
 LOCKS: set[str] = set()
+
+class Games:
+    Pathfinder1E = "pathfinder1e"
 
 
 def compute_file_path(file_path: str | Path) -> Path:
@@ -35,7 +40,7 @@ def fetch_skills(game: str, full: bool = False) -> list | dict:
     else:
         return list(skills.keys())
 
-@fetch.get("/character/{character_id}")
+@fetch.get("/characters/{character_id}")
 def fetch_character(character_id: str) -> dict | None:
     if (character_file_path := compute_file_path(f"characters/{character_id}")).exists():
         while character_file_path.as_posix() in LOCKS:
@@ -43,3 +48,19 @@ def fetch_character(character_id: str) -> dict | None:
         with character_file_path.open("r") as character_file:
             return load(character_file)
     raise HTTPException(status_code=404, detail="Character not found!")
+
+def new_character(user_id: str, game: str, npc: bool = False) -> str:
+    match game:
+        case Games.Pathfinder1E:
+            character = Characters.Pathfinder(user_id=user_id)
+        case _:
+            raise HTTPException(status_code=404, detail="Game does not exist!")
+
+    character_id = character.character_id
+    if (character_file := compute_file_path(f"characters/{character_id}")).exists():
+        raise FileExistsError("UUID clash????")
+    LOCKS.add(character_file.as_posix())
+    character_file.write_text(dumps(asdict(character)))
+    LOCKS.remove(character_file.as_posix())
+
+    return character_id

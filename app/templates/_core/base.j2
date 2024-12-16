@@ -14,15 +14,15 @@
         <link href="https://fonts.googleapis.com/css2?family=Caudex&display=swap" rel="stylesheet">
 
         <!--icons-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='line-awesome') }}/css/line-awesome.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', path='line-awesome') }}/css/line-awesome.min.css">
 
         <!--internal stylesheet and icons-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
-        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='layout.css') }}">
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', path='favicon.png') }}">
 
         <!--jquery-->
-        <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+        <script src="{{ url_for('static', path='jquery.js') }}"></script>
 
         {% block head %}{% endblock %}
     </head>
