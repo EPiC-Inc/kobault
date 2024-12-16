@@ -1,4 +1,4 @@
-{% extends "_core/base.html" %}
+{% extends "_core/base.j2" %}
 {% block title %}Home{% endblock %}
 
 {% block body %}
@@ -59,7 +59,7 @@
 {% endblock %}
 
 {% block afterbody %}
-<script>
+<script type="text/javascript">
     $("#new_character_options").hide();
 
     function new_character() {
