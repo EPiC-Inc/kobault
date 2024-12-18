@@ -27,4 +27,4 @@ def new_character(request: Request, game: str, npc: bool = False):
     if npc:
         return TemplateResponse(request, f"{game}/new_npc.html")
     character_id = fetch.new_character("test", game)
-    return RedirectResponse(request.url_for('character_sheet', game=game, character_id=character_id))
+    return RedirectResponse(request.url_for("character_sheet", game=game, character_id=character_id))

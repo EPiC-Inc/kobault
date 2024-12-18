@@ -19,6 +19,7 @@ for path in (ROOT_PATH / "characters", ROOT_PATH / "campaigns"):
     elif not path.is_dir():
         raise FileExistsError(f"{path.name} folder is not a folder??????")
 
+
 class Games:
     Pathfinder1E = "pathfinder1e"
 
@@ -46,6 +47,7 @@ def fetch_skills(game: str, full: bool = False) -> list | dict:
     else:
         return list(skills.keys())
 
+
 @fetch.get("/characters/{character_id}")
 def fetch_character(character_id: str) -> dict | None:
     if (character_file_path := compute_file_path(f"characters/{character_id}")).exists():
@@ -54,6 +56,7 @@ def fetch_character(character_id: str) -> dict | None:
         with character_file_path.open("r") as character_file:
             return load(character_file)
     raise HTTPException(status_code=404, detail="Character not found!")
+
 
 def new_character(user_id: str, game: str, npc: bool = False) -> str:
     match game:

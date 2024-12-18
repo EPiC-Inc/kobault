@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from uuid import uuid4
 
+
 @dataclass(slots=True)
 class User:
     user_id: str
@@ -10,6 +11,7 @@ class User:
     password: bytes
     characters: list = field(default_factory=list)
     campaigns: list = field(default_factory=list)
+
 
 class Characters:
     @dataclass(slots=True)
@@ -23,7 +25,7 @@ class Characters:
         class_: str = "class / subclass (0)"
         background: str = "N/A"
         image_url: str = ""
-        age: str  = "N/A"
+        age: str = "N/A"
         race: str = "N/A"
         height: str = "N/A"
         weight: str = "N/A"
