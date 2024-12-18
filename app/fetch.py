@@ -10,8 +10,14 @@ from .objects import Characters
 
 fetch = FastAPI()
 
-ROOT_PATH = Path(__file__).parent.parent
 LOCKS: set[str] = set()
+ROOT_PATH = Path(__file__).parent.parent
+
+for path in (ROOT_PATH / "characters", ROOT_PATH / "campaigns"):
+    if not path.exists():
+        path.mkdir()
+    elif not path.is_dir():
+        raise FileExistsError(f"{path.name} folder is not a folder??????")
 
 class Games:
     Pathfinder1E = "pathfinder1e"

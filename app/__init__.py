@@ -5,7 +5,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from . import fetch
+from . import fetch, auth
 
 
 app = FastAPI(openapi_url=None)
@@ -22,6 +22,7 @@ def index(request: Request):
 
 
 @app.get("/characters/{game}/new")
+@auth.authentication_required
 def new_character(request: Request, game: str, npc: bool = False):
     if npc:
         return TemplateResponse(request, f"{game}/new_npc.html")

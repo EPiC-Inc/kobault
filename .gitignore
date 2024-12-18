@@ -4,9 +4,9 @@ __pycache__/
 static/line-awesome/
 static/jquery.js
 
-main_database.json
-data/i.db
-data/db/
+users/
+characters/
+campaigns/
 
 .replit
 replit.nix
