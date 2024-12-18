@@ -5,22 +5,20 @@
 
 {% block body %}
 
-{% with messages = get_flashed_messages() %}
 {% if messages %}
     <div class="error">
         Error: {{ messages[0] }}.
     </div>
 {% endif %}
-{% endwith %}
 
 <div id="login">
-    <form action="{{ url_for('auth.login') }}?next={{ next }}" method="post">
+    <form action="{{ url_for('login') }}?next={{ next }}" method="post">
         <label for="user_id">User ID:</label>
         <input type="text" name="user_id" autocomplete="username" maxlength="50">
         <label for="lname">Password:</label>
         <input type="password" name="password" autocomplete="current-password" maxlength="100">
         <input type="submit" value="Submit">
     </form>
-    <a href="{{ url_for('auth.signup') }}?next={{ next }}" style="margin-top: 2%;"><button id="signup">I don't have an account</button></a>
+    <a href="{{ url_for('signup') }}?next={{ next }}" style="margin-top: 2%;"><button id="signup">I don't have an account</button></a>
 </div>
 {% endblock %}

@@ -1,8 +1,8 @@
 .env
 .vscode/
 __pycache__/
-static/line-awesome/
-static/jquery.js
+app/static/line-awesome/
+app/static/jquery.js
 
 users/
 characters/

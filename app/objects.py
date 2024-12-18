@@ -1,7 +1,12 @@
 """Holds all the required objects."""
 
 from dataclasses import dataclass, field
+from enum import Enum
 from uuid import uuid4
+
+
+class Games(str, Enum):
+    Pathfinder1E = "pathfinder1e"
 
 
 @dataclass(slots=True)
@@ -15,11 +20,11 @@ class User:
 
 class Characters:
     @dataclass(slots=True)
-    class Pathfinder:
+    class Pathfinder1E:
         user_id: str
         user_name: str = "Your Name"
         character_id: str = field(default_factory=lambda: uuid4().hex)
-        game: str = "pathfinder1e"
+        game: Games = Games.Pathfinder1E
         npc: bool = False
         name: str = "Unnamed Character"
         class_: str = "class / subclass (0)"
